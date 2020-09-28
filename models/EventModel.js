@@ -12,10 +12,18 @@ export class EventModel{
         return this.events
     }
 
+    /**
+     * 
+     * @param {number} id 
+     */
     static getEventByID(id) {
         return events.get(id)
     }
 
+    /**
+     * 
+     * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event 
+     */
     static createEvent(event) {
         let id = this.events.size + 1
         let newEvent = new Event(event.id, event.theme, event.beginning)
@@ -23,6 +31,10 @@ export class EventModel{
         return newEvent
     }
 
+    /**
+     * 
+     * @param {Event} event 
+     */
     static updateEvent(event) {
         let updatingEvent = getEventByID(event.id)
 
@@ -34,6 +46,10 @@ export class EventModel{
         return updatingEvent
     }
 
+    /**
+     * 
+     * @param {number} id 
+     */
     static deleteEvent(id) {
         events.delete(id)
     }
