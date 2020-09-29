@@ -1,4 +1,4 @@
-import {Event} from "/models/entities/Event";
+import {Event} from "./../../models/entities/Event.js";
 
 export class EventWindowView{
 
@@ -6,9 +6,9 @@ export class EventWindowView{
      * 
      * @param {Event[]} events 
      */
-    static view(events){
+    view(event){
         return webix.ui({
-            data:events
+            data:event
         })
     }
 }

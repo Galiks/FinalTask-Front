@@ -1,33 +1,31 @@
-import { Employee } from "models/entities/Employee";
-import { EmployeeWindowController } from "components/employee/EmployeeWindowController";
-import { EmployeeModel } from "models/EmployeeModel";
-import { EventTabView } from "../event/EventTabView";
+import { EmployeeWindowController } from "./EmployeeWindowController.js";
+import { EmployeeModel } from "./../../models/EmployeeModel.js";
+import { EmployeeTabView } from "../employee/EmployeeTabView.js";
 
 export class EmployeeTabController{
-    /**
-     * 
-     * @param {Employee} employee 
-     */
-    constructor(employee){
-        this.employee = employee
-        this.employeeWindow = new EmployeeWindowController()
+
+    constructor(){
+        this.employeeWindowController = new EmployeeWindowController()
+        this.employeeModel = new EmployeeModel()
+        this.employeeTabView = new EmployeeTabView()
     }
 
-    static config(){
+    init(){
+        this.employeeWindowController.init()
+    }
+
+    config(){
+        return {
+
+        }
+    }
+
+    attachEvent(){
 
     }
 
-    static attachEvent(){
-
-    }
-
-    /**
-     * 
-     * @param {number} id 
-     */
-    static showEmployeeByID(id){
-        let showEmployee = EmployeeModel.getEmployeeByID(id)
-        
-        EventTabView.view(showEmployee)
+     showEmployees(){
+        let employees = this.employeeModel.getEmloyees()
+        return this.employeeTabView.view(employees)
     }
 }

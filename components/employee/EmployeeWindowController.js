@@ -1,18 +1,23 @@
-import { EmployeeModel } from 'models/EmployeeModel';
-import { EmployeeWindowView } from './EmployeeWindowView'
+import { EmployeeModel } from './../../models/EmployeeModel.js';
+import { EmployeeWindowView } from './EmployeeWindowView.js'
 
 export class EmployeeWindowController{
     constructor(){
+        this.employeeWindowView = new EmployeeWindowView()
+        this.employeeModel = new EmployeeModel()
+    }
+
+    init(){
 
     }
 
-    static config(){
-        return webix.ui({
+     config(){
+        return {
 
-        })
+        }
     }
 
-    static attachEvents(){
+    attachEvents(){
 
     }
 
@@ -20,7 +25,7 @@ export class EmployeeWindowController{
      * 
      * @param {string} window 
      */
-    static switchWindows(window){
+     switchWindows(window){
         switch (window) {
             case "event":
                 //redirect to EventWindowView
@@ -37,10 +42,10 @@ export class EmployeeWindowController{
         }
     }
 
-    show(){
-        let employees = EmployeeModel.getEmployees()
+    show(id){
+        let employee = this.employeeModel.getEmployeeByID(id) 
 
-        EmployeeWindowView.view(employees)
+        this.employeeWindowView.view(employees)
     }
 
     hide(){

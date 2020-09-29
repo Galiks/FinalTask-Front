@@ -1,4 +1,4 @@
-import { User } from "./entities/User";
+import { User } from "./entities/User.js";
 
 export class UserModel{
     constructor(){
@@ -10,7 +10,7 @@ export class UserModel{
      * @param {number} id 
      * @returns Users
      */
-    static getUesrById(id){
+     getUesrById(id){
         return this.users.get(id)
     }
 
@@ -19,7 +19,7 @@ export class UserModel{
      * @param {{login: string; password: string; userPhoto: Blob; lastVisited: Date}} user 
      * @returns User
      */
-    static createUser(user){
+     createUser(user){
         let id = this.users.size + 1
         let newUser = new User(id, user.login, user.password, user.userPhoto, user.lastVisited)
         this.users.set(id, newUser)
@@ -32,7 +32,7 @@ export class UserModel{
      * @param {{login: string; password: string; userPhoto: Blob; lastVisited: Date}} user 
      * @returns User
      */
-    static updateUser(user){
+     updateUser(user){
         let updatingUser = this.getUesrById(user.id)
 
         updatingUser.login = user.login
@@ -47,7 +47,7 @@ export class UserModel{
      * 
      * @param {number} id 
      */
-    static deleteUser(id){
+     deleteUser(id){
         this.users.delete(id)
     }
 }

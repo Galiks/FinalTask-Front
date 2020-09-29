@@ -1,29 +1,29 @@
-import { EventModule } from 'models\EventModel.js'
-import { EventWindowController } from "./EventWindowController";
-import { Event } from "models/entities/Event";
-import { EventTabView } from './EventTabView';
+import { EventModel } from './../../models/EventModel.js'
+import { EventWindowController } from "./EventWindowController.js";
+import { EventTabView } from './EventTabView.js';
 
 export class EventTabController{
 
-    /**
-     * 
-     * @param {Event} event 
-     */
-    constructor(event){
-        this.event = event
-        this.eventWindow = new EventWindowController()
+    constructor(){  
+        this.eventWindowController = new EventWindowController()
+        this.eventTabView = new EventTabView()
+        this.eventModule = new EventModel()
+    }
+
+    init(){
+        this.eventWindowController.init()
     }
 
     /**
      * @returns Layout of Webix
      */
-    static config(){
-        return webix.ui({
-
-        })
+    config(){
+        return {
+            
+        }
     }
 
-    static attachEvent(){
+    attachEvent(){
 
     }
 
@@ -31,9 +31,7 @@ export class EventTabController{
      * 
      * @param {number} id 
      */
-    static showEventByID(id){
-        let showEvent = EventModule.getEventByID(id)
-        
-        EventTabView.view(showEvent)
+    showEvents(){        
+        return this.eventTabView.view(this.eventModule.getEvents())
     }
 }

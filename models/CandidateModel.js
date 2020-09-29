@@ -1,31 +1,40 @@
-import {Candidate} from './entities/Candidate'
+import {Candidate} from './entities/Candidate.js'
 
 export class CandidateModel{
     constructor(){
         this.candidates = new Map()
+        this.candidates.set(1, new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", 1))
+        this.candidates.set(2, new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", 2))
+
+        this.candidateEvent = [
+            {   
+                employeeID: 0,
+                eventID: 0
+            }
+        ]
     }
 
-    static getCandidates(){
-        return this.candidates
+    getCandidates(){
+        return Array.from(this.candidates.values())
     }
 
     /**
      * 
      * @param {number} id 
      */
-    static getCandidateById(id){
+    getCandidateByID(id){
         return this.candidates.get(id)
     }
 
-    static getCandidatesByEvent(id){
-        throw
+    getCandidatesByEvent(id){
+        alert("DID NOTHING")
     }
 
     /**
      * 
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
      */
-    static createCandidate(candidate){
+    createCandidate(candidate){
         let id = this.candidates.size + 1
         let newCandidate = new Candidate(id, candidate.firstname, candidate.lastname, candidate.patronymic, candidate.email, candidate.phone, candidate.id_candidates_status)
         this.candidates.set(id, newCandidate)
@@ -36,7 +45,7 @@ export class CandidateModel{
      * 
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
      */
-    static updateCandidate(candidate){
+    updateCandidate(candidate){
         let updatingCandidate = this.getCandidateById(candidate.id)
 
         updatingCandidate.ID = candidate.id
@@ -54,7 +63,7 @@ export class CandidateModel{
      * 
      * @param {number} id 
      */
-    static deleteCandidate(id){
+    deleteCandidate(id){
         this.candidates.delete(id)
     }
 }

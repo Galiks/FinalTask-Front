@@ -1,4 +1,4 @@
-import { Employee } from "models/entities/Employee";
+import { Employee } from "./../../models/entities/Employee.js";
 
 export class EmployeeWindowView{
     constructor(){
@@ -9,7 +9,7 @@ export class EmployeeWindowView{
      * 
      * @param {Employee[]} employees 
      */
-    static view(employees){
+    view(employees){
         return webix.ui({
             data: employees
         })

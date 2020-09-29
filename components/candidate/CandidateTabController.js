@@ -1,26 +1,31 @@
-import { CandidateWindowController } from "./CandidateWindowController";
-import { CandidateModel } from "models/CandidateModel";
-import { CandidateTabView } from "./CandidateTabView";
+import { CandidateWindowController } from "./CandidateWindowController.js";
+import { CandidateModel } from "./../../models/CandidateModel.js";
+import { CandidateTabView } from "./CandidateTabView.js";
 
 export class CandidateTabController{
     constructor(){
         this.candidateWindow = new CandidateWindowController()
+        this.candidateModel = new CandidateModel()
+        this.candidateTabView = new CandidateTabView()
     }
 
-    static config(){
-        return webix.ui({
-
-        })
+    init(){
+        this.candidateWindow.init()
     }
 
-    static attachEvents(){
+     config(){
+        return {
+            
+        }
+    }
+
+    attachEvents(){
 
     }
 
-    static showCandidateByID(id){
-        let showCandidate = CandidateModel.getCndidateByID()
-
-        CandidateTabView.view(showCandidate)
+    showCandidates(){
+        let candidates = this.candidateModel.getCandidates()
+        return this.candidateTabView.view(candidates)
     }
 
 

@@ -1,22 +1,24 @@
-import {Event} from './entities/Event';
+import {Event} from './entities/Event.js';
 
 export class EventModel{
 
     //key - id, value - event
     constructor(){
         this.events = new Map()
+        this.events.set(1, new Event(1, "StandUp", new Date(), 1))
+        this.events.set(2, new Event(2, "Собеседование", new Date(), 2))
     }
 
 
-    static getEvents() {
-        return this.events
+     getEvents() {
+        return Array.from(this.events.values())
     }
 
     /**
      * 
      * @param {number} id 
      */
-    static getEventByID(id) {
+     getEventByID(id) {
         return events.get(id)
     }
 
@@ -24,7 +26,7 @@ export class EventModel{
      * 
      * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event 
      */
-    static createEvent(event) {
+     createEvent(event) {
         let id = this.events.size + 1
         let newEvent = new Event(event.id, event.theme, event.beginning)
         this.events.set(id, newEvent)
@@ -35,7 +37,7 @@ export class EventModel{
      * 
      * @param {Event} event 
      */
-    static updateEvent(event) {
+     updateEvent(event) {
         let updatingEvent = getEventByID(event.id)
 
         updatingEvent.ID = event.id
@@ -50,7 +52,7 @@ export class EventModel{
      * 
      * @param {number} id 
      */
-    static deleteEvent(id) {
+     deleteEvent(id) {
         events.delete(id)
     }
 }

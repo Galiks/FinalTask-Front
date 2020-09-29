@@ -1,9 +1,14 @@
-import { EventWindowView } from "./EventWindowView";
-import { EventModel } from "models\EventModel.js";
-import { Event } from "models\entities\Event";
+import { EventWindowView } from "./EventWindowView.js";
+import { EventModel } from "./../../models/EventModel.js";
+import { Event } from "./../../models/entities/Event.js";
 
 export class EventWindowController{
     constructor(){
+        this.eventModel = new EventModel()
+        this.eventWindowView = new EventWindowView()
+    }
+
+    init(){
         
     }
 
@@ -11,9 +16,9 @@ export class EventWindowController{
      * @returns Layout of Webix
      */
     static config(){
-        return webix.ui({
-
-        })
+        return {
+            
+        }
     }
 
     static attachEvent(){
@@ -41,10 +46,10 @@ export class EventWindowController{
         }
     }
 
-    show(){
-        let events = EventModel.getEvents()
+    show(id){
+        let event = this.eventModel.getEventByID(id)
 
-        EventWindowView.view()
+        this.eventWindowView.view(event)
     }
 
     hide(){
