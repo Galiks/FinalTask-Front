@@ -19,8 +19,9 @@ export class EmployeeTabView{
             ],
             "view": "datatable",
             "height": 0,
-            "select": "row",
-            "id": "employees"
+            "select": true,
+            "id": "employees",
+            "onContext":{}
         }      
     }
 }

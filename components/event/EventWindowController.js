@@ -15,30 +15,33 @@ export class EventWindowController{
     /**
      * @returns Layout of Webix
      */
-    static config(){
+    config(){
         return {
             
         }
     }
 
-    static attachEvent(){
+    attachEvent(){
 
     }
 
     /**
      * 
      * @param {string} window 
+     * @param {number} event
      */
-    static switchWindows(window){
+    switchWindows(window, id){
         switch (window) {
-            case "event":
+            case "Добавить":
                 //redirect to EventWindowView
                 break;
-            case "employee":
+            case "Удалить":
                 //redirect to EmployeeWindowView
                 break;
-            case "candidate":
+            case "Изменить":
                 //redirect to CandidateWindowView
+                break;
+            case "Подробнее":
                 break;
             default:
                 //redirect to currentWindow

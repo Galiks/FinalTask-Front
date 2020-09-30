@@ -15,16 +15,14 @@ export class EmployeeTabController{
     }
 
     config(){
-        return {
-
-        }
+        return this.employeeTabView.view
     }
 
     attachEvent(){
 
     }
 
-     showEmployees(){
+    showEmployees(){
         let employees = this.employeeModel.getEmloyees()
         return this.employeeTabView.view(employees)
     }

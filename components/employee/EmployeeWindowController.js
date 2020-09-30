@@ -11,7 +11,7 @@ export class EmployeeWindowController{
 
     }
 
-     config(){
+    config(){
         return {
 
         }
@@ -25,15 +25,18 @@ export class EmployeeWindowController{
      * 
      * @param {string} window 
      */
-     switchWindows(window){
+    switchWindows(window){
         switch (window) {
-            case "event":
+            case "add":
                 //redirect to EventWindowView
                 break;
-            case "employee":
+            case "delete":
                 //redirect to EmployeeWindowView
                 break;
-            case "candidate":
+            case "info":
+                //redirect to CandidateWindowView
+                break;
+            case "edit":
                 //redirect to CandidateWindowView
                 break;
             default:
@@ -42,13 +45,13 @@ export class EmployeeWindowController{
         }
     }
 
-    show(id){
+    #show(id){
         let employee = this.employeeModel.getEmployeeByID(id) 
 
         this.employeeWindowView.view(employee)
     }
 
-    hide(){
+    #hide(){
         
     }
 }

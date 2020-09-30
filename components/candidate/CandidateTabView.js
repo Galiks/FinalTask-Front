@@ -22,8 +22,9 @@ export class CandidateTabView{
             ],
             "view": "datatable",
             "height": 0,
-            "select": "row",
-            "id": "candidates"
+            "select": true,
+            "id": "candidates",
+            "onContext":{}
         }
     }
 }
