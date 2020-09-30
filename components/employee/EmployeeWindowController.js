@@ -45,7 +45,7 @@ export class EmployeeWindowController{
     show(id){
         let employee = this.employeeModel.getEmployeeByID(id) 
 
-        this.employeeWindowView.view(employees)
+        this.employeeWindowView.view(employee)
     }
 
     hide(){

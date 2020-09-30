@@ -10,33 +10,7 @@ export class CandidateTabView{
      * @param {Candidate[]} candidates 
      */
     view(candidates){
-
-        let buttonHeader = {
-            "css": "webix_dark",
-            "view": "toolbar",
-            "height": 0,
-            "autowidth": true,
-            "cols": [
-                { "view": "button", "label": "Мероприятия", "id":"eventButton", "height": 0, "width": 150 },
-                { "view": "button", "label": "Сотрудники", "id":"employeeButton", "height": 0, "width": 150 },
-                { "view": "button", "label": "Кандидаты", "id":"candidateButton",  "height": 0, "width": 150 }
-            ]
-        }
-
-        let userWindow = {
-            "rows": [
-                { "icon": "wxi-user", "view": "icon", "height": 0, "width": 0 },
-                { "label": "Login", "view": "button", "height": 0 }
-            ]
-        }
-
-        let title = {
-            view:"template", 
-            template:"<strong>Список кандидатов</strong>", 
-            type:"header"
-        }
-
-        let candidateData = {
+        return {
             "data": candidates,
             "columns": [
                 { "id": "ID", "header":"Номер", "sort":"number"},
@@ -49,26 +23,7 @@ export class CandidateTabView{
             "view": "datatable",
             "height": 0,
             "select": "row",
-            "id": "candidate"
-        }
-
-        return {
-            "rows": [
-                {
-                    "height": 74,
-                    "cols": [
-                        buttonHeader,
-                        {
-                            "view":"template", 
-                            "template":"Добро пожаловать в приложение!"
-                        },
-                        userWindow
-                    ]
-                },
-                title,
-                candidateData
-            ],
-            "borderless": false
+            "id": "candidates"
         }
     }
 }
