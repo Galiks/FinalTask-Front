@@ -15,7 +15,7 @@ export class EmployeeTabController{
     }
 
     config(){
-        return this.employeeTabView.view
+        
     }
 
     attachEvent(){
@@ -25,5 +25,16 @@ export class EmployeeTabController{
     showEmployees(){
         let employees = this.employeeModel.getEmloyees()
         return this.employeeTabView.view(employees)
+    }
+
+    /**
+     * 
+     * @param {string} action 
+     * @param {number} id 
+     */
+    showEmployee(action, id){
+        if (action == "Добавить") {
+                        
+        }
     }
 }

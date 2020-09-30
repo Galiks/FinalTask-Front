@@ -5,37 +5,103 @@ export class CandidateWindowView{
 
     }
 
-    /**
-     * 
-     * @param {Candidate} cadidate 
-     */
-    view(candidate){
-        return {
-            "id": 1601304390441,
-            "rows": [
+    viewCreateWindow(){
+        let createWindow = {
+            view:"window",
+            height:250,
+            width:300,
+            head:"Окно содания",
+            position:"center",
+            body:{
+              "autoheight": false,
+              "view": "form",
+              "rows": [
+                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
+                { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
+                { "view": "text", "label": "Отчество", "name": "theme", "type":"text" },
+                { "view": "text", "label": "Email", "name": "theme", "type":"text" },
+                { "view": "text", "label": "Телефон", "name": "theme", "type":"text" },
+                { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" }
+              ]
+            },
+            close: true,
+            id: "createWindow"
+          }
+
+          return createWindow;
+        }
+
+        viewDeleteWindow(){
+  
+          let deleteWindow = {
+            view:"window",
+            height:250,
+            width:300,
+            head:"Окно удаления",
+            position:"center",
+            body:{
+              "rows": [
                 {
-                    "height": 183,
-                    "cols": [
-                        { "view": "template", "template": "Place for image", "role": "placeholder", "width": 215 },
-                    ]
+                  "template": "Вы уверены, что хотите удалить данных элемент?",
+                  "view": "template"
                 },
                 {
-                    "height": 0,
-                    "data":candidate,
-                    "cols": [
-                        {
-                            "rows": [
-                                { "id":"firstname", "label": "Имя", "view": "text", "height": 0 },
-                                { "id":"lastname", "label": "Фамилия", "view": "text", "height": 0 },
-                                { "id":"patronymic", "label": "Отчество", "view": "text", "height": 0 },
-                                { "id":"email", "label": "Email", "view": "text", "height": 0 },
-                                { "id":"phone", "label": "Телефон", "view": "text", "height": 0 }
-                            ],
-                            "width": 215
-                        }
-                    ]
+                  "cols": [
+                    { "label": "Да", "view": "button", id:"deleteWindowButtonYes" },
+                    { "label": "Нет", "view": "button", id:"deleteWindowButtonNo" }
+                  ]
                 }
-            ]
+              ]
+            },
+            close: true,
+            id: "deleteWindow"
+          }
+
+          return deleteWindow
         }
-    }
+
+        viewUpdateWindow(){
+          let updateWindow = {
+            view:"window",
+            height:250,
+            width:300,
+            head:"Окно изменения",
+            position:"center",
+            body:{
+              "autoheight": false,
+              "view": "form",
+              "rows": [
+                { "view": "text", "label": "User name", "name": "name" },
+                { "view": "text", "label": "Email", "name": "email" },
+                { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
+              ]
+            },
+            close: true,
+            id: "updateWindow"
+          }
+
+          return updateWindow
+        }
+
+        viewAboutWindow(){
+          let aboutWindow = {
+            view:"window",
+            height:250,
+            width:300,
+            head:"Окно информации",
+            position:"center",
+            body:{
+              "elements": [
+                { "label": "Информация", "type": "label" },
+                { "label": "Width", "type": "text", "id": "width", "value": 250 },
+                { "label": "Height", "type": "text", "id": "height", "value": 250 }
+              ],
+              "view": "property"
+            },
+            close: true,
+            id: "aboutWindow"
+          }
+
+          return aboutWindow
+        }
 }

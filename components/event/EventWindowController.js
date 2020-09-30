@@ -9,7 +9,13 @@ export class EventWindowController{
     }
 
     init(){
-        
+        // webix.ui(this.createEvent())
+        // webix.ui(this.deleteEvent())
+        // webix.ui(this.updateEvent())
+        // webix.ui(this.aboutEvent())
+
+        // this.attachEventOnUpdateWindow()
+        // this.attachEventOnWindow()
     }
 
     /**
@@ -21,41 +27,56 @@ export class EventWindowController{
         }
     }
 
-    attachEvent(){
-
+    attachEventOnUpdateWindow(event){
+        $$("updateForm").setValues({
+            theme: event.theme,
+            beginning: event.beginning
+        })
     }
 
-    /**
-     * 
-     * @param {string} window 
-     * @param {number} event
-     */
-    switchWindows(window, id){
-        switch (window) {
-            case "Добавить":
-                //redirect to EventWindowView
-                break;
-            case "Удалить":
-                //redirect to EmployeeWindowView
-                break;
-            case "Изменить":
-                //redirect to CandidateWindowView
-                break;
-            case "Подробнее":
-                break;
-            default:
-                //redirect to currentWindow
-                break;
-        }
+    attachEventOnWindow(){
+        $$("createWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
+      
+          $$("deleteWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
+      
+          $$("updateWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
+      
+          $$("aboutWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
     }
 
-    show(id){
-        let event = this.eventModel.getEventByID(id)
-
-        this.eventWindowView.view(event)
+    createEvent(){
+        webix.ui(this.eventWindowView.viewCreateWindow())
+        $$("createWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
     }
 
-    hide(){
-        
+    deleteEvent(event){
+        webix.ui(this.eventWindowView.viewDeleteWindow(event))
+        $$("deleteWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
+    }
+
+    updateEvent(event){
+        webix.ui(this.eventWindowView.viewUpdateWindow(event))
+        $$("updateWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
+    }
+
+    aboutEvent(event){
+        webix.ui(this.eventWindowView.viewAboutWindow(event))
+        $$("aboutWindow").attachEvent("onHide", function(){
+            $$("main").enable()
+          })
     }
 }
