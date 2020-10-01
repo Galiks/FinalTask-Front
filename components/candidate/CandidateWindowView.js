@@ -22,6 +22,7 @@ export class CandidateWindowView{
           },
           position:"center",
           body:{
+            "id":"createForm",
             "autoheight": false,
             "view": "form",
             "rows": [
@@ -102,11 +103,13 @@ export class CandidateWindowView{
             "view": "form",
             "id":"updateForm",
             "rows": [
+              { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
               { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
               { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
               { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
               { "view": "text", "label": "Email", "name": "email", "type":"text" },
               { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
+              { "view": "text", "name": "id_candidates_status ", "type":"number", "hidden":true },
               { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
             ]
           },

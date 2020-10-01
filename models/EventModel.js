@@ -9,6 +9,10 @@ export class EventModel{
         this.events.set(2, new Event(2, "Собеседование", new Date(), 2))
     }
 
+    getLastID(){
+        let keys = Array.from(this.events.keys());
+        return Math.max.apply(null, keys)
+    }
 
      getEvents() {
         return Array.from(this.events.values())

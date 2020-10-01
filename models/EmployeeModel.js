@@ -15,6 +15,11 @@ export class EmployeeModel{
         ]
     }
 
+    getLastID(){
+        let keys = Array.from(this.employees.keys());
+        return Math.max.apply(null, keys)
+    }
+
      getEmloyees() {
         return Array.from(this.employees.values())
     }

@@ -3,8 +3,9 @@ import {Candidate} from './entities/Candidate.js'
 export class CandidateModel{
     constructor(){
         this.candidates = new Map()
-        this.candidates.set(1, new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", 1))
-        this.candidates.set(2, new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", 2))
+
+        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", 1))
+        this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", 2))
 
         this.candidateEvent = [
             {   
@@ -12,6 +13,11 @@ export class CandidateModel{
                 eventID: 0
             }
         ]
+    }
+
+    getLastID(){
+        let keys = Array.from(this.candidates.keys());
+        return Math.max.apply(null, keys)
     }
 
     getCandidates(){
@@ -23,7 +29,7 @@ export class CandidateModel{
      * @param {number} id 
      */
     getCandidateByID(id){
-        return this.candidates.get(id)
+        return this.candidates.get(Number(id))
     }
 
     getCandidatesByEvent(id){
@@ -46,15 +52,17 @@ export class CandidateModel{
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
      */
     updateCandidate(candidate){
-        let updatingCandidate = this.getCandidateById(candidate.id)
+        let updatingCandidate = this.getCandidateByID(candidate.ID)
 
-        updatingCandidate.ID = candidate.id
+        updatingCandidate.ID = candidate.ID
         updatingCandidate.firstname = candidate.firstname
         updatingCandidate.lastname = candidate.lastname
         updatingCandidate.patronymic = candidate.patronymic
         updatingCandidate.email = candidate.email
         updatingCandidate.phone = candidate.phone
         updatingCandidate.id_candidates_status = candidate.id_candidates_status
+
+        this.candidates.set(updatingCandidate.ID, updatingCandidate)
 
         return updatingCandidate
     }
