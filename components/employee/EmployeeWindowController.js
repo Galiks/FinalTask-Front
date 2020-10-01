@@ -1,3 +1,4 @@
+import { Employee } from '../../models/entities/Employee.js';
 import { EmployeeModel } from './../../models/EmployeeModel.js';
 import { EmployeeWindowView } from './EmployeeWindowView.js'
 
@@ -11,6 +12,15 @@ export class EmployeeWindowController{
 
     }
 
+    /**
+     * Метод закрывает указанное окно и разблокирует главное окно
+     * @param {string} window ID окна
+     */
+    closeWindow(window) {
+        $$(window).close();
+        $$("main").enable();
+    }
+
     refreshEmployeeDatatable(){
         let employees = this.employeeModel.getEmloyees()
         $$("employees").clearAll()
@@ -19,54 +29,66 @@ export class EmployeeWindowController{
     }
 
     attachEmployeeOnCreateWindow(){
-        $$("createWindowClose").attachEvent("onItemClick", function(){
-            $$("createWindow").close()
-            $$("main").enable()
-          })
+        $$("createWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("createWindow")
+        })
+
+        $$("createWindowButton").attachEvent("onItemClick", ()=>{
+            let values = $$("createForm").getValues()
+            let id = this.employeeModel.getLastID() + 1
+            this.employeeModel.createEmployee(
+                new Employee(id, values.firstname, values.lastname, values.patronymic, values.position,
+                    values.email, values.phone))
+    
+            this.refreshEmployeeDatatable()
+            this.closeWindow("createWindow");
+        })
     }
 
     attachEmployeeOnUpdateWindow(employee){
-        $$("updateWindowClose").attachEvent("onItemClick", function(){
-            $$("updateWindow").close()
-            $$("main").enable()      
+        $$("updateWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("updateWindow")   
           });
 
           $$("updateForm").setValues({
+            ID: employee.ID,
             firstname: employee.firstname,
             lastname: employee.lastname,
             patronymic: employee.patronymic,
             position: employee.position,
             email: employee.email,
             phone: employee.phone
+        });
+
+        $$("updateWindowButton").attachEvent("onItemClick", ()=>{
+            let values = $$("updateForm").getValues()
+            this.employeeModel.updateEmployee(new Employee(
+                values.ID, values.firstname, values.lastname, values.patronymic, values.position,
+                values.email, values.phone))
+            this.closeWindow("updateWindow")    
+            this.refreshEmployeeDatatable()
         })
           
     }
 
     attachEmployeeOnDeleteWindow(employee){
-        $$("deleteWindowClose").attachEvent("onItemClick", function(){
-            $$("deleteWindow").close()
-            $$("main").enable()      
+        $$("deleteWindowClose").attachEvent("onItemClick", () => {
+            this.closeWindow("deleteWindow")      
           })
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
             this.employeeModel.deleteEmployee(employee.ID)
-            $$("deleteWindow").close()
-            $$("main").enable()
-
+            this.closeWindow("deleteWindow")
             this.refreshEmployeeDatatable()
-
-            // let columns = $$('events').get
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
-            $$("deleteWindow").close()
-            $$("main").enable() 
+            this.closeWindow("deleteWindow")
         })
     }
 
     attachEmployeeOnAboutWindow(){
-        $$("aboutWindowClose").attachEvent("onItemClick", function(){
-            $$("aboutWindow").close()
-            $$("main").enable()      
+        $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("aboutWindow")    
           })
     }
 

@@ -23,6 +23,7 @@ export class EmployeeWindowView{
             position:"center",
             body:{
               "autoheight": false,
+              "id":"createForm",
               "view": "form",
               "rows": [
                 { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
@@ -104,6 +105,7 @@ export class EmployeeWindowView{
               "view": "form",
               "id":"updateForm",
               "rows": [
+                { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
                 { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
                 { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
                 { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },

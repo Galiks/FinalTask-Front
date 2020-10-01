@@ -29,9 +29,7 @@ export class EmployeeModel{
      * @param {number} id 
      */
      getEmployeeByID(id) {
-        let employee = this.employees.get(id)
-
-        return employee
+        return this.employees.get(Number(id))
     }
 
      getEmployeesByEvent(id) {
@@ -43,13 +41,13 @@ export class EmployeeModel{
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; position: string; email: string; phone: string; id_user: number; }} employee 
      */
      createEmployee(employee) {
-        let id = employees.size + 1
-        let newEmployee = new Employee(id, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
-        employees.set(id, newEmployee)
+        let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
+        this.employees.set(employee.ID, newEmployee)
     }
 
      updateEmployee(employee){
-        updatingEmployee = this.getEmployeeByID(employee.id)
+        let updatingEmployee = this.getEmployeeByID(employee.ID)
+        
         updatingEmployee.ID = employee.ID
         updatingEmployee.firstname = employee.firstname
         updatingEmployee.lastname = employee.lastname
@@ -59,11 +57,13 @@ export class EmployeeModel{
         updatingEmployee.phone = employee.phone
         updatingEmployee.id_user = employee.id_user
 
+        this.employees.set(employee.ID, updatingEmployee)
+
         return updatingEmployee
     }
 
      deleteEmployee(id){
-        employees.delete(id)
+        this.employees.delete(id)
     }
 
     getEmployeeByEventID(id_event){

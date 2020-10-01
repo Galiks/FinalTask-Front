@@ -42,11 +42,10 @@ export class CandidateModel{
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
      */
     createCandidate(candidate){
-        let id = this.candidates.size + 1
         let newCandidate = new Candidate
-        (id, candidate.firstname, candidate.lastname, candidate.patronymic, 
+        (candidate.ID, candidate.firstname, candidate.lastname, candidate.patronymic, 
             candidate.email, candidate.phone, candidate.status)
-        this.candidates.set(id, newCandidate)
+        this.candidates.set(candidate.ID, newCandidate)
         return newCandidate
     }
 
