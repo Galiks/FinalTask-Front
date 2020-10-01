@@ -27,14 +27,7 @@ export class EventTabController{
     }
 
     attachEvent(){
-
-        $$("cmenu").attachTo($$("events"));
-    }
-
-    showEventsByID(action, id = null){
-        if (action == "Добавить") {
-            this.eventWindowController.show()
-        }
+        $$("eventcmenu").attachTo($$("events"));
     }
 
     /**
@@ -42,7 +35,7 @@ export class EventTabController{
      * @param {this} controller 
      */
     attachEventWindowHandler(controller){
-        $$("cmenu").attachEvent("onItemClick", function(id) {
+        $$("eventcmenu").attachEvent("onItemClick", function(id) {
             let context = this.getContext();
             let item = context.obj;
             let itemID = context.id;

@@ -6,6 +6,15 @@ export class EmployeeTabView{
      * @param {Employee[]} employees
      */
     view(employees){
+
+        let contextmenu = {
+            view:"contextmenu",
+            id:"employeecmenu",
+            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
+        }
+
+        webix.ui(contextmenu)
+
         return {
             "data": employees,
             "columns": [
@@ -22,6 +31,6 @@ export class EmployeeTabView{
             "select": true,
             "id": "employees",
             "onContext":{}
-        }      
+        }
     }
 }

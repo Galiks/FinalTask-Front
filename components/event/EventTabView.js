@@ -10,7 +10,15 @@ export class EventTabView{
      */
      view(events){
 
-        let datatable = {
+        let contextmenu = {
+            view:"contextmenu",
+            id:"eventcmenu",
+            data:["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"]
+        }
+
+        webix.ui(contextmenu)   
+
+        return {
             "data": events,
             "columns": [
                 { "id": "ID", "header": "Номер", "sort": "number" },
@@ -22,14 +30,6 @@ export class EventTabView{
             "id":"events",
             "select":true,
         }
-
-          
-
-        return{ 
-            rows: [
-            datatable
-        ]
-    }
     }
 }
 

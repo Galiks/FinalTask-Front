@@ -11,44 +11,81 @@ export class CandidateWindowController{
         
     }
 
-    static config(){
-        return {
-
-        }
+    refreshCandidateDatatable(){
+        let candidates = this.candidateModel.getCandidates()
+        $$("candidates").clearAll()
+        $$("candidates").define("data", candidates)
+        $$("candidates").refresh()
     }
 
-    static attachEvents(){
-
+    attachCandidateOnCreateWindow(){
+        $$("createWindowClose").attachEvent("onItemClick", function(){
+            $$("createWindow").close()
+            $$("main").enable()
+          })
     }
 
-     /**
-     * 
-     * @param {string} window 
-     */
-    static switchWindows(window){
-        switch (window) {
-            case "event":
-                //redirect to EventWindowView
-                break;
-            case "employee":
-                //redirect to EmployeeWindowView
-                break;
-            case "candidate":
-                //redirect to CandidateWindowView
-                break;
-            default:
-                //redirect to currentWindow
-                break;
-        }
+    attachCandidateOnUpdateWindow(employee){
+        $$("updateWindowClose").attachEvent("onItemClick", function(){
+            $$("updateWindow").close()
+            $$("main").enable()      
+          });
+
+          $$("updateForm").setValues({
+            firstname: employee.firstname,
+            lastname: employee.lastname,
+            patronymic: employee.patronymic,
+            email: employee.email,
+            phone: employee.phone
+        })
+          
     }
 
-    show(id){
-        let candidate = this.candidateModel.getCandidateByID(id)
+    attachCandidateOnDeleteWindow(employee){
+        $$("deleteWindowClose").attachEvent("onItemClick", function(){
+            $$("deleteWindow").close()
+            $$("main").enable()      
+          })
 
-        this.candidateWindowView.view(candidate)
+        $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
+            this.candidateModel.deleteCandidate(employee.ID)
+            $$("deleteWindow").close()
+            $$("main").enable()
+
+            this.refreshCandidateDatatable()
+
+            // let columns = $$('events').get
+        })
+        $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
+            $$("deleteWindow").close()
+            $$("main").enable() 
+        })
     }
 
-    hide(){
-        
+    attachCandidateOnAboutWindow(){
+        $$("aboutWindowClose").attachEvent("onItemClick", function(){
+            $$("aboutWindow").close()
+            $$("main").enable()      
+          })
+    }
+
+    createCandidate(){
+        webix.ui(this.candidateWindowView.viewCreateWindow())
+        this.attachCandidateOnCreateWindow()
+    }
+
+    deleteCandidate(candidate){
+        webix.ui(this.candidateWindowView.viewDeleteWindow(candidate))
+        this.attachCandidateOnDeleteWindow(candidate)
+    }
+
+    updateCandidate(candidate){
+        webix.ui(this.candidateWindowView.viewUpdateWindow(candidate))
+        this.attachCandidateOnUpdateWindow(candidate)
+    }
+
+    aboutCandidate(candidate){
+        webix.ui(this.candidateWindowView.viewAboutWindow(candidate))
+        this.attachCandidateOnAboutWindow()
     }
 }

@@ -3,7 +3,7 @@ import {Event} from "./../../models/entities/Event.js";
 export class EventWindowView{
 
     constructor(){
-        
+
     }
 
     viewCreateWindow(){
@@ -11,7 +11,12 @@ export class EventWindowView{
             view:"window",
             height:250,
             width:300,
-            head:"Окно содания",
+            head:{
+                view:"toolbar", cols:[
+                    { view:"label", label: "Окно создания" },
+                    { view:"button", label: 'Close', id:"createWindowClose" , width: 100, align: 'right'}
+                  ]
+            },
             position:"center",
             body:{
               "autoheight": false,
@@ -33,12 +38,17 @@ export class EventWindowView{
             view:"window",
             height: 250,
             width: 300,
-            head:"Окно удаления",
+            head:{
+                view:"toolbar", cols:[
+                    { view:"label", label: "Окно удаления" },
+                    { view:"button", label: 'Close', id:"deleteWindowClose" , width: 100, align: 'right'}
+                  ]
+            },
             position:"center",
             body:{
               "rows": [
                 {
-                  "template": "Вы уверены, что хотите удалить мероприятие <<" + event.theme + ">>",
+                  "template": "Вы уверены, что хотите удалить мероприятие '" + event.theme + "'",
                   "view": "template"
                 },
                 {
@@ -55,12 +65,21 @@ export class EventWindowView{
           return deleteWindow
         }
 
-        viewUpdateWindow(event){
+        /**
+         * 
+         * @returns 
+         */
+        viewUpdateWindow(){
           let updateWindow = {
             view:"window",
             height:250,
             width:300,
-            head:"Окно изменения",
+            head:{
+                view:"toolbar", cols:[
+                    { view:"label", label: "Окно изменения" },
+                    { view:"button", label: 'Close', id:"updateWindowClose" , width: 100, align: 'right'}
+                  ]
+            },
             position:"center",
             body:{
               "autoheight": false,
@@ -84,13 +103,18 @@ export class EventWindowView{
             view:"window",
             height:250,
             width:300,
-            head:"Окно информации",
+            head:{
+                view:"toolbar", cols:[
+                    { view:"label", label: "Окно информации" },
+                    { view:"button", label: 'Close', id:"aboutWindowClose" , width: 100, align: 'right'}
+                  ]
+            },
             position:"center",
             body:{
               "elements": [
                 { "label": "Информация", "type": "label" },
-                { "label": "Тема", "type": "text", "id": "width", "value": event.theme },
-                { "label": "Время начала", "type": "text", "id": "height", "value": event.beginning }
+                { "label": "Тема", "type": "text", "value": event.theme },
+                { "label": "Время начала", "type": "text", "value": event.beginning }
               ],
               "view": "property"
             },

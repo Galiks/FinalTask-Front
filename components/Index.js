@@ -13,22 +13,15 @@ class Index{
 
     init(){
         this.eventTab.init()
-        // this.employeeTab.init()
-        // this.candidateTab.init()
+        this.employeeTab.init()
+        this.candidateTab.init()
     }
 
     run(){
 
-        // let employees = this.employeeTab.showEmployees()
-        // let candidates = this.candidateTab.showCandidates()
-
+        let employees = this.employeeTab.config()
+        let candidates = this.candidateTab.config()
         let eventsConfig = this.eventTab.config() 
-
-        var contextmenu = {
-          view:"contextmenu",
-          id:"cmenu",
-          data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
-        }
 
         let userWindow = {
             "rows": [
@@ -69,7 +62,9 @@ class Index{
                     ]},
                   {
                     cells:[
-                     eventsConfig
+                     eventsConfig,
+                     employees,
+                     candidates
                     ]
                   }
                 ]
@@ -79,24 +74,15 @@ class Index{
 
         webix.ui(tabbar)
 
-        webix.ui(contextmenu)
         webix.ui(loginPopup)
 
         this.init()
-
-        //this.eventTab.attachEvent()
     }
 }
 
 webix.ready( ()=>{
     let start = new Index()
     start.run()
-
-    
-
-    // $$("cmenu").attachTo($$("events"));
-    // $$("cmenu").attachTo($$("employees"));
-    // $$("cmenu").attachTo($$("candidates"));
 
 })
 

@@ -9,74 +9,81 @@ export class EventWindowController{
     }
 
     init(){
-        // webix.ui(this.createEvent())
-        // webix.ui(this.deleteEvent())
-        // webix.ui(this.updateEvent())
-        // webix.ui(this.aboutEvent())
 
-        // this.attachEventOnUpdateWindow()
-        // this.attachEventOnWindow()
     }
 
-    /**
-     * @returns Layout of Webix
-     */
-    config(){
-        return {
-            
-        }
+    refreshEventsDatatable(){
+        let events = this.eventModel.getEvents()
+        $$("events").clearAll()
+        $$("events").define("data", events)
+        $$("events").refresh()
+    }
+
+    attachEventOnCreateWindow(){
+        $$("createWindowClose").attachEvent("onItemClick", function(){
+            $$("createWindow").close()
+            $$("main").enable()
+          })
     }
 
     attachEventOnUpdateWindow(event){
-        $$("updateForm").setValues({
+        $$("updateWindowClose").attachEvent("onItemClick", function(){
+            $$("updateWindow").close()
+            $$("main").enable()      
+          });
+
+          $$("updateForm").setValues({
             theme: event.theme,
             beginning: event.beginning
         })
+          
     }
 
-    attachEventOnWindow(){
-        $$("createWindow").attachEvent("onHide", function(){
-            $$("main").enable()
+    attachEventOnDeleteWindow(event){
+        $$("deleteWindowClose").attachEvent("onItemClick", function(){
+            $$("deleteWindow").close()
+            $$("main").enable()      
           })
-      
-          $$("deleteWindow").attachEvent("onHide", function(){
+
+        $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
+            this.eventModel.deleteEvent(event.ID)
+            $$("deleteWindow").close()
             $$("main").enable()
-          })
-      
-          $$("updateWindow").attachEvent("onHide", function(){
-            $$("main").enable()
-          })
-      
-          $$("aboutWindow").attachEvent("onHide", function(){
-            $$("main").enable()
+
+            this.refreshEventsDatatable()
+
+            // let columns = $$('events').get
+        })
+        $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
+            $$("deleteWindow").close()
+            $$("main").enable() 
+        })
+    }
+
+    attachEventOnAboutWindow(){
+        $$("aboutWindowClose").attachEvent("onItemClick", function(){
+            $$("aboutWindow").close()
+            $$("main").enable()      
           })
     }
 
     createEvent(){
         webix.ui(this.eventWindowView.viewCreateWindow())
-        $$("createWindow").attachEvent("onHide", function(){
-            $$("main").enable()
-          })
+        this.attachEventOnCreateWindow()
     }
 
     deleteEvent(event){
         webix.ui(this.eventWindowView.viewDeleteWindow(event))
-        $$("deleteWindow").attachEvent("onHide", function(){
-            $$("main").enable()
-          })
+        this.attachEventOnDeleteWindow(event)
     }
 
     updateEvent(event){
-        webix.ui(this.eventWindowView.viewUpdateWindow(event))
-        $$("updateWindow").attachEvent("onHide", function(){
-            $$("main").enable()
-          })
+        webix.ui(this.eventWindowView.viewUpdateWindow())
+        this.attachEventOnUpdateWindow(event)
     }
 
     aboutEvent(event){
         webix.ui(this.eventWindowView.viewAboutWindow(event))
-        $$("aboutWindow").attachEvent("onHide", function(){
-            $$("main").enable()
-          })
+        this.attachEventOnAboutWindow()
     }
 }

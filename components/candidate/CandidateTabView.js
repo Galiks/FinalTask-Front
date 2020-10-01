@@ -10,6 +10,15 @@ export class CandidateTabView{
      * @param {Candidate[]} candidates 
      */
     view(candidates){
+
+        let contextmenu = {
+            view:"contextmenu",
+            id:"candidatecmenu",
+            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
+        }
+
+        webix.ui(contextmenu)
+
         return {
             "data": candidates,
             "columns": [

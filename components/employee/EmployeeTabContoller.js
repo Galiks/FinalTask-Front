@@ -12,29 +12,50 @@ export class EmployeeTabController{
 
     init(){
         this.employeeWindowController.init()
+
+        this.attachEvent()
+        this.attachEventWindowHandler(this)
     }
 
     config(){
-        
+        return this.employeeTabView.view(this.employeeModel.getEmloyees())
     }
 
     attachEvent(){
-
-    }
-
-    showEmployees(){
-        let employees = this.employeeModel.getEmloyees()
-        return this.employeeTabView.view(employees)
+        $$("employeecmenu").attachTo($$("employees"));
     }
 
     /**
      * 
-     * @param {string} action 
-     * @param {number} id 
+     * @param {this} controller 
      */
-    showEmployee(action, id){
-        if (action == "Добавить") {
-                        
-        }
+    attachEventWindowHandler(controller){
+        $$("employeecmenu").attachEvent("onItemClick", function(id) {
+            let context = this.getContext();
+            let item = context.obj;
+            let itemID = context.id;
+            let element = item.getItem(itemID)
+            // let constructorName = element.constructor.name
+            if (this.getItem(id).value == "Добавить"){   
+                controller.employeeWindowController.createEmployee()
+                $$("createWindow").show()
+                $$("main").disable()
+            }
+            else if (this.getItem(id).value == "Удалить"){
+                controller.employeeWindowController.deleteEmployee(element)
+              $$("deleteWindow").show()
+              $$("main").disable()
+            }
+            else if (this.getItem(id).value == "Изменить"){
+                controller.employeeWindowController.updateEmployee(element)          
+              $$("updateWindow").show()
+              $$("main").disable()
+            }
+            else if (this.getItem(id).value == "Подробнее"){
+                controller.employeeWindowController.aboutEmployee(element)
+              $$("aboutWindow").show()
+              $$("main").disable()
+            }           
+          });
     }
 }

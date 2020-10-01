@@ -53,6 +53,6 @@ export class EventModel{
      * @param {number} id 
      */
      deleteEvent(id) {
-        events.delete(id)
+        this.events.delete(id)
     }
 }
