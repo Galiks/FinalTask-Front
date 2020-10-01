@@ -64,3 +64,9 @@ export class EventTabController{
           });
     }
 }
+
+export const EVENT_STATUC = {
+    planned: "Запланировано",
+    inProgress: "В процессе",
+    finished: "Закончено"
+}

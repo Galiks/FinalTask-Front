@@ -56,6 +56,13 @@ export class CandidateTabController{
             }           
           });
     }
+}
 
-
+export const CANDIDATE_STATUS = {
+    invite: "Приглашен",
+    showUp: "Явился",
+    dontShowUp: "Не явился",
+    wait: "Ожидает результат",
+    success: "Успешно",
+    unsuccess: "Неуспешно"
 }

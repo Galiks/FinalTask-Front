@@ -1,3 +1,5 @@
+import { CANDIDATE_STATUS } from "../../components/candidate/CandidateTabController.js";
+
 export class Candidate{
     /**
      * 
@@ -7,15 +9,15 @@ export class Candidate{
      * @param {string} patronymic 
      * @param {string} email 
      * @param {string} phone 
-     * @param {number} id_candidates_status 
+     * @param {CANDIDATE_STATUS} status 
      */
-    constructor(id, firstname, lastname, patronymic, email, phone, id_candidates_status){
+    constructor(id, firstname, lastname, patronymic, email, phone, status){
         this.ID = id;
         this.firstname = firstname
         this.lastname = lastname
         this.patronymic = patronymic
         this.email = email
         this.phone = phone
-        this.id_candidates_status = id_candidates_status
+        this.status = status
     }
 }

@@ -4,7 +4,7 @@ export class EmployeeModel{
     //key - id, value - employee
     constructor(){
         this.employees = new Map();
-        this.employees.set(1, new Employee(1, "ivan", "ivanov", "ivanovich", "programmer", "email@email.com", "888888", 1))
+        this.employees.set(1, new Employee(1, "ivan", "ivanov", "ivanovich", "programmer", "email@email.com", "888888", ))
         this.employees.set(2, new Employee(2, "ivan2", "ivanov2", "ivanovich2", "programmer2", "222email@email.com", "22888888", 2))
         //{employeeID: {number}, {eventID : {number}}}
         this.employeeEvent = [

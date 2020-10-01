@@ -1,5 +1,6 @@
 import { Candidate } from "../../models/entities/Candidate.js";
 import { CandidateModel } from "./../../models/CandidateModel.js";
+import { CANDIDATE_STATUS } from "./CandidateTabController.js";
 import { CandidateWindowView } from "./CandidateWindowView.js";
 
 export class CandidateWindowController{
@@ -39,7 +40,9 @@ export class CandidateWindowController{
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("createForm").getValues()
             let id = this.candidateModel.getLastID() + 1
-            this.candidateModel.createCandidate(new Candidate(id, values.firstname, values.lastname, values.patronymic, values.email, values.phone, 0))
+            this.candidateModel.createCandidate(
+                new Candidate(id, values.firstname, values.lastname, values.patronymic, 
+                    values.email, values.phone, values.status))
     
             this.refreshCandidateDatatable()
             this.closeWindow("createWindow");
@@ -57,17 +60,16 @@ export class CandidateWindowController{
             lastname: employee.lastname,
             patronymic: employee.patronymic,
             email: employee.email,
-            phone: employee.phone
+            phone: employee.phone,
+            status: employee.status
         })
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
-
             let values = $$("updateForm").getValues()
-
-            this.candidateModel.updateCandidate(new Candidate(values.ID, values.firstname, values.lastname, values.patronymic, values.email, values.phone, values.id_candidates_status))
-    
-            this.closeWindow("updateWindow")
-            
+            this.candidateModel.updateCandidate(new Candidate(
+                values.ID, values.firstname, values.lastname, values.patronymic, 
+                values.email, values.phone, values.status))
+            this.closeWindow("updateWindow")    
             this.refreshCandidateDatatable()
         })
           
@@ -90,6 +92,7 @@ export class CandidateWindowController{
 
     attachCandidateOnAboutWindow(){
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
+
             this.closeWindow("aboutWindow")     
           })
     }

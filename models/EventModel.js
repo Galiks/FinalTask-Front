@@ -1,3 +1,4 @@
+import { EVENT_STATUC } from '../components/event/EventTabController.js';
 import {Event} from './entities/Event.js';
 
 export class EventModel{
@@ -5,8 +6,8 @@ export class EventModel{
     //key - id, value - event
     constructor(){
         this.events = new Map()
-        this.events.set(1, new Event(1, "StandUp", new Date(), 1))
-        this.events.set(2, new Event(2, "Собеседование", new Date(), 2))
+        this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUC.planned))
+        this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUC.inProgress))
     }
 
     getLastID(){

@@ -1,4 +1,5 @@
 import { Candidate } from "./../../models/entities/Candidate.js";
+import { CANDIDATE_STATUS } from "./CandidateTabController.js";
 
 export class CandidateWindowView{
     constructor(){
@@ -25,12 +26,20 @@ export class CandidateWindowView{
             "id":"createForm",
             "autoheight": false,
             "view": "form",
-            "rows": [
+            "elements": [
               { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
               { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
               { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
               { "view": "text", "label": "Email", "name": "email", "type":"text" },
               { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
+              { "view":"select", "label":"Статус", "name":"status", "options":[
+                CANDIDATE_STATUS.invite,
+                CANDIDATE_STATUS.showUp,
+                CANDIDATE_STATUS.dontShowUp,
+                CANDIDATE_STATUS.wait,
+                CANDIDATE_STATUS.success,
+                CANDIDATE_STATUS.unsuccess
+            ] },
               { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" }
             ]
           },
@@ -61,7 +70,7 @@ export class CandidateWindowView{
             "rows": [
               {
                   "elements": [
-                      { "label": "Информация", "type": "label" },
+                      { "label": "Хотите удалить?", "type": "label" },
                       { "label": "ФИО", "type": "text", "value": candidate.lastname + " " + candidate.firstname + " " + candidate.patronymic },
                       { "label": "Email", "type":"text", "value": candidate.email },
                       { "label": "Телефон", "type":"text", "value": candidate.phone },
@@ -89,7 +98,7 @@ export class CandidateWindowView{
       viewUpdateWindow(){
         let updateWindow = {
           view:"window",
-          height:400,
+          height:450,
           width:300,
           head:{
               view:"toolbar", cols:[
@@ -109,7 +118,15 @@ export class CandidateWindowView{
               { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
               { "view": "text", "label": "Email", "name": "email", "type":"text" },
               { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
-              { "view": "text", "name": "id_candidates_status ", "type":"number", "hidden":true },
+              { view:"select", label:"Статус", name:"status", options:[
+                  CANDIDATE_STATUS.invite,
+                  CANDIDATE_STATUS.showUp,
+                  CANDIDATE_STATUS.dontShowUp,
+                  CANDIDATE_STATUS.wait,
+                  CANDIDATE_STATUS.success,
+                  CANDIDATE_STATUS.unsuccess
+              ] },
+              // { "view": "text", "name": "id_candidates_status ", "type":"number", "hidden":true },
               { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
             ]
           },

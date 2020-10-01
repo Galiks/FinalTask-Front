@@ -22,12 +22,13 @@ export class CandidateTabView{
         return {
             "data": candidates,
             "columns": [
-                { "id": "ID", "header":"Номер", "sort":"number"},
-                { "id": "firstname", "header": "Имя", "fillspace": true, "sort": "string" },
-                { "id": "lastname", "header": "Фамилия", "fillspace": true, "sort": "string" },
-                { "id": "patronymic", "header": "Отчество", "fillspace": true, "sort": "string" },
+                { "id": "ID", "header":"Номер", "sort":"number", "fillspace": true,},
+                { "id": "firstname", "header": "Имя",  },
+                { "id": "lastname", "header": "Фамилия",  },
+                { "id": "patronymic", "header": "Отчество",  },
                 { "id": "email", "header": "Email", "sort": "string" },
-                { "id": "phone", "header": "Телефон", "sort": "string" }
+                { "id": "phone", "header": "Телефон", "sort": "string", "fillspace": true,},
+                { "id": "status", "header": "Статус", "sort": "string", "fillspace": true, }
             ],
             "view": "datatable",
             "height": 0,

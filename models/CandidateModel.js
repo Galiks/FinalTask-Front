@@ -1,11 +1,12 @@
+import { CANDIDATE_STATUS } from '../components/candidate/CandidateTabController.js'
 import {Candidate} from './entities/Candidate.js'
 
 export class CandidateModel{
     constructor(){
         this.candidates = new Map()
 
-        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", 1))
-        this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", 2))
+        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.invite))
+        this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.showUp))
 
         this.candidateEvent = [
             {   
@@ -42,7 +43,9 @@ export class CandidateModel{
      */
     createCandidate(candidate){
         let id = this.candidates.size + 1
-        let newCandidate = new Candidate(id, candidate.firstname, candidate.lastname, candidate.patronymic, candidate.email, candidate.phone, candidate.id_candidates_status)
+        let newCandidate = new Candidate
+        (id, candidate.firstname, candidate.lastname, candidate.patronymic, 
+            candidate.email, candidate.phone, candidate.status)
         this.candidates.set(id, newCandidate)
         return newCandidate
     }
@@ -60,7 +63,7 @@ export class CandidateModel{
         updatingCandidate.patronymic = candidate.patronymic
         updatingCandidate.email = candidate.email
         updatingCandidate.phone = candidate.phone
-        updatingCandidate.id_candidates_status = candidate.id_candidates_status
+        updatingCandidate.status = candidate.status
 
         this.candidates.set(updatingCandidate.ID, updatingCandidate)
 

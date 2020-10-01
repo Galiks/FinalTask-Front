@@ -26,7 +26,10 @@ class Index{
         let userWindow = {
             "rows": [
                 { "icon": "wxi-user", "view": "icon", "width":150 },
-                { "label": "Login", "view": "button", "width":150, "id":"loginButton", popup:"loginPopup"}
+                {cols : [
+                  { "label": "Вход", "view": "button", "width":150, "id":"loginButton", popup:"loginPopup"},
+                  { "label": "Регистрация", "view":"button", "width":150, "id":"registerButton", popup:"registerPopup"}
+                ]}
             ]
         }
 
@@ -36,6 +39,19 @@ class Index{
               { value:'Сотрудники', id:'employees'},
               { value:'Кандидаты', id:'candidates'}
             ]
+        }
+
+        let registerPopup = {
+          view:"popup",
+          id:"registerPopup",
+          body:{ 
+            view:"form", id:"registerForm", elements:[
+              {view:"text", label:"Логин", width:500, name:"login", placeholder:"Логин", align:"left", required:true},
+              {view:"text", label:"Пароль", type:"password", name:"password", placeholder:"Пароль", align:"left", required:true},
+              {view:"text", label:"Повторите пароль", type:"password", name:"repeatPassword", placeholder:"Пароль", align:"left", required:true},
+              {view:"button", label:"Зарегистрироваться", click:register}
+            ]
+          }
         }
 
         let loginPopup =  {
@@ -75,6 +91,7 @@ class Index{
         webix.ui(tabbar)
 
         webix.ui(loginPopup)
+        webix.ui(registerPopup)
 
         this.init()
     }
@@ -89,4 +106,14 @@ webix.ready( ()=>{
 function login(){
   const values = $$("loginForm").getValues()
   alert(values.login + " " + values.password)
+}
+
+function register(){
+  const values = $$("registerForm").getValues()
+  if (values.password != values.repeatPassword) {
+    alert("Пароли не совпадают")
+  }
+  else{
+    alert("Всё ок")
+  }
 }
