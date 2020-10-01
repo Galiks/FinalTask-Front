@@ -24,7 +24,7 @@ export class EventModel{
      * @param {number} id 
      */
      getEventByID(id) {
-        return events.get(id)
+        return this.events.get(Number(id))
     }
 
     /**
@@ -43,12 +43,14 @@ export class EventModel{
      * @param {Event} event 
      */
      updateEvent(event) {
-        let updatingEvent = getEventByID(event.id)
+        let updatingEvent = getEventByID(event.ID)
 
-        updatingEvent.ID = event.id
+        updatingEvent.ID = event.ID
         updatingEvent.theme = event.theme
         updatingEvent.beginning = event.beginning
-        updatingEvent.id_events_status = event.id_events_status
+        updatingEvent.status = event.status
+
+        this.events.set(event.ID, updatingEvent)
 
         return updatingEvent
     }

@@ -12,6 +12,15 @@ export class EventWindowController{
 
     }
 
+    /**
+     * Метод закрывает указанное окно и разблокирует главное окно
+     * @param {string} window ID окна
+     */
+    closeWindow(window) {
+        $$(window).close();
+        $$("main").enable();
+    }
+
     refreshEventsDatatable(){
         let events = this.eventModel.getEvents()
         $$("events").clearAll()
@@ -20,16 +29,14 @@ export class EventWindowController{
     }
 
     attachEventOnCreateWindow(){
-        $$("createWindowClose").attachEvent("onItemClick", function(){
-            $$("createWindow").close()
-            $$("main").enable()
+        $$("createWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("createWindow")
           })
     }
 
     attachEventOnUpdateWindow(event){
-        $$("updateWindowClose").attachEvent("onItemClick", function(){
-            $$("updateWindow").close()
-            $$("main").enable()      
+        $$("updateWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("updateWindow")     
           });
 
           $$("updateForm").setValues({
@@ -40,30 +47,23 @@ export class EventWindowController{
     }
 
     attachEventOnDeleteWindow(event){
-        $$("deleteWindowClose").attachEvent("onItemClick", function(){
-            $$("deleteWindow").close()
-            $$("main").enable()      
+        $$("deleteWindowClose").attachEvent("onItemClick", () =>{
+            this.closeWindow("deleteWindow")  
           })
 
-        $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
+        $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.eventModel.deleteEvent(event.ID)
-            $$("deleteWindow").close()
-            $$("main").enable()
-
+            this.closeWindow("deleteWindow")
             this.refreshEventsDatatable()
-
-            // let columns = $$('events').get
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
-            $$("deleteWindow").close()
-            $$("main").enable() 
+            this.closeWindow("deleteWindow")
         })
     }
 
     attachEventOnAboutWindow(){
-        $$("aboutWindowClose").attachEvent("onItemClick", function(){
-            $$("aboutWindow").close()
-            $$("main").enable()      
+        $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
+            this.closeWindow("aboutWindow")
           })
     }
 
@@ -84,6 +84,6 @@ export class EventWindowController{
 
     aboutEvent(event){
         webix.ui(this.eventWindowView.viewAboutWindow(event))
-        this.attachEventOnAboutWindow()
+        //this.attachEventOnAboutWindow()
     }
 }

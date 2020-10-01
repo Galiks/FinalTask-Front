@@ -98,7 +98,30 @@ export class EventWindowView{
           return updateWindow
         }
 
-        viewAboutWindow(event){
+        viewAboutWindow(event, employees, candidates){
+          // let aboutWindow = {
+          //   view:"window",
+          //   height:250,
+          //   width:300,
+          //   head:{
+          //       view:"toolbar", cols:[
+          //           { view:"label", label: "Окно информации" },
+          //           { view:"button", label: 'Close', id:"aboutWindowClose" , width: 100, align: 'right'}
+          //         ]
+          //   },
+          //   position:"center",
+          //   body:{
+          //     "elements": [
+          //       { "label": "Информация", "type": "label" },
+          //       { "label": "Тема", "type": "text", "value": event.theme },
+          //       { "label": "Время начала", "type": "text", "value": event.beginning }
+          //     ],
+          //     "view": "property"
+          //   },
+          //   close: true,
+          //   id: "aboutWindow"
+          // }
+          
           let aboutWindow = {
             view:"window",
             height:250,
@@ -111,17 +134,36 @@ export class EventWindowView{
             },
             position:"center",
             body:{
-              "elements": [
-                { "label": "Информация", "type": "label" },
-                { "label": "Тема", "type": "text", "value": event.theme },
-                { "label": "Время начала", "type": "text", "value": event.beginning }
-              ],
-              "view": "property"
+              "cols": [
+                {
+                  "rows": [
+                    { "label": "Тема", "view": "label", "value": "Собрание" },
+                    { "label": "Время", "view": "label", "value": "ваыаы" },
+                    {
+                      "cols": [
+                        {
+                          "options": [],
+                          "label": "Values",
+                          "value": "1,2",
+                          "view": "multiselect",
+                          "height": 0
+                        },
+                        {
+                          "options": [],
+                          "label": "Values",
+                          "value": "1,2",
+                          "view": "multiselect",
+                          "height": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             close: true,
             id: "aboutWindow"
           }
-
           return aboutWindow
         }
     }
