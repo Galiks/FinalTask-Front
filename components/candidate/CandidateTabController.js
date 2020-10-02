@@ -59,6 +59,7 @@ export class CandidateTabController{
 }
 
 export const CANDIDATE_STATUS = {
+    empty: "",
     invite: "Приглашен",
     showUp: "Явился",
     dontShowUp: "Не явился",

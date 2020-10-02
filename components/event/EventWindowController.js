@@ -1,6 +1,8 @@
 import { EventWindowView } from "./EventWindowView.js";
 import { EventModel } from "./../../models/EventModel.js";
 import { Event } from "./../../models/entities/Event.js";
+import { EVENT_STATUC } from "./EventTabController.js";
+import { CANDIDATE_STATUS } from "../candidate/CandidateTabController.js";
 
 export class EventWindowController{
     constructor(){
@@ -124,12 +126,38 @@ export class EventWindowController{
         this.attachEventEventOnHideWindow("aboutWindow")
     }
 
-    attachEventOnFinishWindow(){
+    attachEventOnFinishWindow(event, candidates){
         $$("finishWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("finishWindow")
         });
 
         this.attachEventEventOnHideWindow("finishWindow")
+
+        $$("finishWindowButton").attachEvent("onItemClick", ()=>{
+
+            if ($$("finishWindowButton").isEnabled()) {
+                if(event.status == EVENT_STATUC.finished){
+                    candidates.every(element => {
+                    if(element.status != CANDIDATE_STATUS.wait || element.status != CANDIDATE_STATUS.dontShowUp){
+                        $$("finishWindowButton").disable()
+                        return false;
+                    }
+                });
+                    alert("IN THE ARCHIVE!")
+                    this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
+
+                    this.refreshEventsDatatable()
+                }
+                else{
+                    $$("finishWindowButton").disable()
+                }
+            }
+            else{
+                $$("finishhint").start()
+            }
+        })
+
+
     }
 
     createEvent(employees, candidates){
@@ -156,6 +184,6 @@ export class EventWindowController{
 
     finishEvent(event, candidates){
         webix.ui(this.eventWindowView.viewFinishWindow(event, candidates))
-        this.attachEventOnFinishWindow()
+        this.attachEventOnFinishWindow(event, candidates)
     }
 }

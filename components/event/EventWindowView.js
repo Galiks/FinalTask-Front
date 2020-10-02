@@ -60,7 +60,7 @@ export class EventWindowView{
             id: "createWindow"
           }
           return createWindow;
-        }
+    }
 
     viewDeleteWindow(event){
           let deleteWindow = {
@@ -92,12 +92,8 @@ export class EventWindowView{
             id: "deleteWindow"
           }
           return deleteWindow
-        }
+    }
 
-        /**
-         * 
-         * @returns 
-         */
     viewUpdateWindow(employees, candidates, employeesMultiselectValue, candidatesMultiselectValue){
       
       let employeesMultiselect =  {
@@ -269,6 +265,22 @@ export class EventWindowView{
         close: true,
         id: "finishWindow"
       }
+
+      // let hint = {
+      //   view: "hint",
+      //   id: "finishhint",
+      //   steps: [
+      //   {
+      //       el: "$finishWindow",
+      //       title: "ОШИБКА!",
+      //       text: "Условия не выполнены: событие завершено, кандидаты в ожидании",
+      //       event:"click"
+      //   }
+      //   ]
+      // }
+
+      // webix.ui(hint)
+
       return finishWindow
     }
 }

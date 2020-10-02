@@ -6,7 +6,7 @@ export class EventModel{
     //key - id, value - event
     constructor(){
         this.events = new Map()
-        this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUC.planned))
+        this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUC.finished))
         this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUC.inProgress))
 
         this.employeeEvent = [
