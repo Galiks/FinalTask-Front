@@ -20,11 +20,14 @@ export class EventTabView{
 
         return {
             "data": events,
+            "header":{
+                "label":"HEADER"
+            },
             "columns": [
                 { "id": "ID", "header": "Номер", "sort": "number" },
                 { "id": "theme", "header": "Тема", "fillspace": true, "sort": "string" },
                 { "id": "beginning", "header": "Начало", "fillspace":true, "sort": "Date" },
-                { "id": "status", "header": "Статус", "sort": "number" }
+                { "id": "status", "header": ["Статус", {content:"selectFilter"}], "sort": "number" }
             ],
             "view": "datatable",
             "id":"events",

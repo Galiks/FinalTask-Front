@@ -26,7 +26,7 @@ export class EventWindowController{
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
      */
-    closeWindow(window) {
+    attachEventToCloseWindow(window) {
         $$(window).close();
         $$("main").enable();
     }
@@ -40,13 +40,13 @@ export class EventWindowController{
 
     attachEventEventOnHideWindow(window){
         $$(window).attachEvent("onHide", ()=> {
-            this.closeWindow(window)
+            this.attachEventToCloseWindow(window)
         })
     }
 
     attachEventOnCreateWindow(){
         $$("createWindowClose").attachEvent("onItemClick", ()=>{
-            this.closeWindow("createWindow")
+            this.attachEventToCloseWindow("createWindow")
         })
 
         this.attachEventEventOnHideWindow("createWindow")
@@ -68,13 +68,13 @@ export class EventWindowController{
             });
             
             this.refreshEventsDatatable()
-            this.closeWindow("createWindow");
+            this.attachEventToCloseWindow("createWindow");
         })
     }
 
     attachEventOnUpdateWindow(event){
         $$("updateWindowClose").attachEvent("onItemClick", ()=>{
-            this.closeWindow("updateWindow")     
+            this.attachEventToCloseWindow("updateWindow")     
           });
 
         this.attachEventEventOnHideWindow("updateWindow")
@@ -94,7 +94,7 @@ export class EventWindowController{
             this.eventModel.updateCandidateEvent(candidates, event.ID)
             this.eventModel.updateEmployeeEvent(employees, event.ID)
 
-            this.closeWindow("updateWindow")    
+            this.attachEventToCloseWindow("updateWindow")    
             this.refreshEventsDatatable()
         })
 
@@ -102,7 +102,7 @@ export class EventWindowController{
 
     attachEventOnDeleteWindow(event){
         $$("deleteWindowClose").attachEvent("onItemClick", () =>{
-            this.closeWindow("deleteWindow")  
+            this.attachEventToCloseWindow("deleteWindow")  
           })
 
         this.attachEventEventOnHideWindow("deleteWindow")
@@ -110,17 +110,17 @@ export class EventWindowController{
         $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.eventModel.deleteEvent(event.ID)
 
-            this.closeWindow("deleteWindow")
+            this.attachEventToCloseWindow("deleteWindow")
             this.refreshEventsDatatable()
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
-            this.closeWindow("deleteWindow")
+            this.attachEventToCloseWindow("deleteWindow")
         })
     }
 
     attachEventOnAboutWindow(){
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
-            this.closeWindow("aboutWindow")
+            this.attachEventToCloseWindow("aboutWindow")
         });
 
         this.attachEventEventOnHideWindow("aboutWindow")
@@ -128,10 +128,8 @@ export class EventWindowController{
 
     attachEventOnFinishWindow(event, candidates){
         $$("finishWindowClose").attachEvent("onItemClick", ()=>{
-            this.closeWindow("finishWindow")
+            this.attachEventToCloseWindow("finishWindow")
         });
-
-        this.attachEventEventOnHideWindow("finishWindow")
 
         $$("finishWindowButton").attachEvent("onItemClick", ()=>{
 
@@ -143,7 +141,8 @@ export class EventWindowController{
                         return false;
                     }
                 });
-                    alert("IN THE ARCHIVE!")
+                    //Если кандидат не "явился", то "не успешно"
+
                     this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
 
                     this.refreshEventsDatatable()
@@ -156,7 +155,7 @@ export class EventWindowController{
                 $$("finishhint").start()
             }
         })
-
+        this.attachEventEventOnHideWindow("finishWindow")
 
     }
 
