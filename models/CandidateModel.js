@@ -7,13 +7,6 @@ export class CandidateModel{
 
         this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.invite))
         this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.showUp))
-
-        this.candidateEvent = [
-            {   
-                employeeID: 0,
-                eventID: 0
-            }
-        ]
     }
 
     getLastID(){
@@ -33,8 +26,18 @@ export class CandidateModel{
         return this.candidates.get(Number(id))
     }
 
-    getCandidatesByEvent(id){
-        alert("DID NOTHING")
+    /**
+     * Метод возвращает данные о кандидатах в формате {ID, VALUE}, где
+     * ID - ID,
+     * VALUE - lastname + firstname + patronymic
+     * @returns {Array} Массив объектов {ID, VALUE}
+     */
+    getCandidatesLikeIDValue(){
+        let result = []
+        this.candidates.forEach(e => {
+          result.push({id:e.ID, value:e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
+        });
+        return result
     }
 
     /**

@@ -12,6 +12,12 @@ export class EmployeeWindowController{
 
     }
 
+    attachEventEventOnHideWindow(window){
+        $$(window).attachEvent("onHide", ()=> {
+            this.closeWindow(window)
+        })
+    }
+
     /**
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
@@ -33,6 +39,8 @@ export class EmployeeWindowController{
             this.closeWindow("createWindow")
         })
 
+        this.attachEventEventOnHideWindow("createWindow")
+
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("createForm").getValues()
             let id = this.employeeModel.getLastID() + 1
@@ -48,9 +56,11 @@ export class EmployeeWindowController{
     attachEmployeeOnUpdateWindow(employee){
         $$("updateWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("updateWindow")   
-          });
+        });
 
-          $$("updateForm").setValues({
+        this.attachEventEventOnHideWindow("updateWindow")
+
+        $$("updateForm").setValues({
             ID: employee.ID,
             firstname: employee.firstname,
             lastname: employee.lastname,
@@ -74,7 +84,9 @@ export class EmployeeWindowController{
     attachEmployeeOnDeleteWindow(employee){
         $$("deleteWindowClose").attachEvent("onItemClick", () => {
             this.closeWindow("deleteWindow")      
-          })
+        })
+
+        this.attachEventEventOnHideWindow("deleteWindow")
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
             this.employeeModel.deleteEmployee(employee.ID)
@@ -89,7 +101,9 @@ export class EmployeeWindowController{
     attachEmployeeOnAboutWindow(){
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("aboutWindow")    
-          })
+        })
+
+        this.attachEventEventOnHideWindow("aboutWindow")
     }
 
     createEmployee(){

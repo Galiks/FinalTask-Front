@@ -24,7 +24,7 @@ export class EventTabView{
                 { "id": "ID", "header": "Номер", "sort": "number" },
                 { "id": "theme", "header": "Тема", "fillspace": true, "sort": "string" },
                 { "id": "beginning", "header": "Начало", "fillspace":true, "sort": "Date" },
-                { "id": "id_events_status", "header": "Статус", "sort": "number" }
+                { "id": "status", "header": "Статус", "sort": "number" }
             ],
             "view": "datatable",
             "id":"events",

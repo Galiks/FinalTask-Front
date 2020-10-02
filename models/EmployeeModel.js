@@ -7,12 +7,6 @@ export class EmployeeModel{
         this.employees.set(1, new Employee(1, "ivan", "ivanov", "ivanovich", "programmer", "email@email.com", "888888", ))
         this.employees.set(2, new Employee(2, "ivan2", "ivanov2", "ivanovich2", "programmer2", "222email@email.com", "22888888", 2))
         //{employeeID: {number}, {eventID : {number}}}
-        this.employeeEvent = [
-            {   
-                employeeID: 0,
-                eventID: 0
-            }
-        ]
     }
 
     getLastID(){
@@ -20,8 +14,22 @@ export class EmployeeModel{
         return Math.max.apply(null, keys)
     }
 
-     getEmloyees() {
+    getEmloyees() {
         return Array.from(this.employees.values())
+    }
+
+    /**
+     * Метод возвращает данные о сотрудниках в формате {ID, VALUE}, где
+     * ID - ID,
+     * VALUE - position + lastname + firstname + patronymic
+     * @returns {Array} Массив объектов {ID, VALUE}
+     */
+    getEmployeesLikeIDValue(){
+        let result = []
+        this.employees.forEach(e => {
+          result.push({id:e.ID, value:e.position + ' ' + e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
+        });
+        return result
     }
 
     /**
@@ -30,10 +38,6 @@ export class EmployeeModel{
      */
      getEmployeeByID(id) {
         return this.employees.get(Number(id))
-    }
-
-     getEmployeesByEvent(id) {
-        //   ¯ \ _ (ツ) _ / ¯
     }
 
     /**

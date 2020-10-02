@@ -8,6 +8,76 @@ export class EventModel{
         this.events = new Map()
         this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUC.planned))
         this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUC.inProgress))
+
+        this.employeeEvent = [
+            {   
+                employeeID: 1,
+                eventID: 1
+            }
+        ]
+
+        this.candidateEvent = [
+            {   
+                candidateID: 1,
+                eventID: 1
+            }
+        ]
+    }
+
+    setCandidateToEvent(candidateID, eventID){
+        this.candidateEvent.push({candidateID:Number(candidateID), eventID: Number(eventID)})
+    }
+
+    getCandidateToEvent(){
+        return this.candidateEvent;
+    }
+
+    setEmployeeToEvent(employeeID, eventID){
+        this.employeeEvent.push({employeeID:Number(employeeID), eventID: Number(eventID)})
+    }
+
+    getEmployeeToEvent(){
+        return this.employeeEvent;
+    }
+
+    getEmployeeIDByEventIDLikeString(eventID){
+        return String(this.getEmployeeIDByEventID(eventID))
+    }
+
+    getCandidateIDByEventIDLikeString(eventID){
+        return String(this.getCandidateIDByEventID(eventID))
+    }
+
+    getCandidateIDByEventID(eventID){
+        let result = []
+        let candidates = this.candidateEvent.filter(element => element.eventID == eventID)
+        candidates.forEach(element =>{
+            result.push(element.candidateID)
+        })
+        return result
+    }
+
+    getEmployeeIDByEventID(eventID){
+        let result = []
+        let employees = this.employeeEvent.filter(element => element.eventID == eventID)
+        employees.forEach(element =>{
+            result.push(element.employeeID)
+        })
+        return result
+    }
+
+    updateCandidateEvent(candidateIDs, eventID){
+        this.candidateEvent = this.candidateEvent.filter(element => element.eventID != eventID)
+        candidateIDs.split(',').forEach(element => {
+            this.setCandidateToEvent(element, eventID)
+        })
+    }
+
+    updateEmployeeEvent(employeeIDs, eventID){
+        this.employeeEvent = this.employeeEvent.filter(element => element.eventID != eventID)
+        employeeIDs.split(',').forEach(element => {
+            this.setEmployeeToEvent(element, eventID)
+        })
     }
 
     getLastID(){
@@ -15,7 +85,7 @@ export class EventModel{
         return Math.max.apply(null, keys)
     }
 
-     getEvents() {
+    getEvents() {
         return Array.from(this.events.values())
     }
 
@@ -32,9 +102,8 @@ export class EventModel{
      * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event 
      */
      createEvent(event) {
-        let id = this.events.size + 1
-        let newEvent = new Event(event.id, event.theme, event.beginning)
-        this.events.set(id, newEvent)
+        let newEvent = new Event(event.ID, event.theme, event.beginning, event.status)
+        this.events.set(event.ID, newEvent)
         return newEvent
     }
 
@@ -43,7 +112,7 @@ export class EventModel{
      * @param {Event} event 
      */
      updateEvent(event) {
-        let updatingEvent = getEventByID(event.ID)
+        let updatingEvent = this.getEventByID(event.ID)
 
         updatingEvent.ID = event.ID
         updatingEvent.theme = event.theme
@@ -59,7 +128,37 @@ export class EventModel{
      * 
      * @param {number} id 
      */
-     deleteEvent(id) {
+    deleteEvent(id) {
         this.events.delete(id)
+        this.deleteCandidateEventByEventID(id)
+        this.deleteEmployeeEventByEventID(id)
+    }
+
+    deleteCandidateEventByEventID(eventID){
+        for (let index = 0; index < this.candidateEvent.length; index++) {
+            const element = this.candidateEvent[index];
+            if (element.eventID == eventID){
+                this.candidateEvent.splice(index, 1)
+            }
+        }
+        // this.candidateEvent.forEach((item, i) => {
+        //     if (item.eventID == eventID){
+        //         this.candidateEvent.slice(i, 1);
+        //     }
+        // })
+    }
+
+    deleteEmployeeEventByEventID(eventID){
+        for (let index = 0; index < this.employeeEvent.length; index++) {
+            const element = this.employeeEvent[index];
+            if (element.eventID == eventID){
+                this.employeeEvent.splice(index, 1)
+            }
+        }
+        // this.employeeEvent.forEach( (item,i) =>{
+        //     if(item.eventID == eventID){
+        //         this.employeeEvent.slice(i, 1);
+        //     }
+        // })
     }
 }

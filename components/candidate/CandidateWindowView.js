@@ -159,6 +159,7 @@ export class CandidateWindowView{
               { "label": "ФИО", "type": "text", "value": candidate.lastname + " " + candidate.firstname + " " + candidate.patronymic },
               { "label": "Email", "type":"text", "value": candidate.email },
               { "label": "Телефон", "type":"text", "value": candidate.phone },
+              { "label": "Статус", "type":"text", value: candidate.status}
             ],
             "view": "property"
           },

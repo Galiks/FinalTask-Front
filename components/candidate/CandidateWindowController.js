@@ -13,6 +13,12 @@ export class CandidateWindowController{
         
     }
 
+    attachEventEventOnHideWindow(window){
+        $$(window).attachEvent("onHide", ()=> {
+            this.closeWindow(window)
+        })
+    }
+
      /**
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
@@ -35,7 +41,9 @@ export class CandidateWindowController{
     attachCandidateOnCreateWindow(){
         $$("createWindowClose").attachEvent("onItemClick", () =>{
             this.closeWindow("createWindow");
-          })
+        })
+
+        this.attachEventEventOnHideWindow("createWindow")
 
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("createForm").getValues()
@@ -52,7 +60,9 @@ export class CandidateWindowController{
     attachCandidateOnUpdateWindow(employee){
         $$("updateWindowClose").attachEvent("onItemClick", () =>{
             this.closeWindow("updateWindow")
-          });
+        });
+
+        this.attachEventEventOnHideWindow("updateWindow")
 
         $$("updateForm").setValues({
             ID: employee.ID,
@@ -78,7 +88,9 @@ export class CandidateWindowController{
     attachCandidateOnDeleteWindow(employee){
         $$("deleteWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("deleteWindow")
-          })
+        })
+
+        this.attachEventEventOnHideWindow("deleteWindow")
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.candidateModel.deleteCandidate(employee.ID)
@@ -92,9 +104,10 @@ export class CandidateWindowController{
 
     attachCandidateOnAboutWindow(){
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
-
             this.closeWindow("aboutWindow")     
-          })
+        });
+
+        this.attachEventEventOnHideWindow("adoutWindow")
     }
 
     createCandidate(){
