@@ -134,21 +134,25 @@ export class EventWindowController{
         $$("finishWindowButton").attachEvent("onItemClick", ()=>{
 
             //вынести в логику из привязки события
+            let flagOnCandidateStatus = true
             if ($$("finishWindowButton").isEnabled()) {
                 if(event.status == EVENT_STATUC.finished){
                     candidates.every(element => {
                     if(element.status != CANDIDATE_STATUS.wait || element.status != CANDIDATE_STATUS.dontShowUp){
                         $$("finishWindowButton").disable()
+                        flagOnCandidateStatus = false
                         return false;
                     }
                 });
                     //Если кандидат не "явился", то "не успешно"
-
-                    this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
-
-                    this.refreshEventsDatatable()
-
-                    this.closeWindow("finishWindow")
+                    if(flagOnCandidateStatus){
+                        this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
+                        this.refreshEventsDatatable()
+                        this.closeWindow("finishWindow")
+                    }
+                    else{
+                        webix.message("Условие не выполнилось: кандидаты не завершили мероприятие")
+                    }
                 }
                 else{
                     $$("finishWindowButton").disable()
