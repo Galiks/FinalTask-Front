@@ -46,9 +46,9 @@ class Index{
           id:"registerPopup",
           body:{ 
             view:"form", id:"registerForm", elements:[
-              {view:"text", label:"Логин", width:500, name:"login", placeholder:"Логин", align:"left", required:true},
-              {view:"text", label:"Пароль", type:"password", name:"password", placeholder:"Пароль", align:"left", required:true},
-              {view:"text", label:"Повторите пароль", type:"password", name:"repeatPassword", placeholder:"Пароль", align:"left", required:true},
+              {view:"text", label:"Логин", width:370, "labelWidth":150, name:"login", placeholder:"Логин", align:"left", required:true},
+              {view:"text", label:"Пароль", type:"password", "labelWidth":150, name:"password", placeholder:"Пароль", align:"left", required:true},
+              {view:"text", label:"Повторите пароль", "labelWidth":150, type:"password", name:"repeatPassword", placeholder:"Повторите пароль", align:"left", required:true},
               {view:"button", label:"Зарегистрироваться", click:register}
             ]
           }

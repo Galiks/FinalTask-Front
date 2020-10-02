@@ -26,7 +26,7 @@ export class EventWindowController{
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
      */
-    attachEventToCloseWindow(window) {
+    closeWindow(window) {
         $$(window).close();
         $$("main").enable();
     }
@@ -40,13 +40,13 @@ export class EventWindowController{
 
     attachEventEventOnHideWindow(window){
         $$(window).attachEvent("onHide", ()=> {
-            this.attachEventToCloseWindow(window)
+            this.closeWindow(window)
         })
     }
 
     attachEventOnCreateWindow(){
         $$("createWindowClose").attachEvent("onItemClick", ()=>{
-            this.attachEventToCloseWindow("createWindow")
+            this.closeWindow("createWindow")
         })
 
         this.attachEventEventOnHideWindow("createWindow")
@@ -68,13 +68,13 @@ export class EventWindowController{
             });
             
             this.refreshEventsDatatable()
-            this.attachEventToCloseWindow("createWindow");
+            this.closeWindow("createWindow");
         })
     }
 
     attachEventOnUpdateWindow(event){
         $$("updateWindowClose").attachEvent("onItemClick", ()=>{
-            this.attachEventToCloseWindow("updateWindow")     
+            this.closeWindow("updateWindow")     
           });
 
         this.attachEventEventOnHideWindow("updateWindow")
@@ -94,7 +94,7 @@ export class EventWindowController{
             this.eventModel.updateCandidateEvent(candidates, event.ID)
             this.eventModel.updateEmployeeEvent(employees, event.ID)
 
-            this.attachEventToCloseWindow("updateWindow")    
+            this.closeWindow("updateWindow")    
             this.refreshEventsDatatable()
         })
 
@@ -102,7 +102,7 @@ export class EventWindowController{
 
     attachEventOnDeleteWindow(event){
         $$("deleteWindowClose").attachEvent("onItemClick", () =>{
-            this.attachEventToCloseWindow("deleteWindow")  
+            this.closeWindow("deleteWindow")  
           })
 
         this.attachEventEventOnHideWindow("deleteWindow")
@@ -110,17 +110,17 @@ export class EventWindowController{
         $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.eventModel.deleteEvent(event.ID)
 
-            this.attachEventToCloseWindow("deleteWindow")
+            this.closeWindow("deleteWindow")
             this.refreshEventsDatatable()
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
-            this.attachEventToCloseWindow("deleteWindow")
+            this.closeWindow("deleteWindow")
         })
     }
 
     attachEventOnAboutWindow(){
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
-            this.attachEventToCloseWindow("aboutWindow")
+            this.closeWindow("aboutWindow")
         });
 
         this.attachEventEventOnHideWindow("aboutWindow")
@@ -128,11 +128,12 @@ export class EventWindowController{
 
     attachEventOnFinishWindow(event, candidates){
         $$("finishWindowClose").attachEvent("onItemClick", ()=>{
-            this.attachEventToCloseWindow("finishWindow")
+            this.closeWindow("finishWindow")
         });
 
         $$("finishWindowButton").attachEvent("onItemClick", ()=>{
 
+            //вынести в логику из привязки события
             if ($$("finishWindowButton").isEnabled()) {
                 if(event.status == EVENT_STATUC.finished){
                     candidates.every(element => {
@@ -146,6 +147,8 @@ export class EventWindowController{
                     this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
 
                     this.refreshEventsDatatable()
+
+                    this.closeWindow("finishWindow")
                 }
                 else{
                     $$("finishWindowButton").disable()
@@ -154,7 +157,9 @@ export class EventWindowController{
             else{
                 $$("finishhint").start()
             }
-        })
+        });
+
+
         this.attachEventEventOnHideWindow("finishWindow")
 
     }
