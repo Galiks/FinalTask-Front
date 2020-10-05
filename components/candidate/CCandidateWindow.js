@@ -13,6 +13,16 @@ export class CandidateWindowController{
         
     }
 
+    isEmptyString(){
+        for (let index = 0; index < arguments.length; index++) {
+            const element = arguments[index];
+            if (element.trim() == ''){
+                return true
+            }
+        }
+        return false
+    }
+
     attachEventEventOnHideWindow(window){
         $$(window).attachEvent("onHide", ()=> {
             this.closeWindow(window)
@@ -33,6 +43,9 @@ export class CandidateWindowController{
      */
     refreshCandidateDatatable(){
         let candidates = this.candidateModel.getCandidates()
+        if (candidates.length == 0) {
+            candidates.push(new Candidate(0, null, null, null, null, null, null))
+        }
         $$("candidates").clearAll()
         $$("candidates").define("data", candidates)
         $$("candidates").refresh()
@@ -47,6 +60,11 @@ export class CandidateWindowController{
 
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("createForm").getValues()
+            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("createWindow");
+                return
+            }
             let id = this.candidateModel.getLastID() + 1
             this.candidateModel.createCandidate(
                 new Candidate(id, values.firstname, values.lastname, values.patronymic, 
@@ -76,6 +94,11 @@ export class CandidateWindowController{
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("updateForm").getValues()
+            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("updateWindow");
+                return
+            }
             this.candidateModel.updateCandidate(new Candidate(
                 values.ID, values.firstname, values.lastname, values.patronymic, 
                 values.email, values.phone, values.status))
@@ -94,12 +117,13 @@ export class CandidateWindowController{
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.candidateModel.deleteCandidate(employee.ID)
-            this.refreshCandidateDatatable()
             this.closeWindow("deleteWindow")
+            this.refreshCandidateDatatable()
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
             this.closeWindow("deleteWindow")
         })
+        
     }
 
     attachCandidateOnAboutWindow(){

@@ -11,6 +11,10 @@ export class CandidateTabView{
      */
     view(candidates){
 
+        if(candidates.length == 0){
+            candidates.push(new Event(0, null, null, null))
+        }
+
         let contextmenu = {
             view:"contextmenu",
             id:"candidatecmenu",

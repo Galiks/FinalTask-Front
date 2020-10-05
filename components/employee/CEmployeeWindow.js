@@ -18,6 +18,16 @@ export class EmployeeWindowController{
         })
     }
 
+    isEmptyString(){
+        for (let index = 0; index < arguments.length; index++) {
+            const element = arguments[index];
+            if (element.trim() == ''){
+                return true
+            }
+        }
+        return false
+    }
+
     /**
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
@@ -29,6 +39,9 @@ export class EmployeeWindowController{
 
     refreshEmployeeDatatable(){
         let employees = this.employeeModel.getEmloyees()
+        if (employees.length == 0) {
+            employees.push(new Employee(0, null, null, null, null, null, null, null))
+        }
         $$("employees").clearAll()
         $$("employees").define("data", employees)
         $$("employees").refresh()
@@ -42,8 +55,18 @@ export class EmployeeWindowController{
         this.attachEventEventOnHideWindow("createWindow")
 
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
-            let values = $$("createForm").getValues()
+
+            var form = $$("createForm");
+            if (!form.validate()){
+                webix.message({ type:"error", text:"Form data is invalid" });
+            }
+            let values = form.getValues()
             let id = this.employeeModel.getLastID() + 1
+            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("createWindow");
+                return
+            }
             this.employeeModel.createEmployee(
                 new Employee(id, values.firstname, values.lastname, values.patronymic, values.position,
                     values.email, values.phone))
@@ -51,6 +74,8 @@ export class EmployeeWindowController{
             this.refreshEmployeeDatatable()
             this.closeWindow("createWindow");
         })
+
+
     }
 
     attachEmployeeOnUpdateWindow(employee){
@@ -72,6 +97,11 @@ export class EmployeeWindowController{
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("updateForm").getValues()
+            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("updateWindow");
+                return
+            }
             this.employeeModel.updateEmployee(new Employee(
                 values.ID, values.firstname, values.lastname, values.patronymic, values.position,
                 values.email, values.phone))

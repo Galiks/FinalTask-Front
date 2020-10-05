@@ -11,6 +11,25 @@ export class CandidateWindowView{
      * @returns  Конфиг окна для создания кандидата
      */
     viewCreateWindow(){
+
+      let elements = [
+        { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true },
+        { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true },
+        { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
+        { "view": "text", "label": "Email", "name": "email", "type":"text", required:true },
+        { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g} },
+        { "view":"select", "label":"Статус", "name":"status", "options":[
+          CANDIDATE_STATUS.empty,
+          CANDIDATE_STATUS.invite,
+          CANDIDATE_STATUS.showUp,
+          CANDIDATE_STATUS.dontShowUp,
+          CANDIDATE_STATUS.wait,
+          CANDIDATE_STATUS.success,
+          CANDIDATE_STATUS.unsuccess
+      ] },
+        { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" }
+      ]
+
       let createWindow = {
           view:"window",
           height:400,
@@ -26,23 +45,10 @@ export class CandidateWindowView{
             "id":"createForm",
             "autoheight": false,
             "view": "form",
-            "elements": [
-              { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
-              { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
-              { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
-              { "view": "text", "label": "Email", "name": "email", "type":"text" },
-              { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
-              { "view":"select", "label":"Статус", "name":"status", "options":[
-                CANDIDATE_STATUS.empty,
-                CANDIDATE_STATUS.invite,
-                CANDIDATE_STATUS.showUp,
-                CANDIDATE_STATUS.dontShowUp,
-                CANDIDATE_STATUS.wait,
-                CANDIDATE_STATUS.success,
-                CANDIDATE_STATUS.unsuccess
-            ] },
-              { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" }
-            ]
+            rules:{
+              "email":webix.rules.isEmail,
+            },
+            "elements": elements
           },
           close: true,
           id: "createWindow"
@@ -97,6 +103,30 @@ export class CandidateWindowView{
        * @returns
        */
       viewUpdateWindow(){
+
+        let body = {
+          "autoheight": false,
+          "view": "form",
+          "id":"updateForm",
+          "rows": [
+            { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
+            { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
+            { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
+            { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
+            { "view": "text", "label": "Email", "name": "email", "type":"text" },
+            { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
+            { view:"select", label:"Статус", name:"status", options:[
+                CANDIDATE_STATUS.invite,
+                CANDIDATE_STATUS.showUp,
+                CANDIDATE_STATUS.dontShowUp,
+                CANDIDATE_STATUS.wait,
+                CANDIDATE_STATUS.success,
+                CANDIDATE_STATUS.unsuccess
+            ] },
+            { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
+          ]
+        }
+
         let updateWindow = {
           view:"window",
           height:450,
@@ -108,29 +138,7 @@ export class CandidateWindowView{
                 ]
           },
           position:"center",
-          body:{
-            "autoheight": false,
-            "view": "form",
-            "id":"updateForm",
-            "rows": [
-              { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
-              { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
-              { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
-              { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
-              { "view": "text", "label": "Email", "name": "email", "type":"text" },
-              { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
-              { view:"select", label:"Статус", name:"status", options:[
-                  CANDIDATE_STATUS.invite,
-                  CANDIDATE_STATUS.showUp,
-                  CANDIDATE_STATUS.dontShowUp,
-                  CANDIDATE_STATUS.wait,
-                  CANDIDATE_STATUS.success,
-                  CANDIDATE_STATUS.unsuccess
-              ] },
-              // { "view": "text", "name": "id_candidates_status ", "type":"number", "hidden":true },
-              { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
-            ]
-          },
+          body:body,
           close: true,
           id: "updateWindow"
         }
@@ -156,7 +164,7 @@ export class CandidateWindowView{
           position:"center",
           body:{
             "elements": [
-              { "label": "Информация", "type": "label" },
+              { "label": "Информация", "type": "label"},
               { "label": "ФИО", "type": "text", "value": candidate.lastname + " " + candidate.firstname + " " + candidate.patronymic },
               { "label": "Email", "type":"text", "value": candidate.email },
               { "label": "Телефон", "type":"text", "value": candidate.phone },

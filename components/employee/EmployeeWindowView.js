@@ -25,14 +25,17 @@ export class EmployeeWindowView{
               "autoheight": false,
               "id":"createForm",
               "view": "form",
+              rules:{
+                "email":webix.rules.isEmail,
+              },
               "rows": [
-                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
-                { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
-                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
-                { "view": "text", "label": "Должность", "name": "position", "type":"text" },
-                { "view": "text", "label": "Email", "name": "email", "type":"text" },
-                { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
-                { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" }
+                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true },
+                { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true },
+                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text"},
+                { "view": "text", "label": "Должность", "name": "position", "type":"text", required:true },
+                { "view": "text", "label": "Email", "name": "email", "type":"text", required:true},
+                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g} },
+                { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" },
               ]
             },
             close: true,

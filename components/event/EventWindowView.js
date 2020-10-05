@@ -34,8 +34,8 @@ export class EventWindowView{
             "view": "form",
             id:"createForm",
             "rows": [
-              { "view": "text", "label": "Тема", "name": "theme" },
-              { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
+              { "view": "text", "label": "Тема", "name": "theme", required:true },
+              { "view": "text", type:"datetime-local", required:true, "label": "Время мероприятия", "name": "beginning", labelWidth:200},
               {cols: [
                 employeesView,
                 candidatesView,
@@ -143,7 +143,7 @@ export class EventWindowView{
                   id:"updateForm",
                   "rows": [
                     { view: "text", name:"ID", hidden:true},
-                    { "view": "text", "label": "Тема", "name": "theme", inputWidth:500 },
+                    { "view": "text", "label": "Тема", "name": "theme", inputWidth:500},
                     { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
                     {cols: [
                     employeesMultiselect,

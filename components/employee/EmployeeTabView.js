@@ -7,6 +7,10 @@ export class EmployeeTabView{
      */
     view(employees){
 
+        if(employees.length == 0){
+            employees.push(new Event(0, null, null, null))
+        }
+
         let contextmenu = {
             view:"contextmenu",
             id:"employeecmenu",

@@ -17,11 +17,16 @@ export class EventTabController{
 
     init(){
         this.eventWindowController.init(this.eventModel)
-
-        // let view = this.eventTabView.view(this.eventModule.getEvents())
-
         this.attachEvent()
         this.attachEventWindowHandler(this)
+    }
+
+    getEmployeeIDByEventID(eventID){
+        return this.eventModel.getEmployeeIDByEventID(eventID)
+    }
+
+    getCandidateIDByEventID(eventID){
+        return this.eventModel.getCandidateIDByEventID(eventID)
     }
 
      /**
@@ -38,6 +43,13 @@ export class EventTabController{
         $$("events").clearAll()
         $$("events").define("data", events)
         $$("events").refresh()
+    }
+
+    refreshCandidatesDatatable(){
+        let candidates = this.candidateModel.getCandidates()
+        $$("candidates").clearAll()
+        $$("candidates").define("data", candidates)
+        $$("candidates").refresh()
     }
 
     /**
@@ -93,14 +105,14 @@ export class EventTabController{
                     let eventStatus = event.status
 
                     if (eventStatus == EVENT_STATUS.planned) {
-                        let candidateIDsEvent = controller.eventModel.getEmployeeIDByEventID(element.ID)
+                        let candidateIDsEvent = controller.eventModel.getCandidateIDByEventID(element.ID)
                         candidateIDsEvent.forEach(candidateID => {
                             controller.candidateModel.updateCandidateStatus(candidateID, CANDIDATE_STATUS.invite)
                         })
                     }
 
                     else if (eventStatus == EVENT_STATUS.finished) {
-                        let candidateIDsEvent = controller.eventModel.getEmployeeIDByEventID(element.ID)
+                        let candidateIDsEvent = controller.eventModel.getCandidateIDByEventID(element.ID)
                         candidateIDsEvent.forEach(candidateID => {
                             controller.candidateModel.updateCandidateStatus(candidateID, CANDIDATE_STATUS.wait)
                         })
@@ -108,14 +120,15 @@ export class EventTabController{
 
                     controller.closeWindow("updateWindow")    
                     controller.refreshEventsDatatable()
+                    controller.refreshCandidatesDatatable()
                 })
         
 
                 
             }
             else if (this.getItem(id).value == "Подробнее"){
-                let employeesIDs = controller.eventWindowController.getEmployeeIDByEventID(element.ID)
-                let candidatesIDs = controller.eventWindowController.getCandidateIDByEventID(element.ID)
+                let employeesIDs = controller.ggetEmployeeIDByEventID(element.ID)
+                let candidatesIDs = controller.getCandidateIDByEventID(element.ID)
 
                 let employees = []
                 employeesIDs.forEach(id => {
@@ -132,7 +145,7 @@ export class EventTabController{
                 controller.showWindow("aboutWindow")
             }
             else if (this.getItem(id).value == "Завершить"){
-                let candidatesIDs = controller.eventWindowController.getCandidateIDByEventID(element.ID)
+                let candidatesIDs = controller.getCandidateIDByEventID(element.ID)
 
                 let candidates = []
                 candidatesIDs.forEach(id => {

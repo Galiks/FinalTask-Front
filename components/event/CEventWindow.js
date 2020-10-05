@@ -14,13 +14,17 @@ export class EventWindowController{
         this.eventModel = eventModel
     }
 
-    getEmployeeIDByEventID(eventID){
-        return this.eventModel.getEmployeeIDByEventID(eventID)
+    isEmptyString(){
+        for (let index = 0; index < arguments.length; index++) {
+            const element = arguments[index];
+            if (element.trim() == ''){
+                return true
+            }
+        }
+        return false
     }
 
-    getCandidateIDByEventID(eventID){
-        return this.eventModel.getCandidateIDByEventID(eventID)
-    }
+    
 
     /**
      * Метод закрывает указанное окно и разблокирует главное окно
@@ -53,6 +57,11 @@ export class EventWindowController{
 
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
             let values = $$("createForm").getValues()
+            if (this.isEmptyString(values.theme, values.beginning, values.status)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("createWindow");
+                return
+            }
             let employees = $$("employeesMultiselect").getValue()
             let candidates = $$("candidatesMultiselect").getValue()
             let id = this.eventModel.getLastID() + 1
@@ -87,8 +96,12 @@ export class EventWindowController{
         })
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
-            alert("WINDOW CONTROLLER")
             let values = $$("updateForm").getValues()
+            if (this.isEmptyString(values.theme, values.beginning, values.status)) {
+                webix.message("Один из параметров оказался пустым!")
+                this.closeWindow("updateWindow");
+                return
+            }
             let employees = $$("employeesMultiselect").getValue()
             let candidates = $$("candidatesMultiselect").getValue()
             this.eventModel.updateEvent(new Event(event.ID, values.theme, values.beginning, values.status))

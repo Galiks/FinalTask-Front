@@ -11,15 +11,15 @@ export class EventModel{
 
         this.employeeEvent = [
             {   
-                employeeID: 1,
-                eventID: 1
+                employeeID: 0,
+                eventID: 0
             }
         ]
 
         this.candidateEvent = [
             {   
-                candidateID: 1,
-                eventID: 1
+                candidateID: 0,
+                eventID: 0
             }
         ]
     }
