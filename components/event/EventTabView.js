@@ -10,6 +10,10 @@ export class EventTabView{
      */
      view(events){
 
+        if(events.length == 0){
+            events.push(new Event(0, null, null, null))
+        }
+
         let contextmenu = {
             view:"contextmenu",
             id:"eventcmenu",

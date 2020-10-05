@@ -1,6 +1,6 @@
 import { Candidate } from "../../models/entities/Candidate.js";
-import { CandidateModel } from "./../../models/CandidateModel.js";
-import { CANDIDATE_STATUS } from "./CandidateTabController.js";
+import { CandidateModel } from "../../models/CandidateModel.js";
+import { CANDIDATE_STATUS } from "./CCandidateTab.js";
 import { CandidateWindowView } from "./CandidateWindowView.js";
 
 export class CandidateWindowController{
@@ -107,7 +107,7 @@ export class CandidateWindowController{
             this.closeWindow("aboutWindow")     
         });
 
-        this.attachEventEventOnHideWindow("adoutWindow")
+        this.attachEventEventOnHideWindow("aboutWindow")
     }
 
     createCandidate(){

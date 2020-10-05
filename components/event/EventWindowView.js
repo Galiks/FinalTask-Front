@@ -1,5 +1,5 @@
 import {Event} from "./../../models/entities/Event.js";
-import { EVENT_STATUC } from "./EventTabController.js";
+import { EVENT_STATUS } from "./CEventTab.js";
 
 export class EventWindowView{
 
@@ -9,7 +9,51 @@ export class EventWindowView{
 
     viewCreateWindow(employees, candidates){
 
-        let createWindow = {
+      let employeesView = {
+        "options": employees,
+        "label": "Сотрудники",
+        labelWidth: 90,
+        "id":"employeesMultiselect",
+        "view": "multiselect",
+        "height": 40
+      }
+
+      let candidatesView = {
+        "options": candidates,
+        "label": "Кандидаты",
+        labelWidth: 90,
+        "id":"candidatesMultiselect",
+        "view": "multiselect",
+        "height": 40
+      }
+
+      let createBody = {
+        "cols": [
+          {
+            "autoheight": false,
+            "view": "form",
+            id:"createForm",
+            "rows": [
+              { "view": "text", "label": "Тема", "name": "theme" },
+              { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
+              {cols: [
+                employeesView,
+                candidatesView,
+                ]
+              },
+              { view:"select", label:"Статус", name:"status", options:[
+                EVENT_STATUS.planned,
+                EVENT_STATUS.inProgress,
+                EVENT_STATUS.finished
+              ] 
+              },
+              { "view": "button", "css": "webix_primary", "label": "Добавить", "id":"createWindowButton", "height": 40 }
+            ]
+          }
+        ]
+      }
+
+      let createWindow = {
             view:"window",
             height:300,
             width:1100,
@@ -20,46 +64,12 @@ export class EventWindowView{
                   ]
             },
             position:"center",
-            body:{
-              "cols": [
-                {
-                  "autoheight": false,
-                  "view": "form",
-                  id:"createForm",
-                  "rows": [
-                    { "view": "text", "label": "Тема", "name": "theme", inputWidth:500 },
-                    { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
-                    {cols: [
-                    {
-                      "options": employees,
-                      "label": "Values",
-                      "id":"employeesMultiselect",
-                      "view": "multiselect",
-                      "height": 38
-                    },
-                    {
-                      "options": candidates,
-                      "label": "Values",
-                      "id":"candidatesMultiselect",
-                      "view": "multiselect",
-                      "height": 38
-                    },
-                  ]},
-                  { view:"select", label:"Статус", name:"status", options:[
-                    EVENT_STATUC.planned,
-                    EVENT_STATUC.inProgress,
-                    EVENT_STATUC.finished
-                  ] 
-                    },
-                    { "view": "button", "css": "webix_primary", "label": "Добавить", "id":"createWindowButton", "height": 38 }
-                  ]
-                }
-              ]
-            },
+            body:createBody,
             close: true,
             id: "createWindow"
           }
-          return createWindow;
+
+      return createWindow;
     }
 
     viewDeleteWindow(event){
@@ -132,6 +142,7 @@ export class EventWindowView{
                   "view": "form",
                   id:"updateForm",
                   "rows": [
+                    { view: "text", name:"ID", hidden:true},
                     { "view": "text", "label": "Тема", "name": "theme", inputWidth:500 },
                     { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
                     {cols: [
@@ -139,9 +150,9 @@ export class EventWindowView{
                     candidatesMultiselect,
                   ]},
                   { view:"select", label:"Статус", name:"status", options:[
-                    EVENT_STATUC.planned,
-                    EVENT_STATUC.inProgress,
-                    EVENT_STATUC.finished
+                    EVENT_STATUS.planned,
+                    EVENT_STATUS.inProgress,
+                    EVENT_STATUS.finished
                   ] 
                     },
                     { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton", "height": 38 }
@@ -265,21 +276,6 @@ export class EventWindowView{
         close: true,
         id: "finishWindow"
       }
-
-      // let hint = {
-      //   view: "hint",
-      //   id: "finishhint",
-      //   steps: [
-      //   {
-      //       el: "$finishWindow",
-      //       title: "ОШИБКА!",
-      //       text: "Условия не выполнены: событие завершено, кандидаты в ожидании",
-      //       event:"click"
-      //   }
-      //   ]
-      // }
-
-      // webix.ui(hint)
 
       return finishWindow
     }

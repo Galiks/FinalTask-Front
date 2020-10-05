@@ -1,8 +1,8 @@
 import { EventWindowView } from "./EventWindowView.js";
-import { EventModel } from "./../../models/EventModel.js";
-import { Event } from "./../../models/entities/Event.js";
-import { EVENT_STATUC } from "./EventTabController.js";
-import { CANDIDATE_STATUS } from "../candidate/CandidateTabController.js";
+import { EventModel } from "../../models/EventModel.js";
+import { Event } from "../../models/entities/Event.js";
+import { EVENT_STATUS } from "./CEventTab.js";
+import { CANDIDATE_STATUS } from "../candidate/CCandidateTab.js";
 
 export class EventWindowController{
     constructor(){
@@ -10,8 +10,8 @@ export class EventWindowController{
         this.eventWindowView = new EventWindowView()
     }
 
-    init(){
-
+    init(eventModel){
+        this.eventModel = eventModel
     }
 
     getEmployeeIDByEventID(eventID){
@@ -80,12 +80,14 @@ export class EventWindowController{
         this.attachEventEventOnHideWindow("updateWindow")
 
         $$("updateForm").setValues({
+            ID: event.ID,
             theme: event.theme,
             beginning: event.beginning,
             status: event.status
         })
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
+            alert("WINDOW CONTROLLER")
             let values = $$("updateForm").getValues()
             let employees = $$("employeesMultiselect").getValue()
             let candidates = $$("candidatesMultiselect").getValue()
@@ -93,9 +95,6 @@ export class EventWindowController{
 
             this.eventModel.updateCandidateEvent(candidates, event.ID)
             this.eventModel.updateEmployeeEvent(employees, event.ID)
-
-            this.closeWindow("updateWindow")    
-            this.refreshEventsDatatable()
         })
 
     }
@@ -136,7 +135,7 @@ export class EventWindowController{
             //вынести в логику из привязки события
             let flagOnCandidateStatus = true
             if ($$("finishWindowButton").isEnabled()) {
-                if(event.status == EVENT_STATUC.finished){
+                if(event.status == EVENT_STATUS.finished){
                     candidates.every(element => {
                     if(element.status != CANDIDATE_STATUS.wait || element.status != CANDIDATE_STATUS.dontShowUp){
                         $$("finishWindowButton").disable()
@@ -146,7 +145,7 @@ export class EventWindowController{
                 });
                     //Если кандидат не "явился", то "не успешно"
                     if(flagOnCandidateStatus){
-                        this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUC.archive))
+                        this.eventModel.updateEvent(new Event(event.ID, event.theme, event.beginning, EVENT_STATUS.archive))
                         this.refreshEventsDatatable()
                         this.closeWindow("finishWindow")
                     }

@@ -1,8 +1,9 @@
-import { EventModel } from './../../models/EventModel.js'
-import { EventWindowController } from "./EventWindowController.js";
+import { EventModel } from '../../models/EventModel.js'
+import { EventWindowController } from "./CEventWindow.js";
 import { EventTabView } from './EventTabView.js';
-import { EmployeeModel } from "./../../models/EmployeeModel.js";
-import { CandidateModel } from "./../../models/CandidateModel.js";
+import { EmployeeModel } from "../../models/EmployeeModel.js";
+import { CandidateModel } from "../../models/CandidateModel.js";
+import { CANDIDATE_STATUS } from '../candidate/CCandidateTab.js';
 
 export class EventTabController{
 
@@ -15,12 +16,28 @@ export class EventTabController{
     }
 
     init(){
-        this.eventWindowController.init()
+        this.eventWindowController.init(this.eventModel)
 
         // let view = this.eventTabView.view(this.eventModule.getEvents())
 
         this.attachEvent()
         this.attachEventWindowHandler(this)
+    }
+
+     /**
+     * Метод закрывает указанное окно и разблокирует главное окно
+     * @param {string} window ID окна
+     */
+    closeWindow(window) {
+        $$(window).close();
+        $$("main").enable();
+    }
+
+    refreshEventsDatatable(){
+        let events = this.eventModel.getEvents()
+        $$("events").clearAll()
+        $$("events").define("data", events)
+        $$("events").refresh()
     }
 
     /**
@@ -66,7 +83,35 @@ export class EventTabController{
                 controller.eventWindowController.updateEvent(element, 
                     controller.employeeModel.getEmployeesLikeIDValue(element.ID), 
                     controller.candidateModel.getCandidatesLikeIDValue(element.ID))
+                
                 controller.showWindow("updateWindow")
+
+                $$("updateWindowButton").attachEvent("onItemClick", ()=>{
+                    let values = $$("updateForm").getValues()
+                    let eventID = values.ID
+                    let event = controller.eventModel.getEventByID(eventID)
+                    let eventStatus = event.status
+
+                    if (eventStatus == EVENT_STATUS.planned) {
+                        let candidateIDsEvent = controller.eventModel.getEmployeeIDByEventID(element.ID)
+                        candidateIDsEvent.forEach(candidateID => {
+                            controller.candidateModel.updateCandidateStatus(candidateID, CANDIDATE_STATUS.invite)
+                        })
+                    }
+
+                    else if (eventStatus == EVENT_STATUS.finished) {
+                        let candidateIDsEvent = controller.eventModel.getEmployeeIDByEventID(element.ID)
+                        candidateIDsEvent.forEach(candidateID => {
+                            controller.candidateModel.updateCandidateStatus(candidateID, CANDIDATE_STATUS.wait)
+                        })
+                    }
+
+                    controller.closeWindow("updateWindow")    
+                    controller.refreshEventsDatatable()
+                })
+        
+
+                
             }
             else if (this.getItem(id).value == "Подробнее"){
                 let employeesIDs = controller.eventWindowController.getEmployeeIDByEventID(element.ID)
@@ -102,7 +147,7 @@ export class EventTabController{
     }
 }
 
-export const EVENT_STATUC = {
+export const EVENT_STATUS = {
     planned: "Запланировано",
     inProgress: "В процессе",
     finished: "Закончено",

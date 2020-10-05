@@ -1,5 +1,5 @@
 import { Employee } from '../../models/entities/Employee.js';
-import { EmployeeModel } from './../../models/EmployeeModel.js';
+import { EmployeeModel } from '../../models/EmployeeModel.js';
 import { EmployeeWindowView } from './EmployeeWindowView.js'
 
 export class EmployeeWindowController{

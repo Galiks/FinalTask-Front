@@ -1,5 +1,5 @@
 import { Candidate } from "./../../models/entities/Candidate.js";
-import { CANDIDATE_STATUS } from "./CandidateTabController.js";
+import { CANDIDATE_STATUS } from "./CCandidateTab.js";
 
 export class CandidateWindowView{
     constructor(){
@@ -33,6 +33,7 @@ export class CandidateWindowView{
               { "view": "text", "label": "Email", "name": "email", "type":"text" },
               { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
               { "view":"select", "label":"Статус", "name":"status", "options":[
+                CANDIDATE_STATUS.empty,
                 CANDIDATE_STATUS.invite,
                 CANDIDATE_STATUS.showUp,
                 CANDIDATE_STATUS.dontShowUp,

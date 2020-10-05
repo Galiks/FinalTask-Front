@@ -1,6 +1,6 @@
-import { EmployeeWindowController } from "./EmployeeWindowController.js";
-import { EmployeeModel } from "./../../models/EmployeeModel.js";
-import { EmployeeTabView } from "../employee/EmployeeTabView.js";
+import { EmployeeWindowController } from "./CEmployeeWindow.js";
+import { EmployeeModel } from "../../models/EmployeeModel.js";
+import { EmployeeTabView } from "./EmployeeTabView.js";
 
 export class EmployeeTabController{
 

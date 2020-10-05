@@ -1,12 +1,12 @@
-import { CANDIDATE_STATUS } from '../components/candidate/CandidateTabController.js'
+import { CANDIDATE_STATUS } from '../components/candidate/CCandidateTab.js'
 import {Candidate} from './entities/Candidate.js'
 
 export class CandidateModel{
     constructor(){
         this.candidates = new Map()
 
-        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.success))
-        this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.success))
+        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.empty))
+        this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.empty))
     }
 
     getLastID(){
@@ -68,6 +68,21 @@ export class CandidateModel{
         updatingCandidate.status = candidate.status
 
         this.candidates.set(updatingCandidate.ID, updatingCandidate)
+
+        return updatingCandidate
+    }
+
+    /**
+     * 
+     * @param {number} candidateID 
+     * @param {CANDIDATE_STATUS} status 
+     */
+    updateCandidateStatus(candidateID, status){
+        let updatingCandidate = this.getCandidateByID(candidateID)
+
+        updatingCandidate.status = status
+
+        this.candidates.set(candidateID, updatingCandidate)
 
         return updatingCandidate
     }

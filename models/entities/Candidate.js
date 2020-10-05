@@ -1,4 +1,4 @@
-import { CANDIDATE_STATUS } from "../../components/candidate/CandidateTabController.js";
+import { CANDIDATE_STATUS } from "../../components/candidate/CCandidateTab.js";
 
 export class Candidate{
     /**

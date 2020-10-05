@@ -1,6 +1,6 @@
-import { EventTabController } from "./event/EventTabController.js";
-import { EmployeeTabController } from "./employee/EmployeeTabContoller.js";
-import { CandidateTabController } from "./candidate/CandidateTabController.js";
+import { EventTabController } from "./event/CEventTab.js";
+import { EmployeeTabController } from "./employee/CEmployeeTab.js";
+import { CandidateTabController } from "./candidate/CCandidateTab.js";
 
 class Index{
     constructor(){

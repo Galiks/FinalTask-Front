@@ -1,5 +1,5 @@
-import { CandidateWindowController } from "./CandidateWindowController.js";
-import { CandidateModel } from "./../../models/CandidateModel.js";
+import { CandidateWindowController } from "./CCandidateWindow.js";
+import { CandidateModel } from "../../models/CandidateModel.js";
 import { CandidateTabView } from "./CandidateTabView.js";
 
 export class CandidateTabController{

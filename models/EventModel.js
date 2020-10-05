@@ -1,4 +1,4 @@
-import { EVENT_STATUC } from '../components/event/EventTabController.js';
+import { EVENT_STATUS } from '../components/event/CEventTab.js';
 import {Event} from './entities/Event.js';
 
 export class EventModel{
@@ -6,8 +6,8 @@ export class EventModel{
     //key - id, value - event
     constructor(){
         this.events = new Map()
-        this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUC.finished))
-        this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUC.inProgress))
+        // this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUS.planned))
+        // this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUS.planned))
 
         this.employeeEvent = [
             {   
@@ -81,6 +81,9 @@ export class EventModel{
     }
 
     getLastID(){
+        if (this.events.size == 0) {
+            return 0
+        }
         let keys = Array.from(this.events.keys());
         return Math.max.apply(null, keys)
     }
