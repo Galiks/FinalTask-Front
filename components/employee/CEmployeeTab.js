@@ -12,7 +12,6 @@ export class EmployeeTabController{
 
     init(){
         this.employeeWindowController.init()
-
         this.attachEvent()
         this.attachEventWindowHandler(this)
     }

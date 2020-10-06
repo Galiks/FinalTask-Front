@@ -6,7 +6,7 @@ import { CANDIDATE_STATUS } from "../candidate/CCandidateTab.js";
 
 export class EventWindowController{
     constructor(){
-        this.eventModel = new EventModel()
+        // this.eventModel = new EventModel()
         this.eventWindowView = new EventWindowView()
     }
 
@@ -37,6 +37,17 @@ export class EventWindowController{
 
     refreshEventsDatatable(){
         let events = this.eventModel.getEvents()
+        if (events.length == 0) {
+            events.push(new Employee())
+            $$("eventcmenu").clearAll()
+            $$("eventcmenu").define("data", ["Добавить"])
+            $$("eventcmenu").refresh()
+        }
+        else{
+            $$("eventcmenu").clearAll()
+            $$("eventcmenu").define("data", ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"])
+            $$("eventcmenu").refresh()
+        }
         $$("events").clearAll()
         $$("events").define("data", events)
         $$("events").refresh()
@@ -59,13 +70,12 @@ export class EventWindowController{
             let values = $$("createForm").getValues()
             if (this.isEmptyString(values.theme, values.beginning, values.status)) {
                 webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("createWindow");
                 return
             }
             let employees = $$("employeesMultiselect").getValue()
             let candidates = $$("candidatesMultiselect").getValue()
             let id = this.eventModel.getLastID() + 1
-            let newEvent = this.eventModel.createEvent(
+            this.eventModel.createEvent(
                 new Event(id, values.theme, values.beginning, values.status));
 
             employees.split(',').forEach(element => {
@@ -99,7 +109,6 @@ export class EventWindowController{
             let values = $$("updateForm").getValues()
             if (this.isEmptyString(values.theme, values.beginning, values.status)) {
                 webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("updateWindow");
                 return
             }
             let employees = $$("employeesMultiselect").getValue()

@@ -12,13 +12,15 @@ export class CandidateWindowView{
      */
     viewCreateWindow(){
 
+      let labelWidth = 90
+
       let elements = [
-        { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true },
-        { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true },
-        { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
-        { "view": "text", "label": "Email", "name": "email", "type":"text", required:true },
-        { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g} },
-        { "view":"select", "label":"Статус", "name":"status", "options":[
+        { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true, labelWidth:labelWidth },
+        { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true, labelWidth:labelWidth },
+        { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text", labelWidth:labelWidth },
+        { "view": "text", "label": "Email", "name": "email", "type":"text", required:true, labelWidth:labelWidth },
+        { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, labelWidth:labelWidth, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g} },
+        { "view":"select", "label":"Статус", labelWidth:labelWidth, "name":"status", "options":[
           CANDIDATE_STATUS.empty,
           CANDIDATE_STATUS.invite,
           CANDIDATE_STATUS.showUp,
@@ -34,6 +36,11 @@ export class CandidateWindowView{
           view:"window",
           height:400,
           width:300,
+          rules:{
+            "email":webix.rules.isEmail,
+          },
+          move:true,
+          resize: true,
           head:{
               view:"toolbar", cols:[
                   { view:"label", label: "Окно создания" },
@@ -64,6 +71,8 @@ export class CandidateWindowView{
       viewDeleteWindow(candidate){
         let deleteWindow = {
           view:"window",
+          move:true,
+          resize: true,
           height: 300,
           width: 300,
           head:{
@@ -109,13 +118,14 @@ export class CandidateWindowView{
           "view": "form",
           "id":"updateForm",
           "rows": [
-            { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
+            { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true, hidden:true},
             { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
             { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
             { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
             { "view": "text", "label": "Email", "name": "email", "type":"text" },
             { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
             { view:"select", label:"Статус", name:"status", options:[
+                CANDIDATE_STATUS.empty,
                 CANDIDATE_STATUS.invite,
                 CANDIDATE_STATUS.showUp,
                 CANDIDATE_STATUS.dontShowUp,
@@ -129,6 +139,8 @@ export class CandidateWindowView{
 
         let updateWindow = {
           view:"window",
+          move:true,
+          resize: true,
           height:450,
           width:300,
           head:{
@@ -153,6 +165,8 @@ export class CandidateWindowView{
       viewAboutWindow(candidate){
         let aboutWindow = {
           view:"window",
+          move:true,
+          resize: true,
           height:300,
           width:300,
           head:{

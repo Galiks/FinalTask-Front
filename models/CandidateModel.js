@@ -5,25 +5,45 @@ export class CandidateModel{
     constructor(){
         this.candidates = new Map()
 
-        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.empty))
+        //this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.empty))
         this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.empty))
     }
 
+    /**
+     * Метод возвращает последний индекс коллекции
+     * @returns последний индекс коллекции
+     */
     getLastID(){
-        let keys = Array.from(this.candidates.keys());
-        return Math.max.apply(null, keys)
-    }
-
-    getCandidates(){
-        return Array.from(this.candidates.values())
+        return new Promise((resolve, reject) =>{
+            if (this.candidates.size == 0) {
+                resolve(0)
+            }
+            else{
+                let keys = Array.from(this.candidates.keys());
+                resolve(Math.max.apply(null, keys))
+            }
+        })
     }
 
     /**
-     * 
-     * @param {number} id 
+     * Метод возвращает список кандиидатов в виде массива
+     * @returns список кандидата в виде массива
+     */
+    getCandidates(){
+        return new Promise((resolve, refect) =>{ 
+            resolve(Array.from(this.candidates.values()))
+        })
+    }
+
+    /**
+     * Метод возвращает кандидата по ID
+     * @param {number} id ID кандидата
+     * @returns кандидата
      */
     getCandidateByID(id){
-        return this.candidates.get(Number(id))
+        return new Promise((resolve, reject) => {
+            resolve(this.candidates.get(Number(id)))
+        })
     }
 
     /**
@@ -33,65 +53,82 @@ export class CandidateModel{
      * @returns {Array} Массив объектов {ID, VALUE}
      */
     getCandidatesLikeIDValue(){
-        let result = []
-        this.candidates.forEach(e => {
-          result.push({id:e.ID, value:e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
-        });
-        return result
+        return new Promise((resolve, reject) =>{
+            let result = []
+            this.candidates.forEach(e => {
+                result.push({id:e.ID, value:e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
+            });
+            resolve(result)
+        })
     }
 
     /**
-     * 
-     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
+     * Метод создаёт кандидата по заданным параметрам
+     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate объект класса Candidate
+     * @returns кандидата
      */
     createCandidate(candidate){
-        let newCandidate = new Candidate
-        (candidate.ID, candidate.firstname, candidate.lastname, candidate.patronymic, 
-            candidate.email, candidate.phone, candidate.status)
-        this.candidates.set(candidate.ID, newCandidate)
-        return newCandidate
+
+        return new Promise((resolve, reject) => {
+            let newCandidate = new Candidate
+            (candidate.ID, candidate.firstname, candidate.lastname, candidate.patronymic, 
+                candidate.email, candidate.phone, candidate.status)
+            this.candidates.set(candidate.ID, newCandidate)
+
+            resolve(newCandidate)
+        })
     }
 
     /**
-     * 
-     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate 
+     * Метод обновляет кандидата по заданным параметрам
+     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; email: string; phone: string; id_candidates_status: number; }} candidate объект класса Candidate
+     * @returns кандидата
      */
     updateCandidate(candidate){
-        let updatingCandidate = this.getCandidateByID(candidate.ID)
+        return new Promise((resolve, reject) => {
+            let updatingCandidate = this.getCandidateByID(candidate.ID)
 
-        updatingCandidate.ID = candidate.ID
-        updatingCandidate.firstname = candidate.firstname
-        updatingCandidate.lastname = candidate.lastname
-        updatingCandidate.patronymic = candidate.patronymic
-        updatingCandidate.email = candidate.email
-        updatingCandidate.phone = candidate.phone
-        updatingCandidate.status = candidate.status
-
-        this.candidates.set(updatingCandidate.ID, updatingCandidate)
-
-        return updatingCandidate
+            if (updatingCandidate != null) {
+                this.candidates.set(updatingCandidate.ID, updatingCandidate)
+                resolve(updatingCandidate)   
+            }else{
+                reject(null)
+            }
+        })
     }
 
     /**
-     * 
-     * @param {number} candidateID 
-     * @param {CANDIDATE_STATUS} status 
+     * Метод обновляет статус кандидата
+     * @param {number} candidateID ID кандидата
+     * @param {CANDIDATE_STATUS} status новый статус
+     * @returns кандидата
      */
     updateCandidateStatus(candidateID, status){
-        let updatingCandidate = this.getCandidateByID(candidateID)
-
-        updatingCandidate.status = status
-
-        this.candidates.set(candidateID, updatingCandidate)
-
-        return updatingCandidate
+        return new Promise((resolve, reject) => {
+            let updatingCandidate = this.getCandidateByID(candidateID)
+            if (updatingCandidate != null) {
+                updatingCandidate.status = status
+                this.candidates.set(candidateID, updatingCandidate)
+                resolve(updatingCandidate)   
+            } else {
+                reject(null)
+            }
+        })
     }
 
     /**
-     * 
-     * @param {number} id 
+     * Метод удаляет кандидата по ID
+     * @param {number} id ID кандидата
      */
     deleteCandidate(id){
-        this.candidates.delete(id)
+        return new Promise((resolve, reject)=>{
+            let deletingCandidate = this.getCandidateByID(id)
+            if (deletingCandidate != null) {
+                this.candidates.delete(Number(id))
+                resolve()      
+            } else {
+                reject()
+            }
+        })
     }
 }

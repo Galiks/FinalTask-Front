@@ -38,13 +38,6 @@ export class EventTabController{
         $$("main").enable();
     }
 
-    refreshEventsDatatable(){
-        let events = this.eventModel.getEvents()
-        $$("events").clearAll()
-        $$("events").define("data", events)
-        $$("events").refresh()
-    }
-
     refreshCandidatesDatatable(){
         let candidates = this.candidateModel.getCandidates()
         $$("candidates").clearAll()
@@ -84,7 +77,9 @@ export class EventTabController{
             let element = item.getItem(itemID)
             let constructorName = element.constructor.name
             if (this.getItem(id).value == "Добавить"){   
-                controller.eventWindowController.createEvent(controller.employeeModel.getEmployeesLikeIDValue(), controller.candidateModel.getCandidatesLikeIDValue())
+                let employees = controller.employeeModel.getEmployeesLikeIDValue()
+                let candidates = controller.candidateModel.getCandidatesLikeIDValue()
+                controller.eventWindowController.createEvent(employees, candidates)
                 controller.showWindow("createWindow")
             }
             else if (this.getItem(id).value == "Удалить"){
@@ -119,7 +114,7 @@ export class EventTabController{
                     }
 
                     controller.closeWindow("updateWindow")    
-                    controller.refreshEventsDatatable()
+                    controller.eventWindowController.refreshEventsDatatable()
                     controller.refreshCandidatesDatatable()
                 })
         

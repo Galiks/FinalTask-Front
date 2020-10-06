@@ -40,7 +40,15 @@ export class EmployeeWindowController{
     refreshEmployeeDatatable(){
         let employees = this.employeeModel.getEmloyees()
         if (employees.length == 0) {
-            employees.push(new Employee(0, null, null, null, null, null, null, null))
+            employees.push(new Employee())
+            $$("employeecmenu").clearAll()
+            $$("employeecmenu").define("data", ["Добавить"])
+            $$("employeecmenu").refresh()
+        }
+        else{
+            $$("employeecmenu").clearAll()
+            $$("employeecmenu").define("data", ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"])
+            $$("employeecmenu").refresh()
         }
         $$("employees").clearAll()
         $$("employees").define("data", employees)
@@ -58,7 +66,9 @@ export class EmployeeWindowController{
 
             var form = $$("createForm");
             if (!form.validate()){
-                webix.message({ type:"error", text:"Form data is invalid" });
+                webix.message("Email имеет неверный формат!")
+                $$("createForm").clear()
+                return
             }
             let values = form.getValues()
             let id = this.employeeModel.getLastID() + 1

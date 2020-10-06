@@ -10,14 +10,18 @@ export class EventTabView{
      */
      view(events){
 
+        let data
         if(events.length == 0){
-            events.push(new Event(0, null, null, null))
+            events.push(new Event())
+            data = ["Добавить"]
+        }else{
+            data = ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"]
         }
 
         let contextmenu = {
             view:"contextmenu",
             id:"eventcmenu",
-            data:["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"]
+            data:data
         }
 
         webix.ui(contextmenu)   
@@ -39,11 +43,3 @@ export class EventTabView{
         }
     }
 }
-
-// ready(){
-//     webix.ui({
-//         view:"contextmenu",
-//         id:"cmenu",
-//         data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
-//     }).attachTo(this)
-// }

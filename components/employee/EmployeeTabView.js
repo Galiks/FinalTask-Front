@@ -7,14 +7,18 @@ export class EmployeeTabView{
      */
     view(employees){
 
+        let data;
         if(employees.length == 0){
             employees.push(new Event(0, null, null, null))
+            data = ["Добавить"]
+        }else{
+            data = ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
         }
 
         let contextmenu = {
             view:"contextmenu",
             id:"employeecmenu",
-            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
+            data:data
         }
 
         webix.ui(contextmenu)

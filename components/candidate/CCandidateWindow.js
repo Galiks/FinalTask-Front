@@ -44,11 +44,20 @@ export class CandidateWindowController{
     refreshCandidateDatatable(){
         let candidates = this.candidateModel.getCandidates()
         if (candidates.length == 0) {
-            candidates.push(new Candidate(0, null, null, null, null, null, null))
+            candidates.push(new Candidate())
+            $$("candidatecmenu").clearAll()
+            $$("candidatecmenu").define("data", ["Добавить"])
+            $$("candidatecmenu").refresh()
+        }
+        else{
+            $$("candidatecmenu").clearAll()
+            $$("candidatecmenu").define("data", ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"])
+            $$("candidatecmenu").refresh()
         }
         $$("candidates").clearAll()
         $$("candidates").define("data", candidates)
         $$("candidates").refresh()
+        
     }
 
     attachCandidateOnCreateWindow(){
@@ -59,10 +68,15 @@ export class CandidateWindowController{
         this.attachEventEventOnHideWindow("createWindow")
 
         $$("createWindowButton").attachEvent("onItemClick", ()=>{
-            let values = $$("createForm").getValues()
+            var form = $$("createForm");
+            if (!form.validate()){
+                webix.message("Email имеет неверный формат!")
+                $$("createForm").clear()
+                return
+            }
+            let values = form.getValues()
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("createWindow");
                 return
             }
             let id = this.candidateModel.getLastID() + 1
@@ -93,10 +107,15 @@ export class CandidateWindowController{
         })
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
-            let values = $$("updateForm").getValues()
+            var form = $$("updateForm");
+            if (!form.validate()){
+                webix.message("Email имеет неверный формат!")
+                $$("updateForm").clear()
+                return
+            }
+            let values = form.getValues()
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("updateWindow");
                 return
             }
             this.candidateModel.updateCandidate(new Candidate(

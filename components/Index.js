@@ -12,9 +12,9 @@ class Index{
     }
 
     init(){
-        this.eventTab.init()
-        this.employeeTab.init()
-        this.candidateTab.init()
+      this.employeeTab.init()
+      this.candidateTab.init()
+      this.eventTab.init()
     }
 
     run(){

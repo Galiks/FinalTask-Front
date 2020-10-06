@@ -11,14 +11,19 @@ export class CandidateTabView{
      */
     view(candidates){
 
-        if(candidates.length == 0){
-            candidates.push(new Event(0, null, null, null))
+        let data
+
+        if (candidates.length == 0){
+            candidates.push(new Candidate())
+            data = ["Добавить"]
+        }else{
+            data = ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
         }
 
         let contextmenu = {
             view:"contextmenu",
             id:"candidatecmenu",
-            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
+            data:data
         }
 
         webix.ui(contextmenu)

@@ -10,6 +10,8 @@ export class EmployeeWindowView{
      * @returns  Конфиг окна для создания сотрудника
      */
     viewCreateWindow(){
+      let labelWidth = 100
+
         let createWindow = {
             view:"window",
             height:400,
@@ -29,12 +31,12 @@ export class EmployeeWindowView{
                 "email":webix.rules.isEmail,
               },
               "rows": [
-                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true },
-                { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true },
-                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text"},
-                { "view": "text", "label": "Должность", "name": "position", "type":"text", required:true },
-                { "view": "text", "label": "Email", "name": "email", "type":"text", required:true},
-                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g} },
+                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true, labelWidth:labelWidth },
+                { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true, labelWidth:labelWidth },
+                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text", labelWidth:labelWidth},
+                { "view": "text", "label": "Должность", "name": "position", "type":"text", required:true, labelWidth:labelWidth },
+                { "view": "text", "label": "Email", "name": "email", "type":"text", required:true, labelWidth:labelWidth},
+                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", required:true, pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g}, labelWidth:labelWidth },
                 { "view": "button", "css": "webix_primary", "label": "Создать", "id":"createWindowButton" },
               ]
             },
@@ -92,6 +94,9 @@ export class EmployeeWindowView{
          * @returns
          */
         viewUpdateWindow(){
+
+          let labelWidth = 100
+
           let updateWindow = {
             view:"window",
             height:400,
@@ -108,13 +113,13 @@ export class EmployeeWindowView{
               "view": "form",
               "id":"updateForm",
               "rows": [
-                { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true},
-                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text" },
-                { "view": "text", "label": "Имя", "name": "firstname", "type":"text" },
-                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text" },
-                { "view": "text", "label": "Должность", "name": "position", "type":"text" },
-                { "view": "text", "label": "Email", "name": "email", "type":"text" },
-                { "view": "text", "label": "Телефон", "name": "phone", "type":"text" },
+                { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true, labelWidth:labelWidth},
+                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Имя", "name": "firstname", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Должность", "name": "position", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Email", "name": "email", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", labelWidth:labelWidth },
                 { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
               ]
             },

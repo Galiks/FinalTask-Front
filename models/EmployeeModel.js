@@ -6,16 +6,24 @@ export class EmployeeModel{
         this.employees = new Map();
         this.employees.set(1, new Employee(1, "ivan", "ivanov", "ivanovich", "programmer", "email@email.com", "888888", ))
         this.employees.set(2, new Employee(2, "ivan2", "ivanov2", "ivanovich2", "programmer2", "222email@email.com", "22888888", 2))
-        //{employeeID: {number}, {eventID : {number}}}
     }
 
     getLastID(){
-        let keys = Array.from(this.employees.keys());
-        return Math.max.apply(null, keys)
+        return new Promise((resolve, reject) =>{
+            if (this.employees.size == 0) {
+                resolve(0)
+            }
+            else{
+                let keys = Array.from(this.employees.keys());
+                resolve(Math.max.apply(null, keys))
+            }
+        })
     }
 
     getEmloyees() {
-        return Array.from(this.employees.values())
+        return new Promise((resolve, reject)=>{
+            resolve(Array.from(this.employees.values()))
+        })
     }
 
     /**
@@ -25,11 +33,13 @@ export class EmployeeModel{
      * @returns {Array} Массив объектов {ID, VALUE}
      */
     getEmployeesLikeIDValue(){
-        let result = []
-        this.employees.forEach(e => {
-          result.push({id:e.ID, value:e.position + ' ' + e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
-        });
-        return result
+        return new Promise((resolve, reject)=>{
+            let result = []
+            this.employees.forEach(e => {
+                result.push({id:e.ID, value:e.position + ' ' + e.lastname + ' ' + e.firstname + ' ' + e.patronymic})
+            });
+            resolve(result)
+        })
     }
 
     /**
@@ -37,7 +47,9 @@ export class EmployeeModel{
      * @param {number} id 
      */
      getEmployeeByID(id) {
-        return this.employees.get(Number(id))
+        return new Promise((resolve, reject)=>{
+            resolve(this.employees.get(Number(id)))
+        })
     }
 
     /**
@@ -45,53 +57,34 @@ export class EmployeeModel{
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; position: string; email: string; phone: string; id_user: number; }} employee 
      */
      createEmployee(employee) {
-        let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
-        this.employees.set(employee.ID, newEmployee)
+        return new Promise((resolve, reject)=>{
+            let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
+            this.employees.set(employee.ID, newEmployee)  
+            resolve(newEmployee)
+        })
     }
 
      updateEmployee(employee){
-        let updatingEmployee = this.getEmployeeByID(employee.ID)
-        
-        updatingEmployee.ID = employee.ID
-        updatingEmployee.firstname = employee.firstname
-        updatingEmployee.lastname = employee.lastname
-        updatingEmployee.patronymic = employee.patronymic
-        updatingEmployee.position = employee.position
-        updatingEmployee.email = employee.email
-        updatingEmployee.phone = employee.phone
-        updatingEmployee.id_user = employee.id_user
-
-        this.employees.set(employee.ID, updatingEmployee)
-
-        return updatingEmployee
-    }
-
-     deleteEmployee(id){
-        this.employees.delete(id)
-    }
-
-    getEmployeeByEventID(id_event){
-        let employeesArray = []
-
-        this.employeeEvents.forEach(element =>{
-            if (element.eventID == id_event) {
-                employeesArray.push(this.getEmployeeByID(element.employeeID))
+        return new Promise((resolve, reject)=>{
+            let updatingEmployee = this.getEmployeeByID(employee.ID)
+            if (updatingEmployee != null) {
+                this.employees.set(employee.ID, updatingEmployee)
+                resolve(updatingEmployee)
+            } else {
+                reject(null)
             }
         })
-
-        return employeesArray
     }
 
-    setEmployeeToEvent(id_employee, id_event){
-        this.employeeEvent.push({employeeID: id_employee, eventID: id_event})
-    }
-
-     deleteEmployeeFromEvent(id_employee, id_event){
-        for (let index = 0; index < this.employeeEvent.length; index++) {
-            const element = this.employeeEvent[index];
-            if (element.employeeID == id_employee && element.eventID == id_event) {
-                this.employeeEvent.splice(index, 1)
-            }
-        }   
+    deleteEmployee(id){
+        return new Promise((resolve, reject)=>{
+            let deletingEmployee = this.getEmployeeByID(id)
+            if (deletingEmployee != null) {
+                this.employees.delete(Number(id))
+                resolve()
+            } else {
+                reject()
+            }  
+        })
     }
 }
