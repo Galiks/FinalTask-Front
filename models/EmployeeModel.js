@@ -8,6 +8,10 @@ export class EmployeeModel{
         this.employees.set(2, new Employee(2, "ivan2", "ivanov2", "ivanovich2", "programmer2", "222email@email.com", "22888888", 2))
     }
 
+    /**
+     * Метод возвращает последний номер коллекции
+     * @returns последний номер коллекции
+     */
     getLastID(){
         return new Promise((resolve, reject) =>{
             if (this.employees.size == 0) {
@@ -20,6 +24,10 @@ export class EmployeeModel{
         })
     }
 
+    /**
+     * Метод возвращает список сотрудников в виде массива
+     * @returns список сотрдуников в виде массива
+     */
     getEmloyees() {
         return new Promise((resolve, reject)=>{
             resolve(Array.from(this.employees.values()))
@@ -43,8 +51,9 @@ export class EmployeeModel{
     }
 
     /**
-     * 
-     * @param {number} id 
+     * Метод возвращает сотрудника по его ID
+     * @param {number} id ID сотрудника
+     * @returns сотрудника
      */
      getEmployeeByID(id) {
         return new Promise((resolve, reject)=>{
@@ -53,17 +62,28 @@ export class EmployeeModel{
     }
 
     /**
-     * 
-     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; position: string; email: string; phone: string; id_user: number; }} employee 
+     * Метод создаёт сотрудника по заданным параметрам
+     * @param {{ id: number; firstname: string; lastname: string; patronymic: string; position: string; email: string; phone: string; id_user: number; }} employee объект класса Employee
+     * @returns нового сотрудника
      */
      createEmployee(employee) {
         return new Promise((resolve, reject)=>{
-            let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
-            this.employees.set(employee.ID, newEmployee)  
-            resolve(newEmployee)
+            let creatingEmployee = this.getEmployeeByID(employee.ID)
+            if (creatingEmployee == null) {
+                let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
+                this.employees.set(employee.ID, newEmployee)  
+                resolve(newEmployee)   
+            } else {
+                reject(null)
+            }
         })
     }
 
+    /**
+     * Метод обновляет сотрудника по заданным параметрам
+     * @param {Employee} employee объект класса Employee
+     * @returns сотрудника
+     */
      updateEmployee(employee){
         return new Promise((resolve, reject)=>{
             let updatingEmployee = this.getEmployeeByID(employee.ID)
@@ -76,6 +96,10 @@ export class EmployeeModel{
         })
     }
 
+    /**
+     * Метод удаляет сотрудника по его ID
+     * @param {number} id ID сотрудника
+     */
     deleteEmployee(id){
         return new Promise((resolve, reject)=>{
             let deletingEmployee = this.getEmployeeByID(id)

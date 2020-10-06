@@ -26,6 +26,11 @@ export class EventModel{
         // ]
     }
 
+    /**
+     * Метод устанавливает связь между кандидатом и мероприятием
+     * @param {number} candidateID ID кандидата
+     * @param {number} eventID ID мероприятия
+     */
     setCandidateToEvent(candidateID, eventID){
         return new Promise((resolve, reject)=>{
             this.candidateEvent.push({candidateID:Number(candidateID), eventID: Number(eventID)})
@@ -33,12 +38,21 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод возвращает список кандидатов и мероприятий в виде массива
+     * @returns список кандидатов и мероприятий в виде массива
+     */
     getCandidatesToEvents(){
         return new Promise((resolve, reject)=>{
             resolve(this.candidateEvent)
         })
     }
 
+    /**
+     * Метод устанавливает связь между сотрудником и мероприятием
+     * @param {number} employeeID ID сотрудника
+     * @param {number} eventID ID мероприятия
+     */
     setEmployeeToEvent(employeeID, eventID){
         return new Promise((resolve, reject)=>{
             this.employeeEvent.push({employeeID:Number(employeeID), eventID: Number(eventID)})
@@ -46,24 +60,43 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод возвращает список сотрудников и мероприятий в виде массива
+     * @returns список сотрудников и мероприятий в виде массива
+     */
     getEmployeesToEvents(){
         return new Promise((resolve, reject)=>{
             resolve(this.employeeEvent)
         })
     }
 
+    /**
+     * Метод возвращает ID сотрудников определённого мероприятия в виде строки
+     * @param {number} eventID ID мероприятия
+     * @returns список ID сотрудников в виде строки
+     */
     getEmployeeIDByEventIDLikeString(eventID){
         return new Promise((resolve, reject)=>{
             resolve(String(this.getEmployeeIDByEventID(eventID)))
         })
     }
 
+    /**
+     * Метод возвращает ID кандидатов определённого мероприятия в виде строки
+     * @param {number} eventID ID мероприятия
+     * @returns список ID кандидатов в виде строки
+     */
     getCandidateIDByEventIDLikeString(eventID){
         return new Promise((resolve, reject)=>{
             resolve(String(this.getCandidateIDByEventID(eventID)))
         })
     }
 
+    /**
+     * Метод возвращает ID кандидатов определённого мероприятия в виде массива
+     * @param {number} eventID ID мероприятия
+     * @returns список ID кандидатов в виде массива
+     */
     getCandidateIDByEventID(eventID){
         return new Promise((resolve, reject)=>{
             let result = []
@@ -75,6 +108,12 @@ export class EventModel{
         })
     }
 
+    /**
+     * 
+     * Метод возвращает ID кандидатов определённого мероприятия в виде массива
+     * @param {number} eventID ID мероприятия
+     * @returns список ID кандидатов в виде массива 
+     */
     getEmployeeIDByEventID(eventID){
         return new Promise((resolve, reject)=>{
             let result = []
@@ -86,6 +125,11 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод обновляет связь между кандидатом и мероприятием
+     * @param {number} candidateIDs ID кандидата
+     * @param {number} eventID ID мероприятия
+     */
     updateCandidateEvent(candidateIDs, eventID){
         return new Promise((resolve, reject)=>{
             this.candidateEvent = this.candidateEvent.filter(element => element.eventID != eventID)
@@ -96,6 +140,11 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод обновляет связь между сотрудников и мероприятием
+     * @param {number} employeeIDs ID сотрудника
+     * @param {number} eventID ID мероприятия 
+     */
     updateEmployeeEvent(employeeIDs, eventID){
         return new Promise((resolve, reject)=>{
             this.employeeEvent = this.employeeEvent.filter(element => element.eventID != eventID)
@@ -106,6 +155,10 @@ export class EventModel{
         })
     }
 
+    /**
+     Метод возвращает последний номер коллекции
+     * @returns последний номер коллекции
+     */
     getLastID(){
         return new Promise((resolve, reject)=>{
             if (this.events.size == 0) {
@@ -119,6 +172,10 @@ export class EventModel{
         
     }
 
+    /**
+     * Метод возвращает список мероприятий в виде массива
+     * @returns список мероприятий в виде массива
+     */
     getEvents() {
         return new Promise((resolve, reject)=>{
             resolve(Array.from(this.events.values()))
@@ -126,8 +183,9 @@ export class EventModel{
     }
 
     /**
-     * 
-     * @param {number} id 
+     * Метод возвращает мероприятие по его ID
+     * @param {number} id ID мероприятия
+     * @returns мероприятие
      */
      getEventByID(id) {
         return new Promise((resolve, reject)=>{
@@ -136,8 +194,9 @@ export class EventModel{
     }
 
     /**
-     * 
-     * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event 
+     * Метод создаёт мероприятие по заданным параметрам
+     * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event объект класса Event
+     * @returns мероприятие
      */
      createEvent(event) {
         return new Promise((resolve, reject)=>{
@@ -153,8 +212,9 @@ export class EventModel{
     }
 
     /**
-     * 
-     * @param {Event} event 
+     * Метод обновляет мероприятие по заданным параметрам
+     * @param {Event} event объект класса Event
+     * @returns мероприятие
      */
      updateEvent(event) {
         return new Promise((resolve, reject)=>{
@@ -169,8 +229,8 @@ export class EventModel{
     }
 
     /**
-     * 
-     * @param {number} id 
+     * Метод удаляет мероприятие по ID
+     * @param {number} id ID мероприятия
      */
     deleteEvent(id) {
         return new Promise((resolve, reject)=>{
@@ -186,6 +246,10 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод удаляет связи между кандидатами и мероприятием
+     * @param {number} eventID ID мероприятия 
+     */
     deleteCandidateEventByEventID(eventID){
         return new Promise((resolve, reject)=>{
             for (let index = 0; index < this.candidateEvent.length; index++) {
@@ -198,6 +262,10 @@ export class EventModel{
         })
     }
 
+    /**
+     * Метод удаляет связи между сотрудником и мероприятием
+     * @param {number} eventID ID мероприятия 
+     */
     deleteEmployeeEventByEventID(eventID){
         return new Promise((resolve, reject)=>{
             for (let index = 0; index < this.employeeEvent.length; index++) {
