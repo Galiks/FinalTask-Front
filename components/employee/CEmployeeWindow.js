@@ -29,6 +29,31 @@ export class EmployeeWindowController{
     }
 
     /**
+     * Метод обновляет данные в указанной таблице
+     * @param {string} datatableName имя таблицы
+     */
+    refreshDatatable(datatableName){
+        let getData;
+        if (datatableName == "events") {
+            getData = this.eventModel.getEvents()
+        }
+        else if(datatableName == "candidates"){
+            getData = this.candidateModel.getCandidates()
+        }
+        else if (datatableName == "employees"){
+            getData = this.employeeModel.getEmloyees()
+        }
+        else {
+            return
+        }
+        getData.then((data)=>{
+            $$(datatableName).clearAll()
+            $$(datatableName).parse(data)
+            $$(datatableName).refresh()
+        })
+    }
+
+    /**
      * Метод закрывает указанное окно и разблокирует главное окно
      * @param {string} window ID окна
      */

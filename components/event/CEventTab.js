@@ -8,13 +8,10 @@ export class EventTabController{
     constructor(){
         this.eventTabView = new EventTabView()
         this.eventWindowController = new EventWindowController()
-        this.eventModel = new EventModel()
-        this.employeeModel = new EmployeeModel()
-        this.candidateModel = new CandidateModel()
     }
 
     init(){
-        this.eventWindowController.init(this.eventModel)
+        this.eventWindowController.init()
 
         this.datatable = $$("events")
         this.cmenu = $$("eventcmenu")

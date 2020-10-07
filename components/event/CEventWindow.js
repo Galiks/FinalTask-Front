@@ -15,12 +15,13 @@ export class EventWindowController{
      * @param {EventModel} eventModel объект класса EventModel
      */
     init(eventModel){
-        this.eventModel = eventModel
+        this.eventModel = new EventModel()
         //this.eventModel = new EventModel()
         this.eventWindowView = new EventWindowView()
         this.employeeModel = new EmployeeModel()
         this.candidateModel = new CandidateModel()
-        this.refreshEventDatatable
+
+        this.cmenu = $$("eventcmenu")
     }
 
     /**
@@ -42,9 +43,23 @@ export class EventWindowController{
             return
         }
         getData.then((data)=>{
-            $$(datatableName).clearAll()
-            $$(datatableName).parse(data)
-            $$(datatableName).refresh()
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                $$(datatableName).clearAll()
+                $$(datatableName).parse(empty)
+                $$(datatableName).refresh()
+            }
+            else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                $$(datatableName).clearAll()
+                $$(datatableName).parse(data)
+                $$(datatableName).refresh()
+            }
         })
     }
 

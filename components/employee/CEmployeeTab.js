@@ -11,19 +11,21 @@ export class EmployeeTabController{
     }
 
     init(){
+
+        this.datatable = $$("employees")
+        this.cmenu = $$("employeecmenu")
+
         this.employeeWindowController.init()
         this.attachEvent()
-        this.attachEventWindowHandler(this)
     }
 
     config(){
-        return this.employeeTabView.view(this.employeeModel.getEmloyees().then((employees) => {
-            return employees
-        }))
+        return this.employeeTabView.view()
     }
 
     attachEvent(){
-        $$("employeecmenu").attachTo($$("employees"));
+        this.cmenu.attachTo(this.datatable);
+        this.attachEventWindowHandler(this)
     }
 
     /**
@@ -31,7 +33,7 @@ export class EmployeeTabController{
      * @param {this} controller 
      */
     attachEventWindowHandler(controller){
-        $$("employeecmenu").attachEvent("onItemClick", function(id) {
+        this.cmenu.attachEvent("onItemClick", function(id) {
             let context = this.getContext();
             let item = context.obj;
             let itemID = context.id;
@@ -39,23 +41,15 @@ export class EmployeeTabController{
             // let constructorName = element.constructor.name
             if (this.getItem(id).value == "Добавить"){   
                 controller.employeeWindowController.createEmployee()
-                $$("createWindow").show()
-                $$("main").disable()
             }
             else if (this.getItem(id).value == "Удалить"){
                 controller.employeeWindowController.deleteEmployee(element)
-              $$("deleteWindow").show()
-              $$("main").disable()
             }
             else if (this.getItem(id).value == "Изменить"){
                 controller.employeeWindowController.updateEmployee(element)          
-              $$("updateWindow").show()
-              $$("main").disable()
             }
             else if (this.getItem(id).value == "Подробнее"){
                 controller.employeeWindowController.aboutEmployee(element)
-              $$("aboutWindow").show()
-              $$("main").disable()
             }           
           });
     }

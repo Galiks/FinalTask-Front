@@ -5,26 +5,16 @@ export class EmployeeTabView{
      * 
      * @param {Employee[]} employees
      */
-    view(employees){
-
-        let data;
-        if(employees.length == 0){
-            employees.push(new Event(0, null, null, null))
-            data = ["Добавить"]
-        }else{
-            data = ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
-        }
-
+    view(){
         let contextmenu = {
             view:"contextmenu",
             id:"employeecmenu",
-            data:data
+            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
         }
 
         webix.ui(contextmenu)
 
         return {
-            "data": employees,
             "columns": [
                 { "id": "ID", "header":"Номер", "sort":"number"},
                 { "id": "firstname", "header": "Имя", "fillspace": true, "sort": "string" },
