@@ -17,7 +17,9 @@ export class EmployeeTabController{
     }
 
     config(){
-        return this.employeeTabView.view(this.employeeModel.getEmloyees())
+        return this.employeeTabView.view(this.employeeModel.getEmloyees().then((employees) => {
+            return employees
+        }))
     }
 
     attachEvent(){

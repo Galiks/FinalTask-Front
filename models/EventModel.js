@@ -1,4 +1,4 @@
-import { EVENT_STATUS } from '../components/event/CEventTab.js';
+import { EVENT_STATUS } from '../components/event/CEventWindow.js';
 import {Event} from './entities/Event.js';
 
 export class EventModel{
@@ -6,24 +6,21 @@ export class EventModel{
     //key - id, value - event
     constructor(){
         this.events = new Map()
-        // this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUS.planned))
-        // this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUS.planned))
+        this.events.set(1, new Event(1, "StandUp", new Date(), EVENT_STATUS.planned))
+        this.events.set(2, new Event(2, "Собеседование", new Date(), EVENT_STATUS.planned))
 
-        this.candidateEvent = []
-        this.employeeEvent = []
-        // this.employeeEvent = [
-        //     {   
-        //         employeeID: 0,
-        //         eventID: 0
-        //     }
-        // ]
-
-        // this.candidateEvent = [
-        //     {   
-        //         candidateID: 0,
-        //         eventID: 0
-        //     }
-        // ]
+        this.candidateEvent = [
+            {
+                candidateID:1,
+                eventID:1
+            }
+        ]
+        this.employeeEvent = [
+            {
+                employeeID:1,
+                eventID:1
+            }
+        ]
     }
 
     /**
@@ -77,7 +74,9 @@ export class EventModel{
      */
     getEmployeeIDByEventIDLikeString(eventID){
         return new Promise((resolve, reject)=>{
-            resolve(String(this.getEmployeeIDByEventID(eventID)))
+            this.getEmployeeIDByEventID(eventID).then((employees) =>{
+                resolve(String(Array.from(employees)))
+            })
         })
     }
 
@@ -88,7 +87,9 @@ export class EventModel{
      */
     getCandidateIDByEventIDLikeString(eventID){
         return new Promise((resolve, reject)=>{
-            resolve(String(this.getCandidateIDByEventID(eventID)))
+            this.getCandidateIDByEventID(eventID).then((candidates) =>{
+                resolve(String(Array.from(candidates)))
+            })
         })
     }
 
@@ -109,8 +110,7 @@ export class EventModel{
     }
 
     /**
-     * 
-     * Метод возвращает ID кандидатов определённого мероприятия в виде массива
+     * Метод возвращает ID сотрудников определённого мероприятия в виде массива
      * @param {number} eventID ID мероприятия
      * @returns список ID кандидатов в виде массива 
      */
@@ -134,7 +134,9 @@ export class EventModel{
         return new Promise((resolve, reject)=>{
             this.candidateEvent = this.candidateEvent.filter(element => element.eventID != eventID)
             candidateIDs.split(',').forEach(element => {
-                this.setCandidateToEvent(element, eventID)
+                this.setCandidateToEvent(element, eventID).then(()=>{
+
+                })
             })
             resolve()
         })
@@ -149,7 +151,9 @@ export class EventModel{
         return new Promise((resolve, reject)=>{
             this.employeeEvent = this.employeeEvent.filter(element => element.eventID != eventID)
             employeeIDs.split(',').forEach(element => {
-                this.setEmployeeToEvent(element, eventID)
+                this.setEmployeeToEvent(element, eventID).then(()=>{
+
+                })
             })
             resolve()
         })
@@ -160,16 +164,13 @@ export class EventModel{
      * @returns последний номер коллекции
      */
     getLastID(){
-        return new Promise((resolve, reject)=>{
-            if (this.events.size == 0) {
-                resolve(0)
-            }
-            else{
-                let keys = Array.from(this.events.keys());
-                resolve(Math.max.apply(null, keys))
-            }
-        })
-        
+        if (this.events.size == 0) {
+            return 0
+        }
+        else{
+            let keys = Array.from(this.events.keys());
+            return Math.max.apply(null, keys)
+        }
     }
 
     /**
@@ -180,6 +181,10 @@ export class EventModel{
         return new Promise((resolve, reject)=>{
             resolve(Array.from(this.events.values()))
         })
+    }
+
+    getEventsNotPromise(){
+        return Array.from(this.events.values())
     }
 
     /**
@@ -195,19 +200,16 @@ export class EventModel{
 
     /**
      * Метод создаёт мероприятие по заданным параметрам
-     * @param {{ID: number; theme: string; beginning: Date; id_events_status: number}} event объект класса Event
+     * @param {{ID: number; theme: string; beginning: Date; status: EVENT_STATUS}} event объект класса Event
      * @returns мероприятие
      */
      createEvent(event) {
         return new Promise((resolve, reject)=>{
-            let creatingEvent = this.getEventByID(event.ID)
-            if (creatingEvent == null) {
-                let newEvent = new Event(event.ID, event.theme, event.beginning, event.status)
-                this.events.set(event.ID, newEvent)
-                resolve(newEvent)   
-            } else {
-                reject(null)
-            }
+            let id = this.getLastID() + 1
+            let newEvent = new Event(id, event.theme, event.beginning, event.status)
+            this.events.set(id, newEvent)
+
+            resolve(newEvent)
         })
     }
 
@@ -216,15 +218,14 @@ export class EventModel{
      * @param {Event} event объект класса Event
      * @returns мероприятие
      */
-     updateEvent(event) {
+    updateEvent(event) {
         return new Promise((resolve, reject)=>{
-            let updatingEvent = this.getEventByID(event.ID)
-            if (updatingEvent != null) {
-                this.events.set(event.ID, updatingEvent)
-                resolve(updatingEvent)
-            } else {
-                reject(null)
-            }
+            this.getEventByID(event.ID).then((updatingEvent) =>{
+                if (updatingEvent != null) {
+                    this.events.set(event.ID, event)
+                    resolve(event)
+                }
+            })
         })
     }
 
@@ -234,15 +235,14 @@ export class EventModel{
      */
     deleteEvent(id) {
         return new Promise((resolve, reject)=>{
-            let deletingEvent = this.getEventByID(id)
-            if (deletingEvent != null) {
-                this.events.delete(id)
-                this.deleteCandidateEventByEventID(id)
-                this.deleteEmployeeEventByEventID(id)
-                resolve()   
-            } else {
-                reject()
-            }
+            this.getEventByID(id).then((deletingEvent)=>{
+                if (deletingEvent != null) {
+                    this.events.delete(id)
+                    this.deleteCandidateEventByEventID(id).then(()=>{})
+                    this.deleteEmployeeEventByEventID(id).then(()=>{})
+                    resolve()   
+                }
+            })
         })
     }
 

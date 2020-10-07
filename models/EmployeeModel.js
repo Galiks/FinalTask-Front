@@ -13,15 +13,13 @@ export class EmployeeModel{
      * @returns последний номер коллекции
      */
     getLastID(){
-        return new Promise((resolve, reject) =>{
             if (this.employees.size == 0) {
-                resolve(0)
+                return 0
             }
             else{
                 let keys = Array.from(this.employees.keys());
-                resolve(Math.max.apply(null, keys))
+                return Math.max.apply(null, keys)
             }
-        })
     }
 
     /**
@@ -68,14 +66,13 @@ export class EmployeeModel{
      */
      createEmployee(employee) {
         return new Promise((resolve, reject)=>{
-            let creatingEmployee = this.getEmployeeByID(employee.ID)
-            if (creatingEmployee == null) {
-                let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
-                this.employees.set(employee.ID, newEmployee)  
-                resolve(newEmployee)   
-            } else {
-                reject(null)
-            }
+            this.getEmployeeByID(employee.ID).then((creatingEmployee)=>{
+                if (creatingEmployee == null) {
+                    let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
+                    this.employees.set(employee.ID, newEmployee)  
+                    resolve(newEmployee)
+                }
+            })
         })
     }
 
@@ -86,13 +83,12 @@ export class EmployeeModel{
      */
      updateEmployee(employee){
         return new Promise((resolve, reject)=>{
-            let updatingEmployee = this.getEmployeeByID(employee.ID)
-            if (updatingEmployee != null) {
-                this.employees.set(employee.ID, updatingEmployee)
-                resolve(updatingEmployee)
-            } else {
-                reject(null)
-            }
+            this.getEmployeeByID(employee.ID).then((updatingEmployee)=>{
+                if (updatingEmployee != null) {
+                    this.employees.set(employee.ID, updatingEmployee)
+                    resolve(updatingEmployee)
+                }
+            })
         })
     }
 
@@ -102,13 +98,12 @@ export class EmployeeModel{
      */
     deleteEmployee(id){
         return new Promise((resolve, reject)=>{
-            let deletingEmployee = this.getEmployeeByID(id)
-            if (deletingEmployee != null) {
-                this.employees.delete(Number(id))
-                resolve()
-            } else {
-                reject()
-            }  
+            this.getEmployeeByID(id).then((deletingEmployee)=>{
+                if (deletingEmployee != null) {
+                    this.employees.delete(Number(id))
+                    resolve()
+                }
+            })  
         })
     }
 }

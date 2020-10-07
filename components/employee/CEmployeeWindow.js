@@ -71,7 +71,7 @@ export class EmployeeWindowController{
                 return
             }
             let values = form.getValues()
-            let id = this.employeeModel.getLastID() + 1
+            let id = this.employeeModel.getLastID().PromiseResult + 1
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
                 this.closeWindow("createWindow");

@@ -5,7 +5,7 @@ export class CandidateModel{
     constructor(){
         this.candidates = new Map()
 
-        //this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.empty))
+        this.candidates.set(Number(1), new Candidate(1, "ivan", "ivanov", "ivanovich", "email@email.com", "888888", CANDIDATE_STATUS.empty))
         this.candidates.set(Number(2), new Candidate(2, "ivan2", "ivanov2", "ivanovich2", "222email@email.com", "22888888", CANDIDATE_STATUS.empty))
     }
 
@@ -14,15 +14,13 @@ export class CandidateModel{
      * @returns последний индекс коллекции
      */
     getLastID(){
-        return new Promise((resolve, reject) =>{
-            if (this.candidates.size == 0) {
-                resolve(0)
-            }
-            else{
-                let keys = Array.from(this.candidates.keys());
-                resolve(Math.max.apply(null, keys))
-            }
-        })
+        if (this.candidates.size == 0) {
+            return 0
+        }
+        else{
+            let keys = Array.from(this.candidates.keys());
+            return Math.max.apply(null, keys)
+        }
     }
 
     /**
@@ -86,14 +84,12 @@ export class CandidateModel{
      */
     updateCandidate(candidate){
         return new Promise((resolve, reject) => {
-            let updatingCandidate = this.getCandidateByID(candidate.ID)
-
-            if (updatingCandidate != null) {
-                this.candidates.set(updatingCandidate.ID, updatingCandidate)
-                resolve(updatingCandidate)   
-            }else{
-                reject(null)
-            }
+            this.getCandidateByID(candidate.ID).then((updatingCandidate)=>{
+                if (updatingCandidate != null) {
+                    this.candidates.set(updatingCandidate.ID, updatingCandidate)
+                    resolve(updatingCandidate)   
+                }
+            })
         })
     }
 
@@ -105,14 +101,13 @@ export class CandidateModel{
      */
     updateCandidateStatus(candidateID, status){
         return new Promise((resolve, reject) => {
-            let updatingCandidate = this.getCandidateByID(candidateID)
-            if (updatingCandidate != null) {
-                updatingCandidate.status = status
-                this.candidates.set(candidateID, updatingCandidate)
-                resolve(updatingCandidate)   
-            } else {
-                reject(null)
-            }
+            this.getCandidateByID(candidateID).then((candidate) => {
+                if (candidate != null) {
+                    candidate.status = status
+                    this.candidates.set(candidate.ID, candidate)
+                    resolve(candidate)   
+                }
+            })
         })
     }
 
@@ -122,13 +117,12 @@ export class CandidateModel{
      */
     deleteCandidate(id){
         return new Promise((resolve, reject)=>{
-            let deletingCandidate = this.getCandidateByID(id)
-            if (deletingCandidate != null) {
-                this.candidates.delete(Number(id))
-                resolve()      
-            } else {
-                reject()
-            }
+            this.getCandidateByID(id).then((deletingCandidate)=>{
+                if (deletingCandidate != null) {
+                    this.candidates.delete(Number(id))
+                    resolve()      
+                }
+            })
         })
     }
 }

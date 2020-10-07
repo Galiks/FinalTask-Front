@@ -1,5 +1,5 @@
 import {Event} from "./../../models/entities/Event.js";
-import { EVENT_STATUS } from "./CEventTab.js";
+import { EVENT_STATUS } from "./CEventWindow.js";
 
 export class EventWindowView{
 
@@ -7,10 +7,10 @@ export class EventWindowView{
 
     }
 
-    viewCreateWindow(employees, candidates){
+    viewCreateWindow(){
 
       let employeesView = {
-        "options": employees,
+        "options": [],
         "label": "Сотрудники",
         labelWidth: 90,
         "id":"employeesMultiselect",
@@ -19,7 +19,7 @@ export class EventWindowView{
       }
 
       let candidatesView = {
-        "options": candidates,
+        "options": [],
         "label": "Кандидаты",
         labelWidth: 90,
         "id":"candidatesMultiselect",
@@ -143,7 +143,7 @@ export class EventWindowView{
                   id:"updateForm",
                   "rows": [
                     { view: "text", name:"ID", hidden:true},
-                    { "view": "text", "label": "Тема", "name": "theme", inputWidth:500},
+                    { "view":"text", "label": "Тема", "name": "theme", inputWidth:500},
                     { "view": "text", type:"datetime-local", "label": "Время мероприятия", "name": "beginning", labelWidth:200},
                     {cols: [
                     employeesMultiselect,
@@ -168,6 +168,7 @@ export class EventWindowView{
     }
 
     viewAboutWindow(event, employees, candidates){
+      
       let employeesDatatable = {
             "data": employees,
             "columns": [
@@ -179,7 +180,8 @@ export class EventWindowView{
               { "id": "email", "header": "Email", "sort": "string" },
               { "id": "phone", "header": "Телефон", "sort": "string" }
             ],
-            "view": "datatable"
+            "view": "datatable",
+            "id":"employeesAbout"
       }
       let candidatesDatatable = {
             "data": candidates,
@@ -192,7 +194,8 @@ export class EventWindowView{
               { "id": "phone", "header": "Телефон", "sort": "string", "fillspace": true,},
               { "id": "status", "header": "Статус", "sort": "string", "fillspace": true, }
             ],
-            "view": "datatable"
+            "view": "datatable",
+            "id":"candidatesAbout"
       }
       let eventInformation = {
             "view":"property",
