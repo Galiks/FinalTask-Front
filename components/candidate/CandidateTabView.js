@@ -9,27 +9,17 @@ export class CandidateTabView{
      * 
      * @param {Candidate[]} candidates 
      */
-    view(candidates){
-
-        let data
-
-        if (candidates.length == 0){
-            candidates.push(new Candidate())
-            data = ["Добавить"]
-        }else{
-            data = ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
-        }
+    view(){
 
         let contextmenu = {
             view:"contextmenu",
             id:"candidatecmenu",
-            data:data
+            data:["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"]
         }
 
         webix.ui(contextmenu)
 
         return {
-            "data": candidates,
             "columns": [
                 { "id": "ID", "header":"Номер", "sort":"number", "fillspace": true,},
                 { "id": "firstname", "header": "Имя",  },

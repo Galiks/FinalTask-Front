@@ -9,22 +9,35 @@ export class CandidateTabController{
         this.candidateTabView = new CandidateTabView()
     }
 
+    /**
+     * Метод для инициализации
+     */
     init(){
         this.candidateWindowController.init()
         this.attachEvents()
-        this.attachEventWindowHandler(this)
-    }
 
-     config(){
-        return this.candidateTabView.view(this.candidateModel.getCandidates())
-    }
-
-    attachEvents(){
-        $$("candidatecmenu").attachTo($$("candidates"));
+        this.candidateWindowController.refreshDatatable()
     }
 
     /**
-     * 
+     * Метод для отображения главного окна кандидатов
+     * @returns конфигурация WEBIX
+     */
+    config(){
+        return this.candidateTabView.view()
+    }
+
+    /**
+     * Метод для привязки событий
+     */
+    attachEvents(){
+        $$("candidatecmenu").attachTo($$("candidates"));
+
+        this.attachEventWindowHandler(this)
+    }
+
+    /**
+     * Метод для привязки событий к контекстному меню кандидатов
      * @param {this} controller 
      */
     attachEventWindowHandler(controller){
@@ -32,38 +45,19 @@ export class CandidateTabController{
             let context = this.getContext();
             let item = context.obj;
             let itemID = context.id;
-            let element = item.getItem(itemID)
-            let constructorName = element.constructor.name
+            let candidate = item.getItem(itemID)
             if (this.getItem(id).value == "Добавить"){   
-                controller.candidateWindowController.createCandidate()
-                $$("createWindow").show()
-                $$("main").disable()
+                controller.candidateWindowController.createWindow()
             }
             else if (this.getItem(id).value == "Удалить"){
-                controller.candidateWindowController.deleteCandidate(element)
-              $$("deleteWindow").show()
-              $$("main").disable()
+                controller.candidateWindowController.deleteWindow(candidate)
             }
             else if (this.getItem(id).value == "Изменить"){
-                controller.candidateWindowController.updateCandidate(element)          
-              $$("updateWindow").show()
-              $$("main").disable()
+                controller.candidateWindowController.updateWindow(candidate)          
             }
             else if (this.getItem(id).value == "Подробнее"){
-                controller.candidateWindowController.aboutCandidate(element)
-              $$("aboutWindow").show()
-              $$("main").disable()
+                controller.candidateWindowController.aboutWindow(candidate)
             }           
           });
     }
-}
-
-export const CANDIDATE_STATUS = {
-    empty: "",
-    invite: "Приглашен",
-    showUp: "Явился",
-    dontShowUp: "Не явился",
-    wait: "Ожидает результат",
-    success: "Успешно",
-    unsuccess: "Неуспешно"
 }

@@ -1,5 +1,5 @@
 import { Candidate } from "./../../models/entities/Candidate.js";
-import { CANDIDATE_STATUS } from "./CCandidateTab.js";
+import { CANDIDATE_STATUS } from "./CCandidateWindow.js";
 
 export class CandidateWindowView{
     constructor(){

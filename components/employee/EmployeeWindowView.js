@@ -6,6 +6,17 @@ export class EmployeeWindowView{
     }
 
     /**
+     * Метод, создающий маску из 60 символов
+     */
+    getMaskForString(){
+      let result = ""
+      for (let index = 0; index < 6; index++) {
+        result.concat("##########")        
+      }
+      return result
+    }
+
+    /**
      * Создаёт конфиг WEBIX для отображения окна создания сотрудника
      * @returns  Конфиг окна для создания сотрудника
      */
@@ -31,7 +42,7 @@ export class EmployeeWindowView{
                 "email":webix.rules.isEmail,
               },
               "rows": [
-                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true, labelWidth:labelWidth },
+                { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", required:true, labelWidth:labelWidth, },
                 { "view": "text", "label": "Имя", "name": "firstname", "type":"text", required:true, labelWidth:labelWidth },
                 { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text", labelWidth:labelWidth},
                 { "view": "text", "label": "Должность", "name": "position", "type":"text", required:true, labelWidth:labelWidth },
@@ -111,15 +122,18 @@ export class EmployeeWindowView{
             body:{
               "autoheight": false,
               "view": "form",
+              rules:{
+                "email":webix.rules.isEmail,
+              },
               "id":"updateForm",
               "rows": [
-                { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true, labelWidth:labelWidth},
+                { "view":"text", "label":"Номер", "name":"ID", "type":"number", "readonly":true, labelWidth:labelWidth, hidden:true},
                 { "view": "text", "label": "Фамилия", "name": "lastname", "type":"text", labelWidth:labelWidth },
                 { "view": "text", "label": "Имя", "name": "firstname", "type":"text", labelWidth:labelWidth },
                 { "view": "text", "label": "Отчество", "name": "patronymic", "type":"text", labelWidth:labelWidth },
                 { "view": "text", "label": "Должность", "name": "position", "type":"text", labelWidth:labelWidth },
                 { "view": "text", "label": "Email", "name": "email", "type":"text", labelWidth:labelWidth },
-                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", labelWidth:labelWidth },
+                { "view": "text", "label": "Телефон", "name": "phone", "type":"text", pattern:{ mask:"# ### ### ## ##", allow:/[0-9]/g}, labelWidth:labelWidth  },
                 { "view": "button", "css": "webix_primary", "label": "Изменить", "id":"updateWindowButton" }
               ]
             },

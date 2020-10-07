@@ -1,10 +1,8 @@
 import { Employee } from "./../../models/entities/Employee.js";
 
 export class EmployeeTabView{
-    /**
-     * 
-     * @param {Employee[]} employees
-     */
+
+    
     view(){
         let contextmenu = {
             view:"contextmenu",

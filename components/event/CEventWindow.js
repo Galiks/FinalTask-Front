@@ -3,7 +3,7 @@ import { Event } from "./../../models/entities/Event.js";
 import { EventModel } from "../../models/EventModel.js";
 import { EmployeeModel } from "../../models/EmployeeModel.js";
 import { CandidateModel } from "../../models/CandidateModel.js";
-import { CANDIDATE_STATUS } from "../candidate/CCandidateTab.js";
+import { CANDIDATE_STATUS } from "../candidate/CCandidateWindow.js";
 
 export class EventWindowController{
     constructor(){
@@ -48,19 +48,26 @@ export class EventWindowController{
                 this.cmenu.define("data", ["Добавить"])
                 this.cmenu.refresh()
                 let empty = [new Object]
-                $$(datatableName).clearAll()
-                $$(datatableName).parse(empty)
-                $$(datatableName).refresh()
+                this.refreshDatatableData(datatableName, empty)
             }
             else{
                 this.cmenu.clearAll()
                 this.cmenu.define("data", ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"])
                 this.cmenu.refresh()
-                $$(datatableName).clearAll()
-                $$(datatableName).parse(data)
-                $$(datatableName).refresh()
+                this.refreshDatatableData(datatableName, data);
             }
         })
+    }
+
+    /**
+     * Метод для обновления данных в указанной таблице
+     * @param {string} datatableName имя таблицы
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(datatableName, data) {
+        $$(datatableName).clearAll();
+        $$(datatableName).parse(data);
+        $$(datatableName).refresh();
     }
 
     /**

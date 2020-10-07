@@ -1,6 +1,5 @@
 import { Candidate } from "../../models/entities/Candidate.js";
 import { CandidateModel } from "../../models/CandidateModel.js";
-import { CANDIDATE_STATUS } from "./CCandidateTab.js";
 import { CandidateWindowView } from "./CandidateWindowView.js";
 
 export class CandidateWindowController{
@@ -9,10 +8,18 @@ export class CandidateWindowController{
         this.candidateWindowView = new CandidateWindowView()
     }
 
+    /**
+     * Метод для инициализации переменных
+     */
     init(){
-        
+        this.cmenu = $$("candidatecmenu")
+        this.datatable = $$("candidates")
     }
 
+    /**
+     * Метод для проверки пустых строк
+     * @returns true/false
+     */
     isEmptyString(){
         for (let index = 0; index < arguments.length; index++) {
             const element = arguments[index];
@@ -23,6 +30,10 @@ export class CandidateWindowController{
         return false
     }
 
+    /**
+     * Метод для привязки события на скрытие окна к окну кандидата
+     * @param {string} window имя окна
+     */
     attachEventEventOnHideWindow(window){
         $$(window).attachEvent("onHide", ()=> {
             this.closeWindow(window)
@@ -37,30 +48,50 @@ export class CandidateWindowController{
         $$(window).close();
         $$("main").enable();
     }
+
+    /**
+     * Метод показыает указанное окно и блокирует главное окно
+     * @param {string} window имя окна
+     */
+    showWindow(window){
+        $$(window).show();
+        $$("main").disable();
+    }
     
     /**
-     * Метод удаляет данные из таблицы "candidates" и заполняет её заново
+     * Метод обновляет данные в таблице candidates
      */
-    refreshCandidateDatatable(){
-        let candidates = this.candidateModel.getCandidates()
-        if (candidates.length == 0) {
-            candidates.push(new Candidate())
-            $$("candidatecmenu").clearAll()
-            $$("candidatecmenu").define("data", ["Добавить"])
-            $$("candidatecmenu").refresh()
-        }
-        else{
-            $$("candidatecmenu").clearAll()
-            $$("candidatecmenu").define("data", ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"])
-            $$("candidatecmenu").refresh()
-        }
-        $$("candidates").clearAll()
-        $$("candidates").define("data", candidates)
-        $$("candidates").refresh()
-        
+    refreshDatatable(){
+        this.candidateModel.getCandidates().then((data)=>{
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                this.refreshDatatableData(empty)
+            }else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", { $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                this.refreshDatatableData(data);
+            }
+        })
+    }
+
+    /**
+     * Метод для обновления данных в таблице candidates
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(data) {
+        this.datatable.clearAll();
+        this.datatable.parse(data);
+        this.datatable.refresh();
     }
 
     attachCandidateOnCreateWindow(){
+
+        this.showWindow("createWindow")
+
         $$("createWindowClose").attachEvent("onItemClick", () =>{
             this.closeWindow("createWindow");
         })
@@ -74,37 +105,30 @@ export class CandidateWindowController{
                 $$("createForm").clear()
                 return
             }
-            let values = form.getValues()
+            let values = this.fetch("createForm")
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
                 return
             }
             let id = this.candidateModel.getLastID() + 1
-            this.candidateModel.createCandidate(
-                new Candidate(id, values.firstname, values.lastname, values.patronymic, 
-                    values.email, values.phone, values.status))
-    
-            this.refreshCandidateDatatable()
-            this.closeWindow("createWindow");
+            this.candidateModel.createCandidate(values).then((creatingCandidate)=>{
+                this.refreshDatatable()
+                this.closeWindow("createWindow");
+            })
         })
     }
 
     attachCandidateOnUpdateWindow(employee){
+
+        this.showWindow("updateWindow")
+
         $$("updateWindowClose").attachEvent("onItemClick", () =>{
             this.closeWindow("updateWindow")
         });
 
         this.attachEventEventOnHideWindow("updateWindow")
 
-        $$("updateForm").setValues({
-            ID: employee.ID,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            patronymic: employee.patronymic,
-            email: employee.email,
-            phone: employee.phone,
-            status: employee.status
-        })
+        this.parse("updateForm", employee)
 
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
             var form = $$("updateForm");
@@ -113,21 +137,22 @@ export class CandidateWindowController{
                 $$("updateForm").clear()
                 return
             }
-            let values = form.getValues()
+            let values = this.fetch("updateForm")
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
                 return
             }
-            this.candidateModel.updateCandidate(new Candidate(
-                values.ID, values.firstname, values.lastname, values.patronymic, 
-                values.email, values.phone, values.status))
-            this.closeWindow("updateWindow")    
-            this.refreshCandidateDatatable()
+            this.candidateModel.updateCandidate(values).then((updatingCandidat)=>{
+                this.closeWindow("updateWindow")    
+                this.refreshDatatable()
+            })
         })
           
     }
 
     attachCandidateOnDeleteWindow(employee){
+        this.showWindow("deleteWindow")
+
         $$("deleteWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("deleteWindow")
         })
@@ -135,9 +160,10 @@ export class CandidateWindowController{
         this.attachEventEventOnHideWindow("deleteWindow")
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
-            this.candidateModel.deleteCandidate(employee.ID)
-            this.closeWindow("deleteWindow")
-            this.refreshCandidateDatatable()
+            this.candidateModel.deleteCandidate(employee.ID).then(()=>{
+                this.closeWindow("deleteWindow")
+                this.refreshDatatable()
+            })
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
             this.closeWindow("deleteWindow")
@@ -146,6 +172,8 @@ export class CandidateWindowController{
     }
 
     attachCandidateOnAboutWindow(){
+        this.showWindow("aboutWindow")
+
         $$("aboutWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("aboutWindow")     
         });
@@ -153,23 +181,51 @@ export class CandidateWindowController{
         this.attachEventEventOnHideWindow("aboutWindow")
     }
 
-    createCandidate(){
+    createWindow(){
         webix.ui(this.candidateWindowView.viewCreateWindow())
         this.attachCandidateOnCreateWindow()
     }
 
-    deleteCandidate(candidate){
+    deleteWindow(candidate){
         webix.ui(this.candidateWindowView.viewDeleteWindow(candidate))
         this.attachCandidateOnDeleteWindow(candidate)
     }
 
-    updateCandidate(candidate){
+    updateWindow(candidate){
         webix.ui(this.candidateWindowView.viewUpdateWindow(candidate))
         this.attachCandidateOnUpdateWindow(candidate)
     }
 
-    aboutCandidate(candidate){
+    aboutWindow(candidate){
         webix.ui(this.candidateWindowView.viewAboutWindow(candidate))
         this.attachCandidateOnAboutWindow()
     }
+
+    /**
+     * Метод возвращает данные с формы
+     * @param {string} formName имя формы
+     * @returns данные с формы
+     */
+    fetch(formName){
+        return $$(formName).getValues()
+    }
+
+    /**
+     * Метод для заполнение формы данными
+     * @param {string} formName имя формы
+     * @param {*} values значения
+     */
+    parse(formName, values){
+        $$(formName).setValues(values)
+    }
+}
+
+export const CANDIDATE_STATUS = {
+    empty: "",
+    invite: "Приглашен",
+    showUp: "Явился",
+    dontShowUp: "Не явился",
+    wait: "Ожидает результат",
+    success: "Успешно",
+    unsuccess: "Неуспешно"
 }

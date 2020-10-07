@@ -64,15 +64,13 @@ export class EmployeeModel{
      * @param {{ id: number; firstname: string; lastname: string; patronymic: string; position: string; email: string; phone: string; id_user: number; }} employee объект класса Employee
      * @returns нового сотрудника
      */
-     createEmployee(employee) {
+    createEmployee(employee) {
         return new Promise((resolve, reject)=>{
-            this.getEmployeeByID(employee.ID).then((creatingEmployee)=>{
-                if (creatingEmployee == null) {
-                    let newEmployee = new Employee(employee.ID, employee.firstname, employee.lastname, employee.patronymic, employee.position, employee.email, employee.phone, employee.id_user)
-                    this.employees.set(employee.ID, newEmployee)  
-                    resolve(newEmployee)
-                }
-            })
+            let id = this.getLastID() + 1
+            let newEmployee = new Employee(id, employee.firstname, employee.lastname, employee.patronymic, 
+                employee.position, employee.email, employee.phone, employee.id_user)
+            this.employees.set(id, newEmployee)  
+            resolve(newEmployee)
         })
     }
 
@@ -81,12 +79,12 @@ export class EmployeeModel{
      * @param {Employee} employee объект класса Employee
      * @returns сотрудника
      */
-     updateEmployee(employee){
+    updateEmployee(employee){
         return new Promise((resolve, reject)=>{
             this.getEmployeeByID(employee.ID).then((updatingEmployee)=>{
                 if (updatingEmployee != null) {
-                    this.employees.set(employee.ID, updatingEmployee)
-                    resolve(updatingEmployee)
+                    this.employees.set(employee.ID, employee)
+                    resolve(employee)
                 }
             })
         })

@@ -1,4 +1,4 @@
-import { CANDIDATE_STATUS } from '../components/candidate/CCandidateTab.js'
+import { CANDIDATE_STATUS } from '../components/candidate/CCandidateWindow.js'
 import {Candidate} from './entities/Candidate.js'
 
 export class CandidateModel{
@@ -68,10 +68,10 @@ export class CandidateModel{
     createCandidate(candidate){
 
         return new Promise((resolve, reject) => {
-            let newCandidate = new Candidate
-            (candidate.ID, candidate.firstname, candidate.lastname, candidate.patronymic, 
+            let id = this.getLastID() + 1
+            let newCandidate = new Candidate(id, candidate.firstname, candidate.lastname, candidate.patronymic, 
                 candidate.email, candidate.phone, candidate.status)
-            this.candidates.set(candidate.ID, newCandidate)
+            this.candidates.set(id, newCandidate)
 
             resolve(newCandidate)
         })
@@ -86,8 +86,8 @@ export class CandidateModel{
         return new Promise((resolve, reject) => {
             this.getCandidateByID(candidate.ID).then((updatingCandidate)=>{
                 if (updatingCandidate != null) {
-                    this.candidates.set(updatingCandidate.ID, updatingCandidate)
-                    resolve(updatingCandidate)   
+                    this.candidates.set(updatingCandidate.ID, candidate)
+                    resolve(candidate)   
                 }
             })
         })

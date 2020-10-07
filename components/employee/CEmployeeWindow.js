@@ -8,16 +8,27 @@ export class EmployeeWindowController{
         this.employeeModel = new EmployeeModel()
     }
 
+    /**
+     * Метод для инициализации
+     */
     init(){
-
+        this.datatable = $$("employees")
+        this.cmenu = $$("employeecmenu")
     }
 
+    /**
+     * Метод для привязки события на скрытие окна к окну
+     * @param {string} window имя окна
+     */
     attachEventEventOnHideWindow(window){
         $$(window).attachEvent("onHide", ()=> {
             this.closeWindow(window)
         })
     }
 
+    /**
+     * Метод для проверки строк на пустоту
+     */
     isEmptyString(){
         for (let index = 0; index < arguments.length; index++) {
             const element = arguments[index];
@@ -29,28 +40,33 @@ export class EmployeeWindowController{
     }
 
     /**
-     * Метод обновляет данные в указанной таблице
-     * @param {string} datatableName имя таблицы
+     * Метод обновляет данные в таблице employees
      */
-    refreshDatatable(datatableName){
-        let getData;
-        if (datatableName == "events") {
-            getData = this.eventModel.getEvents()
-        }
-        else if(datatableName == "candidates"){
-            getData = this.candidateModel.getCandidates()
-        }
-        else if (datatableName == "employees"){
-            getData = this.employeeModel.getEmloyees()
-        }
-        else {
-            return
-        }
-        getData.then((data)=>{
-            $$(datatableName).clearAll()
-            $$(datatableName).parse(data)
-            $$(datatableName).refresh()
+    refreshDatatable(){
+        this.employeeModel.getEmloyees().then((data)=>{
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                this.refreshDatatableData(empty)
+            }else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", { $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                this.refreshDatatableData(data);
+            }
         })
+    }
+
+    /**
+     * Метод для обновления данных в таблице employees
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(data) {
+        this.datatable.clearAll();
+        this.datatable.parse(data);
+        this.datatable.refresh();
     }
 
     /**
@@ -62,22 +78,13 @@ export class EmployeeWindowController{
         $$("main").enable();
     }
 
-    refreshEmployeeDatatable(){
-        let employees = this.employeeModel.getEmloyees()
-        if (employees.length == 0) {
-            employees.push(new Employee())
-            $$("employeecmenu").clearAll()
-            $$("employeecmenu").define("data", ["Добавить"])
-            $$("employeecmenu").refresh()
-        }
-        else{
-            $$("employeecmenu").clearAll()
-            $$("employeecmenu").define("data", ["Добавить","Удалить", "Изменить",{ $template:"Separator" },"Подробнее"])
-            $$("employeecmenu").refresh()
-        }
-        $$("employees").clearAll()
-        $$("employees").define("data", employees)
-        $$("employees").refresh()
+    /**
+     * Метод показывает указанное окно и блокирует главное окно
+     * @param {string} window ID окна
+     */
+    showWindow(window){
+        $$(window).show()
+        $$("main").disable()
     }
 
     attachEmployeeOnCreateWindow(){
@@ -95,53 +102,50 @@ export class EmployeeWindowController{
                 $$("createForm").clear()
                 return
             }
-            let values = form.getValues()
-            let id = this.employeeModel.getLastID().PromiseResult + 1
+            let values = this.fetch("createForm")
             if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
                 this.closeWindow("createWindow");
                 return
             }
-            this.employeeModel.createEmployee(
-                new Employee(id, values.firstname, values.lastname, values.patronymic, values.position,
-                    values.email, values.phone))
-    
-            this.refreshEmployeeDatatable()
-            this.closeWindow("createWindow");
+            this.employeeModel.createEmployee(values).then(()=>{
+                this.refreshDatatable()
+                this.closeWindow("createWindow");
+            })
         })
-
-
     }
 
     attachEmployeeOnUpdateWindow(employee){
+
+        this.parse("updateForm", employee)
+
+        
+
         $$("updateWindowClose").attachEvent("onItemClick", ()=>{
             this.closeWindow("updateWindow")   
         });
 
         this.attachEventEventOnHideWindow("updateWindow")
 
-        $$("updateForm").setValues({
-            ID: employee.ID,
-            firstname: employee.firstname,
-            lastname: employee.lastname,
-            patronymic: employee.patronymic,
-            position: employee.position,
-            email: employee.email,
-            phone: employee.phone
-        });
-
         $$("updateWindowButton").attachEvent("onItemClick", ()=>{
-            let values = $$("updateForm").getValues()
-            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
-                webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("updateWindow");
+
+            var form = $$("updateForm");
+            if (!form.validate()){
+                webix.message("Email имеет неверный формат!")
+                $$("updateForm").clear()
                 return
             }
-            this.employeeModel.updateEmployee(new Employee(
-                values.ID, values.firstname, values.lastname, values.patronymic, values.position,
-                values.email, values.phone))
-            this.closeWindow("updateWindow")    
-            this.refreshEmployeeDatatable()
+
+            let values = this.fetch("updateForm")
+            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
+                webix.message("Один из параметров оказался пустым!")
+                $$("updateForm").clear()
+                return
+            }
+            this.employeeModel.updateEmployee(values).then((updatingEmployee)=>{
+                this.closeWindow("updateWindow")    
+                this.refreshDatatable()
+            })
         })
           
     }
@@ -154,9 +158,10 @@ export class EmployeeWindowController{
         this.attachEventEventOnHideWindow("deleteWindow")
 
         $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
-            this.employeeModel.deleteEmployee(employee.ID)
-            this.closeWindow("deleteWindow")
-            this.refreshEmployeeDatatable()
+            this.employeeModel.deleteEmployee(employee.ID).then(()=>{
+                this.closeWindow("deleteWindow")
+                this.refreshDatatable()
+            })
         })
         $$("deleteWindowButtonNo").attachEvent("onItemClick", () =>{
             this.closeWindow("deleteWindow")
@@ -171,23 +176,45 @@ export class EmployeeWindowController{
         this.attachEventEventOnHideWindow("aboutWindow")
     }
 
-    createEmployee(){
+    createWindow(){
         webix.ui(this.employeeWindowView.viewCreateWindow())
         this.attachEmployeeOnCreateWindow()
+        this.showWindow("createWindow")
     }
 
-    deleteEmployee(employee){
+    deleteWindow(employee){
         webix.ui(this.employeeWindowView.viewDeleteWindow(employee))
         this.attachEmployeeOnDeleteWindow(employee)
+        this.showWindow("deleteWindow")
     }
 
-    updateEmployee(employee){
+    updateWindow(employee){
         webix.ui(this.employeeWindowView.viewUpdateWindow())
         this.attachEmployeeOnUpdateWindow(employee)
+        this.showWindow("updateWindow")
     }
 
-    aboutEmployee(employee){
+    aboutWindow(employee){
         webix.ui(this.employeeWindowView.viewAboutWindow(employee))
         this.attachEmployeeOnAboutWindow()
+        this.showWindow("aboutWindow")
+    }
+
+     /**
+     * Метод возвращает данные с формы
+     * @param {string} formName имя формы
+     * @returns данные с формы
+     */
+    fetch(formName){
+        return $$(formName).getValues()
+    }
+
+    /**
+     * Метод для заполнение формы данными
+     * @param {string} formName имя формы
+     * @param {*} values значения
+     */
+    parse(formName, values){
+        $$(formName).setValues(values)
     }
 }
