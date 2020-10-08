@@ -1,8 +1,7 @@
-import { Employee } from '../../models/entities/Employee.js';
 import { EmployeeModel } from '../../models/EmployeeModel.js';
 import { EmployeeWindowView } from './EmployeeWindowView.js'
 
-export class EmployeeWindowController{
+export class CEmployeeWindow{
     constructor(){
         this.employeeWindowView = new EmployeeWindowView()
         this.employeeModel = new EmployeeModel()
@@ -141,7 +140,7 @@ export class EmployeeWindowController{
                 $$("updateForm").clear()
                 return
             }
-            this.employeeModel.updateEmployee(values).then((updatingEmployee)=>{
+            this.employeeModel.updateEmployee(values).then(()=>{
                 this.closeWindow("updateWindow")    
                 this.refreshDatatable()
             })
@@ -156,7 +155,7 @@ export class EmployeeWindowController{
 
         this.attachEventEventOnHideWindow("deleteWindow")
 
-        $$("deleteWindowButtonYes").attachEvent("onItemClick", (id) =>{
+        $$("deleteWindowButtonYes").attachEvent("onItemClick", () =>{
             this.employeeModel.deleteEmployee(employee.ID).then(()=>{
                 this.closeWindow("deleteWindow")
                 this.refreshDatatable()

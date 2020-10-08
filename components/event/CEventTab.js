@@ -1,13 +1,10 @@
-import { EventModel } from "../../models/EventModel.js";
-import { EventWindowController } from "./CEventWindow.js";
+import { CEventWindow } from "./CEventWindow.js";
 import { EventTabView } from "./EventTabView.js";
-import { EmployeeModel } from "./../../models/EmployeeModel.js";
-import { CandidateModel } from "./../../models/CandidateModel.js";
 
-export class EventTabController{
+export class CEventTab{
     constructor(){
         this.eventTabView = new EventTabView()
-        this.eventWindowController = new EventWindowController()
+        this.eventWindowController = new CEventWindow()
     }
 
     /**

@@ -1,11 +1,10 @@
-import { EmployeeWindowController } from "./CEmployeeWindow.js";
-import { EmployeeModel } from "../../models/EmployeeModel.js";
+import { CEmployeeWindow} from "./CEmployeeWindow.js";
 import { EmployeeTabView } from "./EmployeeTabView.js";
 
-export class EmployeeTabController{
+export class CEmployeeTab{
 
     constructor(){
-        this.employeeWindowController = new EmployeeWindowController()
+        this.employeeWindowController = new CEmployeeWindow()
         this.employeeTabView = new EmployeeTabView()
     }
 

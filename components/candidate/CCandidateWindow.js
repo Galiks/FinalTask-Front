@@ -1,8 +1,7 @@
-import { Candidate } from "../../models/entities/Candidate.js";
 import { CandidateModel } from "../../models/CandidateModel.js";
 import { CandidateWindowView } from "./CandidateWindowView.js";
 
-export class CandidateWindowController{
+export class CCandidateWindow{
     constructor(){
         this.candidateModel = new CandidateModel()
         this.candidateWindowView = new CandidateWindowView()
@@ -110,8 +109,7 @@ export class CandidateWindowController{
                 webix.message("Один из параметров оказался пустым!")
                 return
             }
-            let id = this.candidateModel.getLastID() + 1
-            this.candidateModel.createCandidate(values).then((creatingCandidate)=>{
+            this.candidateModel.createCandidate(values).then(()=>{
                 this.refreshDatatable()
                 this.closeWindow("createWindow");
             })
@@ -142,7 +140,7 @@ export class CandidateWindowController{
                 webix.message("Один из параметров оказался пустым!")
                 return
             }
-            this.candidateModel.updateCandidate(values).then((updatingCandidat)=>{
+            this.candidateModel.updateCandidate(values).then(()=>{
                 this.closeWindow("updateWindow")    
                 this.refreshDatatable()
             })

@@ -10,7 +10,7 @@ import { CUpdateEventWindow } from "./WindowControllers/CUpdateEventWindow.js";
 import { CDeleteEventWindow } from "./WindowControllers/CDeleteEventWindow.js";
 import { CFinishEventWindow } from "./WindowControllers/CFinishEventWindow.js";
 
-export class EventWindowController{
+export class CEventWindow{
     constructor(){
         
     }
@@ -188,7 +188,6 @@ export class EventWindowController{
             this.finishWindowController.attachEventOnFinishWindow(event, candidates)
         });
     }
-
 
     /**
      * Метод обновляет статус кандидата

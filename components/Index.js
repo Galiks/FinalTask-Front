@@ -1,15 +1,15 @@
-import { EventTabController } from "./event/CEventTab.js";
-import { EmployeeTabController } from "./employee/CEmployeeTab.js";
-import { CandidateTabController } from "./candidate/CCandidateTab.js";
+import { CEventTab } from "./event/CEventTab.js";
+import { CEmployeeTab } from "./employee/CEmployeeTab.js";
+import { CCandidateTab } from "./candidate/CCandidateTab.js";
 import { CUserWindow } from "./user/CUserWindow.js";
 
 class Index{
     constructor(){
-        this.eventTab = new EventTabController()
+        this.eventTab = new CEventTab()
 
-        this.employeeTab = new EmployeeTabController()
+        this.employeeTab = new CEmployeeTab()
 
-        this.candidateTab = new CandidateTabController()
+        this.candidateTab = new CCandidateTab()
 
         this.userWindow = new CUserWindow()
     }

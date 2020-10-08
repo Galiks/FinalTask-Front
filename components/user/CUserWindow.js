@@ -14,15 +14,8 @@ export class CUserWindow{
         this.registerWindow()
     }
 
-    attachEvent(){
-
-    }
-
-    loginWindow(){
-        webix.ui(this.userWindow.loginView())
-
+    attachEventLoginWindow(){
         $$("loginPopupButton").attachEvent("onItemClick", ()=>{
-
             $$("loginButton").disable()
             $$("registerButton").disable()
             $$("userIcon").disable()
@@ -56,9 +49,7 @@ export class CUserWindow{
         })
     }
 
-    registerWindow(){
-        webix.ui(this.userWindow.registerView())
-
+    attachEventRegisterWindow(){
         $$("registerPopupButton").attachEvent("onItemClick", ()=>{
 
             $$("loginButton").disable()
@@ -80,9 +71,7 @@ export class CUserWindow{
         })
     }
 
-    aboutWindow(){
-        webix.ui(this.userWindow.aboutUserView(this.currentUser))
-
+    attachEventAboutWindow(){
         $$("userIcon").define("popup", "userPopup")
         $$("userIcon").refresh()
 
@@ -101,6 +90,24 @@ export class CUserWindow{
                 $$("registerButton").enable()
             })
         })
+    }
+
+    loginWindow(){
+        webix.ui(this.userWindow.loginView())
+
+        this.attachEventLoginWindow()
+    }
+
+    registerWindow(){
+        webix.ui(this.userWindow.registerView())
+
+        this.attachEventRegisterWindow()
+    }
+
+    aboutWindow(){
+        webix.ui(this.userWindow.aboutUserView(this.currentUser))
+
+        this.attachEventAboutWindow()
     }
 
     /**

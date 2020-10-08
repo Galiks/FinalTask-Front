@@ -1,11 +1,9 @@
-import { CandidateWindowController } from "./CCandidateWindow.js";
-import { CandidateModel } from "../../models/CandidateModel.js";
+import { CCandidateWindow } from "./CCandidateWindow.js";
 import { CandidateTabView } from "./CandidateTabView.js";
 
-export class CandidateTabController{
+export class CCandidateTab{
     constructor(){
-        this.candidateWindowController = new CandidateWindowController()
-        this.candidateModel = new CandidateModel()
+        this.candidateWindowController = new CCandidateWindow()
         this.candidateTabView = new CandidateTabView()
     }
 
@@ -14,7 +12,7 @@ export class CandidateTabController{
      */
     init(){
         this.candidateWindowController.init()
-        this.attachEvents()
+        this.attachEvent()
 
         this.candidateWindowController.refreshDatatable()
     }
@@ -30,7 +28,7 @@ export class CandidateTabController{
     /**
      * Метод для привязки событий
      */
-    attachEvents(){
+    attachEvent(){
         $$("candidatecmenu").attachTo($$("candidates"));
 
         this.attachEventWindowHandler(this)
