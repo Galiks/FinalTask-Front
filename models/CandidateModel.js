@@ -86,8 +86,10 @@ export class CandidateModel{
         return new Promise((resolve, reject) => {
             this.getCandidateByID(candidate.ID).then((updatingCandidate)=>{
                 if (updatingCandidate != null) {
-                    this.candidates.set(updatingCandidate.ID, candidate)
-                    resolve(candidate)   
+                    this.candidates.set(updatingCandidate.ID, new Candidate(
+                        updatingCandidate.ID, candidate.firstname, candidate.lastname, 
+                        candidate.patronymic, candidate.email, candidate.phone, candidate.status))
+                    resolve(candidate) 
                 }
             })
         })
@@ -105,6 +107,7 @@ export class CandidateModel{
                 if (candidate != null) {
                     candidate.status = status
                     this.candidates.set(candidate.ID, candidate)
+                    console.log(this.candidates)
                     resolve(candidate)   
                 }
             })

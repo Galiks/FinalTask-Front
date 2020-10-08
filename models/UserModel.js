@@ -3,51 +3,74 @@ import { User } from "./entities/User.js";
 export class UserModel{
     constructor(){
         this.users = new Map()
+        this.users.set(1, new User(1, "admin", "admin", null, new Date()))
     }
 
     /**
-     * 
+     * Метод возвращает пользователя по ID
      * @param {number} id 
-     * @returns Users
+     * @returns пользователь
      */
-     getUesrById(id){
-        return this.users.get(id)
+    getUserById(id){
+        return new Promise((resolve, reject) =>{
+            resolve(this.users.get(id))
+        })
+    }
+
+    getUserByLoginAndPassword(login, password){
+        return new Promise((resolve, reject)=>{
+            for (let index = 0; index < this.users.values().length; index++) {
+                const user = this.users.values()[index];
+                if (user.login == login && user.password == password) {
+                    resolve(user)
+                }
+            }
+        })
     }
 
     /**
-     * 
+     * Метод создаёт пользователя по заданным параметрам
      * @param {{login: string; password: string; userPhoto: Blob; lastVisited: Date}} user 
-     * @returns User
+     * @returns пользователь
      */
-     createUser(user){
-        let id = this.users.size + 1
-        let newUser = new User(id, user.login, user.password, user.userPhoto, user.lastVisited)
-        this.users.set(id, newUser)
+    createUser(user){
+        return new Promise((resolve, reject)=>{
+            let id = this.users.size + 1
+            let newUser = new User(id, user.login, user.password, user.userPhoto, user.lastVisited)
+            this.users.set(id, newUser)
 
-        return newUser
+            resolve(newUser)
+        })
     }
 
     /**
-     * 
+     * Метод обновляет пользователя по заданным параметрам
      * @param {{login: string; password: string; userPhoto: Blob; lastVisited: Date}} user 
-     * @returns User
+     * @returns пользователь
      */
      updateUser(user){
-        let updatingUser = this.getUesrById(user.id)
-
-        updatingUser.login = user.login
-        updatingUser.password = user.password
-        updatingUser.userPhoto = user.userPhoto
-        updatingUser.lastVisited = user.lastVisited
-
-        return updatingUser
+        return new Promise((resolve, reject)=>{
+            this.getUesrById(user.id).then((updatingUser)=>{
+                if (updatingUser != null) {
+                    this.users.set(user.id, user)
+                    resolve(user)
+                }
+            })
+        })
     }
 
     /**
-     * 
+     * Метод удаляет пользователя по ID
      * @param {number} id 
      */
      deleteUser(id){
-        this.users.delete(id)
+        return new Promise((resolve, reject)=>{
+            this.getUesrById(id).then((deletingUser)=>{
+                if (deletingUser != null) {
+                    this.users.delete(id)
+                    resolve()
+                }
+            })
+        })
     }
 }

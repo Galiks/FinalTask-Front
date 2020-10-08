@@ -1,6 +1,7 @@
 import { EventTabController } from "./event/CEventTab.js";
 import { EmployeeTabController } from "./employee/CEmployeeTab.js";
 import { CandidateTabController } from "./candidate/CCandidateTab.js";
+import { CUserWindow } from "./user/CUserWindow.js";
 
 class Index{
     constructor(){
@@ -9,12 +10,18 @@ class Index{
         this.employeeTab = new EmployeeTabController()
 
         this.candidateTab = new CandidateTabController()
+
+        this.userWindow = new CUserWindow()
     }
 
     init(){
+
+
+
       this.employeeTab.init()
       this.candidateTab.init()
       this.eventTab.init()
+      this.userWindow.init()
     }
 
     run(){
@@ -23,9 +30,11 @@ class Index{
         let candidates = this.candidateTab.config()
         let eventsConfig = this.eventTab.config() 
 
+        // popup:"userPopup"
+
         let userWindow = {
             "rows": [
-                { "icon": "wxi-user", "view": "icon", "width":150 },
+                { "icon": "wxi-user", "view": "icon", "width":150, id:"userIcon" },
                 {cols : [
                   { "label": "Вход", "view": "button", "width":150, "id":"loginButton", popup:"loginPopup"},
                   { "label": "Регистрация", "view":"button", "width":150, "id":"registerButton", popup:"registerPopup"}
@@ -39,31 +48,6 @@ class Index{
               { value:'Сотрудники', id:'employees'},
               { value:'Кандидаты', id:'candidates'}
             ]
-        }
-
-        let registerPopup = {
-          view:"popup",
-          id:"registerPopup",
-          body:{ 
-            view:"form", id:"registerForm", elements:[
-              {view:"text", label:"Логин", width:370, "labelWidth":150, name:"login", placeholder:"Логин", align:"left", required:true},
-              {view:"text", label:"Пароль", type:"password", "labelWidth":150, name:"password", placeholder:"Пароль", align:"left", required:true},
-              {view:"text", label:"Повторите пароль", "labelWidth":150, type:"password", name:"repeatPassword", placeholder:"Повторите пароль", align:"left", required:true},
-              {view:"button", label:"Зарегистрироваться", click:register}
-            ]
-          }
-        }
-
-        let loginPopup =  {
-          view:"popup",
-          id:"loginPopup",
-          body:{ 
-            view:"form", id:"loginForm", width:200, elements:[
-              {view:"text", label:"Логин", name:"login", placeholder:"Логин", align:"center", required:true},
-              {view:"text", label:"Пароль", type:"password", name:"password", placeholder:"Пароль", align:"center", required:true},
-              {view:"button", label:"Войти", click:login}
-            ]
-          }
         }
 
         let tabbar = {
@@ -88,12 +72,21 @@ class Index{
             ]
         }
 
-        webix.ui(tabbar)
+        let loginPopup =  {
+          view:"popup",
+          id:"loginPopup",
+          body:{ 
+            view:"form", id:"loginForm", width:200, elements:[
+              {view:"text", label:"Логин", name:"login", placeholder:"Логин", align:"center", required:true},
+              {view:"text", label:"Пароль", type:"password", name:"password", placeholder:"Пароль", align:"center", required:true},
+              {view:"button", label:"Войти"}
+            ]
+          }
+      }
 
-        webix.ui(loginPopup)
-        webix.ui(registerPopup)
+      webix.ui(tabbar)
 
-        this.init()
+       this.init()
     }
 }
 
@@ -102,18 +95,3 @@ webix.ready( ()=>{
     start.run()
 
 })
-
-function login(){
-  const values = $$("loginForm").getValues()
-  alert(values.login + " " + values.password)
-}
-
-function register(){
-  const values = $$("registerForm").getValues()
-  if (values.password != values.repeatPassword) {
-    alert("Пароли не совпадают")
-  }
-  else{
-    alert("Всё ок")
-  }
-}

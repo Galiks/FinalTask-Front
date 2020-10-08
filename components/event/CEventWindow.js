@@ -426,9 +426,9 @@ export class EventWindowController{
                     event.status = EVENT_STATUS.archive;
                     this.eventModel.updateEvent(event).then(() => {
                         this.refreshDatatable("events");
-                        this.refreshDatatable("candidates");
+                        this.updateCandidateStatus(event.ID, CANDIDATE_STATUS.empty)
+                        this.closeWindow("finishWindow");
                     });
-                    this.closeWindow("finishWindow");
                 }
                 else {
                     webix.message("Условие не выполнилось: кандидаты не завершили мероприятие");
