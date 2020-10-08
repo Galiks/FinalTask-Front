@@ -103,9 +103,8 @@ export class EmployeeWindowController{
                 return
             }
             let values = this.fetch("createForm")
-            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.position, values.email, values.phone)) {
+            if (this.isEmptyString(values.firstname, values.lastname, values.position, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
-                this.closeWindow("createWindow");
                 return
             }
             this.employeeModel.createEmployee(values).then(()=>{

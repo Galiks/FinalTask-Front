@@ -22,6 +22,11 @@ export class CUserWindow{
         webix.ui(this.userWindow.loginView())
 
         $$("loginPopupButton").attachEvent("onItemClick", ()=>{
+
+            $$("loginButton").disable()
+            $$("registerButton").disable()
+            $$("userIcon").disable()
+
             let values = this.fetch("loginForm")
 
             if(values.login == "admin" && values.password == "admin"){
@@ -30,7 +35,6 @@ export class CUserWindow{
                 $$("registerButton").disable()
                 $$("userIcon").enable()
                 this.aboutWindow()
-                return
             }
             else{
                 this.userModel.getUserByLoginAndPassword(values.login, values.password).then((user)=>{
@@ -38,8 +42,13 @@ export class CUserWindow{
                         this.currentUser = user
                         $$("loginButton").disable()
                         $$("registerButton").disable()
-
+                        $$("userIcon").enable()
                         this.aboutWindow()
+                    }
+                    else{
+                        $$("loginButton").enable()
+                        $$("registerButton").enable()
+                        $$("userIcon").enable()
                     }
                 })
             }
@@ -51,12 +60,22 @@ export class CUserWindow{
         webix.ui(this.userWindow.registerView())
 
         $$("registerPopupButton").attachEvent("onItemClick", ()=>{
-            const values = $$("registerForm").getValues()
+
+            $$("loginButton").disable()
+            $$("registerButton").disable()
+            $$("userIcon").disable()
+
+            const values = this.fetch("registerForm")
             if (values.password != values.repeatPassword) {
-                alert("Пароли не совпадают")
+                webix.message("Пароли не совпадают!")
+                $$("registerForm").clear()
             }
             else{
-                alert("Всё ок")
+                this.userModel.createUser(values).then((user) =>{
+                    $$("loginButton").enable()
+                    $$("registerButton").enable()
+                    $$("userIcon").enable()
+                })
             }
         })
     }
@@ -68,10 +87,19 @@ export class CUserWindow{
         $$("userIcon").refresh()
 
         $$("logoutButton").attachEvent("onItemClick", ()=>{
-            this.currentUser = null
+
+            $$("loginButton").disable()
+            $$("registerButton").disable()
             $$("userIcon").disable()
-            $$("loginButton").enable()
-            $$("registerButton").enable()
+
+            this.currentUser.lastVisited = new Date()
+
+            this.userModel.updateUser(this.currentUser).then((updatingUser) =>{
+                this.currentUser = null
+                $$("userIcon").disable()
+                $$("loginButton").enable()
+                $$("registerButton").enable()
+            })
         })
     }
 

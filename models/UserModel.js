@@ -19,12 +19,18 @@ export class UserModel{
 
     getUserByLoginAndPassword(login, password){
         return new Promise((resolve, reject)=>{
-            for (let index = 0; index < this.users.values().length; index++) {
-                const user = this.users.values()[index];
+            let users = Array.from(this.users.values())
+            users.forEach(user => {
                 if (user.login == login && user.password == password) {
                     resolve(user)
                 }
-            }
+            });
+            // for (let index = 0; index < this.users.values().length; index++) {
+            //     const user = this.users.values()[index];
+            //     if (user.login == login && user.password == password) {
+            //         resolve(user)
+            //     }
+            // }
         })
     }
 

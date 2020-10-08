@@ -106,7 +106,7 @@ export class CandidateWindowController{
                 return
             }
             let values = this.fetch("createForm")
-            if (this.isEmptyString(values.firstname, values.lastname, values.patronymic, values.email, values.phone)) {
+            if (this.isEmptyString(values.firstname, values.lastname, values.email, values.phone)) {
                 webix.message("Один из параметров оказался пустым!")
                 return
             }
