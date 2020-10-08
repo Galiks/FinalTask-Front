@@ -15,9 +15,6 @@ class Index{
     }
 
     init(){
-
-
-
       this.employeeTab.init()
       this.candidateTab.init()
       this.eventTab.init()

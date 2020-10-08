@@ -1,4 +1,4 @@
-import {Event} from "./../../models/entities/Event.js";
+import {Event} from "../../../models/entities/Event.js";
 import { EVENT_STATUS } from "./CEventWindow.js";
 
 export class EventWindowView{
