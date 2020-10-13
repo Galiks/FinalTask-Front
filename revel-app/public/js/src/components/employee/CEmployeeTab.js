@@ -1,3 +1,4 @@
+import { EmployeeModel } from "../../models/EmployeeModel.js";
 import { CEmployeeWindow} from "./CEmployeeWindow.js";
 import { EmployeeTabView } from "./EmployeeTabView.js";
 
@@ -15,9 +16,42 @@ export class CEmployeeTab{
         this.datatable = $$("employees")
         this.cmenu = $$("employeecmenu")
 
-        this.employeeWindowController.init()
-        this.employeeWindowController.refreshDatatable()
+        this.employeeModel = new EmployeeModel()
+
+        this.refreshDatatable()
+
+        this.employeeWindowController.init(this.employeeModel, ()=>{this.refreshDatatable()})
         this.attachEvent()
+    }
+
+    /**
+     * Метод обновляет данные в таблице employees
+     */
+    refreshDatatable(){
+        this.employeeModel.getEmloyees().then((data)=>{
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                this.refreshDatatableData(empty)
+            }else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", { $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                this.refreshDatatableData(data);
+            }
+        })
+    }
+
+    /**
+     * Метод для обновления данных в таблице employees
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(data) {
+        this.datatable.clearAll();
+        this.datatable.parse(data);
+        this.datatable.refresh();
     }
 
     /**

@@ -29,21 +29,10 @@ export class CEventWindow{
         this.candidateModel = new CandidateModel()
 
         this.createWindowController = new CCreateEventWindow();
-
         this.updateWindowController = new CUpdateEventWindow()
         this.deleteWindowController = new CDeleteEventWindow()
         this.aboutWindowController = new CAboutEventWindow();
         this.finishWindowController = new CFinishEventWindow();
-
-        //this.createWindowController.refreshDatatable = (datatableName) =>{ this.refreshDatatable(datatableName)}
-
-        // this.updateWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
-        // this.updateWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
-
-        // this.deleteWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
-
-        // this.finishWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
-        // this.finishWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
 
         this.cmenu = $$("eventcmenu")
     }
