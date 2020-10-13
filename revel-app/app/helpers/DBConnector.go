@@ -3,7 +3,6 @@ package helpers
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/revel/revel"
 )
@@ -42,12 +41,12 @@ func (connector *dbConnector) GetDBConnection() (db *sql.DB, err error) {
 		revel.AppLog.Errorf("Не удалось получить имя БД")
 		return
 	}
-	address, ok := revel.Config.String("db.address")
-	if !ok {
-		err = ErrFailedConnection
-		revel.AppLog.Errorf("Не удалось получить адрес БД")
-		return
-	}
+	// address, ok := revel.Config.String("db.address")
+	// if !ok {
+	// 	err = ErrFailedConnection
+	// 	revel.AppLog.Errorf("Не удалось получить адрес БД")
+	// 	return
+	// }
 	user, ok := revel.Config.String("dbuser")
 	if !ok {
 		err = ErrFailedConnection
@@ -61,8 +60,8 @@ func (connector *dbConnector) GetDBConnection() (db *sql.DB, err error) {
 		return
 	}
 
-	connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=verify-full", user, password, address, name)
-
+	//connStr := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=verify-full", user, password, address, name)
+	connStr := "user=" + user + " password=" + password + " dbname=" + name + " sslmode=disable"
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		revel.AppLog.Errorf("Не удалось подключиться к БД")

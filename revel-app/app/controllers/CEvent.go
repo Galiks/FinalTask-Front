@@ -32,7 +32,7 @@ func (controller *CEvent) GetEvents() revel.Result {
 	if err != nil {
 		fmt.Println("error!")
 	}
-	return controller.Redirect("/", events)
+	return controller.Render(events)
 }
 
 //GetEventByID метод получения мероприятия по ID

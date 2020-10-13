@@ -3,7 +3,7 @@ import { CEmployeeTab } from "./employee/CEmployeeTab.js";
 import { CCandidateTab } from "./candidate/CCandidateTab.js";
 import { CUserWindow } from "./user/CUserWindow.js";
 
-class Index{
+export class Index{
     constructor(){
         this.eventTab = new CEventTab()
 
