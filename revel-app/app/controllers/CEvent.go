@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"revel-app/app/models/entities"
 	"revel-app/app/models/providers"
 
@@ -13,21 +14,25 @@ type CEvent struct {
 	eventProvider *providers.PEvent
 }
 
-//Before интерцептор BEFOR контроллера CEvent
-func (controller *CEvent) Before() (result revel.Result, rc CEvent) {
-	return nil, *controller
-}
+// //Before интерцептор BEFOR контроллера CEvent
+// func (controller *CEvent) Before() (result revel.Result, rc CEvent) {
+// 	return nil, *controller
+// }
 
-//After интерцептор AFTER контроллера CEvent
-func (controller *CEvent) After() (result revel.Result, rc CEvent) {
-	return nil, *controller
-}
+// //After интерцептор AFTER контроллера CEvent
+// func (controller *CEvent) After() (result revel.Result, rc CEvent) {
+// 	return nil, *controller
+// }
 
 //GetEvents метод получения всех мероприятий
 func (controller *CEvent) GetEvents() revel.Result {
 	//var Events []*entities.Event = controller.EventProvider.GetEvents()
-
-	return nil
+	controller.eventProvider = &providers.PEvent{}
+	events, err := controller.eventProvider.GetEvents()
+	if err != nil {
+		fmt.Println("error!")
+	}
+	return controller.RenderJSON(events)
 }
 
 //GetEventByID метод получения мероприятия по ID

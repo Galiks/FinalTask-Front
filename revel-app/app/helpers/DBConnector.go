@@ -30,25 +30,32 @@ func GetConnector() (IDBConnector, error) {
 	return connector, nil
 }
 
-type dbConnector struct{}
+type dbConnector struct {
+	*sql.DB
+}
 
 func (connector *dbConnector) GetDBConnection() (db *sql.DB, err error) {
-	if name, ok := revel.Config.String("db.name"); !ok {
+
+	name, ok := revel.Config.String("db.name")
+	if !ok {
 		err = ErrFailedConnection
 		revel.AppLog.Errorf("Не удалось получить имя БД")
 		return
 	}
-	if address, ok := revel.Config.String("db.address"); !ok {
+	address, ok := revel.Config.String("db.address")
+	if !ok {
 		err = ErrFailedConnection
 		revel.AppLog.Errorf("Не удалось получить адрес БД")
 		return
 	}
-	if user, ok := revel.Config.String("dbuser"); !ok {
+	user, ok := revel.Config.String("dbuser")
+	if !ok {
 		err = ErrFailedConnection
 		revel.AppLog.Errorf("Не удалось получить пользователя БД")
 		return
 	}
-	if password, ok := revel.Config.String("db.password"); !ok {
+	password, ok := revel.Config.String("db.password")
+	if !ok {
 		err = ErrFailedConnection
 		revel.AppLog.Errorf("Не удалось получить пароль БД")
 		return
@@ -61,5 +68,5 @@ func (connector *dbConnector) GetDBConnection() (db *sql.DB, err error) {
 		revel.AppLog.Errorf("Не удалось подключиться к БД")
 	}
 
-	return
+	return db, nil
 }

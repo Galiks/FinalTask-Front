@@ -13,15 +13,15 @@ type CUser struct {
 	userProvider *providers.PUser
 }
 
-//Before интерцептор BEFOR контроллера CUser
-func (controller *CUser) Before() (result revel.Result, rc CUser) {
-	return nil, *controller
-}
+// //Before интерцептор BEFOR контроллера CUser
+// func (controller *CUser) Before() (result revel.Result, rc CUser) {
+// 	return nil, *controller
+// }
 
-//After интерцептор AFTER контроллера CUser
-func (controller *CUser) After() (result revel.Result, rc CUser) {
-	return nil, *controller
-}
+// //After интерцептор AFTER контроллера CUser
+// func (controller *CUser) After() (result revel.Result, rc CUser) {
+// 	return nil, *controller
+// }
 
 //GetUsers метод получения всех пользователей
 func (controller *CUser) GetUsers() revel.Result {

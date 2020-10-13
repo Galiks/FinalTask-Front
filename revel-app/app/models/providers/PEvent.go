@@ -11,7 +11,8 @@ type PEvent struct {
 }
 
 //GetEvents метод получения мероприятий
-func (e *PEvent) GetEvents() (es []*entities.Event, err error) {
+func (e *PEvent) GetEvents() (es []entities.Event, err error) {
+	e.eventMapper = &mappers.MEvent{}
 	return e.eventMapper.SelectAll()
 }
 

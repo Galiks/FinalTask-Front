@@ -1,6 +1,8 @@
 package app
 
 import (
+	"revel-app/app/controllers"
+
 	"github.com/revel/revel"
 )
 
@@ -36,6 +38,8 @@ func init() {
 	// revel.OnAppStart(ExampleStartupScript)
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+	revel.InterceptMethod((*controllers.CCandidate).Before, revel.BEFORE)
+	revel.InterceptMethod((*controllers.CCandidate).Finally, revel.FINALLY)
 }
 
 // HeaderFilter adds common security headers

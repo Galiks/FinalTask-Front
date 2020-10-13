@@ -10,6 +10,11 @@ type MCandidate struct {
 	db *sql.DB
 }
 
+//Init метод инициализации маппера MCandidate
+func (m *MCandidate) Init(db *sql.DB) {
+	m.db = db
+}
+
 //SelectAll получение всех кандидатов
 func (m *MCandidate) SelectAll() (cs []*entities.Candidate, err error) {
 	return

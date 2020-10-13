@@ -178,9 +178,20 @@ export class EventModel{
      * @returns список мероприятий в виде массива
      */
     getEvents() {
-        return new Promise((resolve, reject)=>{
-            resolve(Array.from(this.events.values()))
-        })
+        let request = new XMLHttpRequest()
+        request.open("GET", "/event", true)
+        request.send()
+
+        if (request.status != 200){
+            console.log(request.status)
+        }
+        else{
+            console.log(request.response)
+        }
+
+        // return new Promise((resolve, reject)=>{
+        //     resolve(Array.from(this.events.values()))
+        // })
     }
 
     /**
