@@ -49,21 +49,4 @@ export class CDeleteEventWindow{
         this.deleteWindow.show()
         this.mainTab.disable()
     }
-
-
-    /**
-     * Метод возвращает данные с формы
-     * @returns данные с формы
-     */
-    fetch(){
-        return this.deleteForm.getValues()
-    }
-
-    /**
-     * Метод для заполнение формы данными
-     * @param {*} values значения
-     */
-    parse(values){
-        this.deleteForm.setValues(values)
-    }
 }

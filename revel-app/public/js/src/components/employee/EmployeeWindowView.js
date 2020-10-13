@@ -2,18 +2,6 @@ import { Employee } from "./../../models/entities/Employee.js";
 
 export class EmployeeWindowView{
     constructor(){
-        this.viewCreateWindow()
-    }
-
-    /**
-     * Метод, создающий маску из 60 символов
-     */
-    getMaskForString(){
-      let result = ""
-      for (let index = 0; index < 6; index++) {
-        result.concat("##########")        
-      }
-      return result
     }
 
     /**
