@@ -1,5 +1,8 @@
 import { CEventWindow } from "./CEventWindow.js";
 import { EventTabView } from "./EventTabView.js";
+import { EventModel } from "../../models/EventModel.js";
+import { EmployeeModel } from "../../models/EmployeeModel.js";
+import { CandidateModel } from "../../models/CandidateModel.js";
 
 export class CEventTab{
     constructor(){
@@ -11,14 +14,66 @@ export class CEventTab{
      * Метод для инициализации
      */
     init(){
-        this.eventWindowController.init()
+        this.eventWindowController.init(() => this.refreshDatatable)
 
         this.datatable = $$("events")
         this.cmenu = $$("eventcmenu")
 
-        this.eventWindowController.refreshDatatable("events")
+
+        this.eventModel = new EventModel()
+        this.employeeModel = new EmployeeModel()
+        this.candidateModel = new CandidateModel()
+
+        this.refreshDatatable("events")
 
         this.attachEvent()
+    }
+
+    /**
+     * Метод обновляет данные в указанной таблице
+     * @param {string} datatableName имя таблицы
+     */
+    refreshDatatable(datatableName){
+        let getData;
+        if (datatableName == "events") {
+            getData = this.eventModel.getEvents()
+        }
+        else if(datatableName == "candidates"){
+            getData = this.candidateModel.getCandidates()
+        }
+        else if (datatableName == "employees"){
+            getData = this.employeeModel.getEmloyees()
+        }
+        else {
+            return
+        }
+        getData.then((data)=>{
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                this.refreshDatatableData(datatableName, empty)
+            }
+            else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                this.refreshDatatableData(datatableName, data);
+            }
+        })
+    }
+
+
+    /**
+     * Метод для обновления данных в указанной таблице
+     * @param {string} datatableName имя таблицы
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(datatableName, data) {
+        $$(datatableName).clearAll();
+        $$(datatableName).parse(data);
+        $$(datatableName).refresh();
     }
 
     /**

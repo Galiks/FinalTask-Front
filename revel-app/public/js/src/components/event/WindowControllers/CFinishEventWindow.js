@@ -6,9 +6,11 @@ export class CFinishEventWindow{
         
     }
 
-    init(eventModel, candidateModel){
+    init(eventModel, candidateModel, refreshDatatable, updateCandidateStatus){
         this.eventModel = eventModel,
         this.candidateModel = candidateModel
+        this.refreshDatatable - refreshDatatable
+        this.updateCandidateStatus = updateCandidateStatus
 
         this.finishWindow = $$("finishWindow")
         this.mainTab = $$("main")

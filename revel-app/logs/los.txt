@@ -108,3 +108,17 @@ INFO  2020/10/13 01:27:11    app     run.go:34: Running revel server
 INFO  2020/10/13 01:27:11    app   plugin.go:9: Go to /@tests to run the tests.          
 INFO  2020/10/13 01:28:18    app     run.go:34: Running revel server                     
 INFO  2020/10/13 01:28:18    app   plugin.go:9: Go to /@tests to run the tests.          
+INFO  2020/10/13 12:44:08    app     run.go:34: Running revel server                     
+INFO  2020/10/13 12:44:08    app   plugin.go:9: Go to /@tests to run the tests.          
+ERROR 2020/10/13 12:46:06    app revel_logger.go:39: Не удалось получить имя БД               
+INFO  2020/10/13 12:59:49    app     run.go:34: Running revel server                     
+INFO  2020/10/13 12:59:49    app   plugin.go:9: Go to /@tests to run the tests.          
+INFO  2020/10/13 13:00:55    app     run.go:34: Running revel server                     
+INFO  2020/10/13 13:00:55    app   plugin.go:9: Go to /@tests to run the tests.          
+INFO  2020/10/13 13:02:01    app     run.go:34: Running revel server                     
+INFO  2020/10/13 13:02:01    app   plugin.go:9: Go to /@tests to run the tests.          
+ERROR 2020/10/13 13:06:14    app revel_logger.go:39: Не удалось получить имя БД               
+INFO  2020/10/13 13:07:57    app     run.go:34: Running revel server                     
+INFO  2020/10/13 13:07:57    app   plugin.go:9: Go to /@tests to run the tests.          
+INFO  2020/10/13 13:09:03    app     run.go:34: Running revel server                     
+INFO  2020/10/13 13:09:03    app   plugin.go:9: Go to /@tests to run the tests.          

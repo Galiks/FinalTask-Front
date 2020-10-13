@@ -5,8 +5,9 @@ export class CCreateEventWindow{
         
     }
 
-    init(eventModel){
+    init(eventModel, refreshDatatable){
         this.eventModel = eventModel
+        this.refreshDatatable = refreshDatatable
         this.createWindow = $$("createWindow")
         this.createWindowButton = $$("createWindowButton")
         this.createForm = $$("createForm")
@@ -41,7 +42,6 @@ export class CCreateEventWindow{
             let employees = $$("employeesMultiselect").getValue()
             let candidates = $$("candidatesMultiselect").getValue()
             this.eventModel.createEvent(values).then((newEvent)=>{
-                console.log(newEvent)
                 employees.split(',').forEach(elem => {
                     this.eventModel.setEmployeeToEvent(elem, newEvent.ID).then(()=>{
 
@@ -54,9 +54,9 @@ export class CCreateEventWindow{
                 });
 
                 this.refreshDatatable("events")
+                this.createWindow.close()
+                this.mainTab.enable()
             })
-            this.createWindow.close()
-            this.mainTab.enable()
         })
 
         this.createWindow.show()

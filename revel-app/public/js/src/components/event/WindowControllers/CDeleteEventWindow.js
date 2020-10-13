@@ -5,8 +5,10 @@ export class CDeleteEventWindow{
         
     }
 
-    init(eventModel){
+    init(eventModel, refreshDatatable){
         this.eventModel = eventModel
+        this.refreshDatatable = refreshDatatable
+
         this.deleteWindow = $$("deleteWindow")
         this.deleteWindowButton = $$("deleteWindowButton")
         this.deleteForm = $$("deleteForm")

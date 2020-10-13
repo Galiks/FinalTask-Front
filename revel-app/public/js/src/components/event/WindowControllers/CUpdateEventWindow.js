@@ -6,8 +6,10 @@ export class CUpdateEventWindow{
         
     }
 
-    init(eventModel){
+    init(eventModel, updateCandidateStatus){
         this.eventModel = eventModel
+        this.updateCandidateStatus = updateCandidateStatus
+
         this.updateWindow = $$("updateWindow")
         this.updateWindowButton = $$("updateWindowButton")
         this.updateForm = $$("updateForm")

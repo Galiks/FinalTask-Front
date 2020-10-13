@@ -19,7 +19,10 @@ export class CEventWindow{
      * Метод для инициализации
      * @param {EventModel} eventModel объект класса EventModel
      */
-    init(){
+    init(refreshTable){
+
+        this.refreshDatatable = refreshTable
+
         this.eventModel = new EventModel()
         this.eventWindowView = new EventWindowView()
         this.employeeModel = new EmployeeModel()
@@ -32,63 +35,17 @@ export class CEventWindow{
         this.aboutWindowController = new CAboutEventWindow();
         this.finishWindowController = new CFinishEventWindow();
 
-        this.createWindowController.refreshDatatable = (datatableName) =>{ this.refreshDatatable(datatableName)}
+        //this.createWindowController.refreshDatatable = (datatableName) =>{ this.refreshDatatable(datatableName)}
 
-        this.updateWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
-        this.updateWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
+        // this.updateWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
+        // this.updateWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
 
-        this.deleteWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
+        // this.deleteWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
 
-        this.finishWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
-        this.finishWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
+        // this.finishWindowController.refreshDatatable = (datatableName) => {this.refreshDatatable(datatableName)}
+        // this.finishWindowController.updateCandidateStatus = (eventID, status) => {this.updateCandidateStatus(eventID, status)}
 
         this.cmenu = $$("eventcmenu")
-    }
-
-    /**
-     * Метод обновляет данные в указанной таблице
-     * @param {string} datatableName имя таблицы
-     */
-    refreshDatatable(datatableName){
-        let getData;
-        if (datatableName == "events") {
-            getData = this.eventModel.getEvents()
-        }
-        else if(datatableName == "candidates"){
-            getData = this.candidateModel.getCandidates()
-        }
-        else if (datatableName == "employees"){
-            getData = this.employeeModel.getEmloyees()
-        }
-        else {
-            return
-        }
-        getData.then((data)=>{
-            if (data.length == 0) {
-                this.cmenu.clearAll()
-                this.cmenu.define("data", ["Добавить"])
-                this.cmenu.refresh()
-                let empty = [new Object]
-                this.refreshDatatableData(datatableName, empty)
-            }
-            else{
-                this.cmenu.clearAll()
-                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", "Завершить",{ $template:"Separator" },"Подробнее"])
-                this.cmenu.refresh()
-                this.refreshDatatableData(datatableName, data);
-            }
-        })
-    }
-
-    /**
-     * Метод для обновления данных в указанной таблице
-     * @param {string} datatableName имя таблицы
-     * @param {Array} data массив данных
-     */
-    refreshDatatableData(datatableName, data) {
-        $$(datatableName).clearAll();
-        $$(datatableName).parse(data);
-        $$(datatableName).refresh();
     }
 
     /**
@@ -125,7 +82,9 @@ export class CEventWindow{
      */
     createWindow(){
         webix.ui(this.eventWindowView.viewCreateWindow())     
-        this.createWindowController.init(this.eventModel)
+        this.createWindowController.init(this.eventModel, () => {
+            this.refreshDatatable
+        })
         this.createWindowController.attachEventOnCreateWindow()
         this.setMultiselectOptions();   
     }
@@ -136,7 +95,9 @@ export class CEventWindow{
      */
     updateWindow(event){
         webix.ui(this.eventWindowView.viewUpdateWindow(event))
-        this.updateWindowController.init(this.eventModel)
+        this.updateWindowController.init(this.eventModel, ()=>{
+            this.updateCandidateStatus
+        })
         this.updateWindowController.attachEventOnUpdateWindow(event)
         this.setMultiselectValue(event.ID);
         this.setMultiselectOptions()
@@ -149,7 +110,9 @@ export class CEventWindow{
     deleteWindow(event){
         webix.ui(this.eventWindowView.viewDeleteWindow(event))
 
-        this.deleteWindowController.init(this.eventModel)
+        this.deleteWindowController.init(this.eventModel, () => {
+            this.refreshDatatable
+        })
         this.deleteWindowController.attachEventOnDeleteWindow(event)
     }
 
@@ -183,7 +146,7 @@ export class CEventWindow{
         ]).then(() => {
             webix.ui(this.eventWindowView.viewFinishWindow(event, candidates))
 
-            this.finishWindowController.init(this.eventModel, this.candidateModel)
+            this.finishWindowController.init(this.eventModel, this.candidateModel, ()=>{this.refreshDatatable}, ()=>{this.updateCandidateStatus})
 
             this.finishWindowController.attachEventOnFinishWindow(event, candidates)
         });

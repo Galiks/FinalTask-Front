@@ -178,20 +178,22 @@ export class EventModel{
      * @returns список мероприятий в виде массива
      */
     getEvents() {
-        let request = new XMLHttpRequest()
-        request.open("GET", "/event", true)
-        request.send()
+        // let request = new XMLHttpRequest()
+        // request.open("GET", "/event/all", true)
+        // request.send()
 
-        if (request.status != 200){
-            console.log(request.status)
-        }
-        else{
-            console.log(request.response)
-        }
+        // if (request.status != 200){
+        //     console.log(request.status)
+        // }
+        // else{
+        //     console.log(request.response)
+        // }
 
-        // return new Promise((resolve, reject)=>{
-        //     resolve(Array.from(this.events.values()))
-        // })
+        // return request.response
+
+        return new Promise((resolve, reject)=>{
+            resolve(Array.from(this.events.values()))
+        })
     }
 
     /**

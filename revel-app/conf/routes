@@ -10,7 +10,7 @@ module:testrunner
 GET     /                                       App.Index
 
 
-GET     /event                            CEvent.GetEvents
+GET     /event/all                            CEvent.GetEvents
 
 # Ignore favicon requests
 # GET     /favicon.ico                            404
