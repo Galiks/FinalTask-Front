@@ -19,11 +19,11 @@ export class CEventWindow{
      * Метод для инициализации
      * @param {EventModel} eventModel объект класса EventModel
      */
-    init(refreshTable){
+    init(eventModel, refreshTable){
 
         this.refreshDatatable = refreshTable
+        this.eventModel = eventModel
 
-        this.eventModel = new EventModel()
         this.eventWindowView = new EventWindowView()
         this.employeeModel = new EmployeeModel()
         this.candidateModel = new CandidateModel()
@@ -82,8 +82,8 @@ export class CEventWindow{
      */
     createWindow(){
         webix.ui(this.eventWindowView.viewCreateWindow())     
-        this.createWindowController.init(this.eventModel, () => {
-            this.refreshDatatable
+        this.createWindowController.init(this.eventModel, (datatableName) => {
+            this.refreshDatatable(datatableName)
         })
         this.createWindowController.attachEventOnCreateWindow()
         this.setMultiselectOptions();   
@@ -95,8 +95,8 @@ export class CEventWindow{
      */
     updateWindow(event){
         webix.ui(this.eventWindowView.viewUpdateWindow(event))
-        this.updateWindowController.init(this.eventModel, ()=>{
-            this.updateCandidateStatus
+        this.updateWindowController.init(this.eventModel, (eventID, status)=>{
+            this.updateCandidateStatus(eventID, status)
         })
         this.updateWindowController.attachEventOnUpdateWindow(event)
         this.setMultiselectValue(event.ID);
@@ -110,8 +110,8 @@ export class CEventWindow{
     deleteWindow(event){
         webix.ui(this.eventWindowView.viewDeleteWindow(event))
 
-        this.deleteWindowController.init(this.eventModel, () => {
-            this.refreshDatatable
+        this.deleteWindowController.init(this.eventModel, (datatableName) => {
+            this.refreshDatatable(datatableName)
         })
         this.deleteWindowController.attachEventOnDeleteWindow(event)
     }
@@ -146,7 +146,7 @@ export class CEventWindow{
         ]).then(() => {
             webix.ui(this.eventWindowView.viewFinishWindow(event, candidates))
 
-            this.finishWindowController.init(this.eventModel, this.candidateModel, ()=>{this.refreshDatatable}, ()=>{this.updateCandidateStatus})
+            this.finishWindowController.init(this.eventModel, this.candidateModel, (datatableName)=>{this.refreshDatatable(datatableName)}, (eventID, status)=>{this.updateCandidateStatus(eventID, status)})
 
             this.finishWindowController.attachEventOnFinishWindow(event, candidates)
         });

@@ -14,15 +14,15 @@ export class CEventTab{
      * Метод для инициализации
      */
     init(){
-        this.eventWindowController.init(() => this.refreshDatatable)
-
-        this.datatable = $$("events")
-        this.cmenu = $$("eventcmenu")
-
-
         this.eventModel = new EventModel()
         this.employeeModel = new EmployeeModel()
         this.candidateModel = new CandidateModel()
+
+
+        this.eventWindowController.init(this.eventModel, (datatableName) => this.refreshDatatable(datatableName))
+
+        this.datatable = $$("events")
+        this.cmenu = $$("eventcmenu")
 
         this.refreshDatatable("events")
 
