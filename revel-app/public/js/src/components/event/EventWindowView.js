@@ -166,10 +166,10 @@ export class EventWindowView{
       return updateWindow
     }
 
-    viewAboutWindow(event, employees, candidates){
+    viewAboutWindow(event){
       
       let employeesDatatable = {
-            "data": employees,
+            // "data": employees,
             "columns": [
               { "id": "ID", "header":"Номер", "sort":"number"},
               { "id": "firstname", "header": "Имя", "fillspace": true, "sort": "string" },
@@ -183,7 +183,7 @@ export class EventWindowView{
             "id":"employeesAbout"
       }
       let candidatesDatatable = {
-            "data": candidates,
+            // "data": candidates,
             "columns": [
               { "id": "ID", "header":"Номер", "sort":"number", "fillspace": true,},
               { "id": "firstname", "header": "Имя",  },
@@ -233,7 +233,7 @@ export class EventWindowView{
       return aboutWindow
     }
 
-    viewFinishWindow(event, candidates){
+    viewFinishWindow(event){
       let eventInformation = {
         "view":"property",
         "elements":[
@@ -243,7 +243,7 @@ export class EventWindowView{
         ]
       }
       let candidatesDatatable = {
-        "data": candidates,
+        // "data": candidates,
         "columns": [
           { "id": "ID", "header":"Номер", "sort":"number", "fillspace": true,},
           { "id": "firstname", "header": "Имя",  },
@@ -253,7 +253,8 @@ export class EventWindowView{
           { "id": "phone", "header": "Телефон", "sort": "string", "fillspace": true,},
           { "id": "status", "header": "Статус", "sort": "string", "fillspace": true, }
         ],
-        "view": "datatable"
+        "view": "datatable",
+        "id":"finishCandidates"
       }
       let finishWindow = {
         view:"window",

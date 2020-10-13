@@ -1,5 +1,6 @@
 import { CCandidateWindow } from "./CCandidateWindow.js";
 import { CandidateTabView } from "./CandidateTabView.js";
+import { CandidateModel } from "../../models/CandidateModel.js";
 
 export class CCandidateTab{
     constructor(){
@@ -11,10 +12,46 @@ export class CCandidateTab{
      * Метод для инициализации
      */
     init(){
-        this.candidateWindowController.init()
+
+        this.cmenu = $$("candidatecmenu")
+        this.datatable = $$("candidates")
+
+        this.candidateModel = new CandidateModel()
+
+        this.candidateWindowController.init(this.candidateModel, ()=>{this.refreshDatatable()})
         this.attachEvent()
 
-        this.candidateWindowController.refreshDatatable()
+        this.refreshDatatable()
+    }
+
+     /**
+     * Метод обновляет данные в таблице candidates
+     */
+    refreshDatatable(){
+        this.candidateModel.getCandidates().then((data)=>{
+            if (data.length == 0) {
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить"])
+                this.cmenu.refresh()
+                let empty = [new Object]
+                this.refreshDatatableData(empty)
+            }else{
+                this.cmenu.clearAll()
+                this.cmenu.define("data", ["Добавить","Удалить", "Изменить", { $template:"Separator" },"Подробнее"])
+                this.cmenu.refresh()
+                this.refreshDatatableData(data);
+            }
+        })
+    }
+
+    /**
+     * Метод для обновления данных в таблице candidates
+     * @param {Array} data массив данных
+     */
+    refreshDatatableData(data) {
+        this.datatable.clearAll();
+        this.datatable.parse(data);
+        this.datatable.refresh();
     }
 
     /**
@@ -29,7 +66,7 @@ export class CCandidateTab{
      * Метод для привязки событий
      */
     attachEvent(){
-        $$("candidatecmenu").attachTo($$("candidates"));
+        this.cmenu.attachTo(this.datatable);
 
         this.attachEventWindowHandler(this)
     }

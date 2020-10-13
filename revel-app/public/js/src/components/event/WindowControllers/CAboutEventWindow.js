@@ -4,13 +4,15 @@ export class CAboutEventWindow{
 
     }
 
-    init(eventModel, employeeModel, candidateModel){
+    init(event, eventModel, employeeModel, candidateModel){
         this.eventModel = eventModel
         this.employeeModel = employeeModel
         this.candidateModel = candidateModel
 
         this.aboutWindow = $$("aboutWindow")
         this.mainTab = $$("main")
+
+        this.attachEventOnAboutWindow(event)
     }
 
     /**
@@ -18,7 +20,7 @@ export class CAboutEventWindow{
      * @param {Event} event объект класса Event
      * @returns {Employee[],Candidate[]} объект из массива сотрудников и массива кандидатов
      */
-    getEmployeesAndCandidatesByEvent(event) {
+    setEmployeesAndCandidatesToEvent(event) {
         let employees = [];
         let candidates = [];
         Promise.all([
@@ -44,13 +46,12 @@ export class CAboutEventWindow{
             $$("aboutWindow").show();
             $$("main").disable();
         });
-        return { employees, candidates };
     }
 
     /**
      * Метод для привязки событий к окну информации о мероприятии
      */
-    attachEventOnAboutWindow(){
+    attachEventOnAboutWindow(event){
 
         this.aboutWindow.attachEvent("onHide", ()=> {
             this.aboutWindow.close()
@@ -65,5 +66,7 @@ export class CAboutEventWindow{
             this.aboutWindow.close()
             this.mainTab.enable()
         });
+
+        this.setEmployeesAndCandidatesToEvent(event)
     }
 }

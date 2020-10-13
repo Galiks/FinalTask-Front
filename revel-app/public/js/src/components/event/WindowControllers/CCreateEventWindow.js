@@ -12,6 +12,8 @@ export class CCreateEventWindow{
         this.createWindowButton = $$("createWindowButton")
         this.createForm = $$("createForm")
         this.mainTab = $$("main")
+
+        this.attachEventOnCreateWindow()
     }
 
     /**

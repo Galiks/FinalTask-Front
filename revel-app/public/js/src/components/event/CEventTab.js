@@ -24,9 +24,9 @@ export class CEventTab{
         this.datatable = $$("events")
         this.cmenu = $$("eventcmenu")
 
-        this.refreshDatatable("events")
-
         this.attachEvent()
+
+        this.refreshDatatable("events")
     }
 
     /**

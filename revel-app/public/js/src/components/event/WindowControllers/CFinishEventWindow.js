@@ -6,14 +6,16 @@ export class CFinishEventWindow{
         
     }
 
-    init(eventModel, candidateModel, refreshDatatable, updateCandidateStatus){
+    init(event, eventModel, candidateModel, refreshDatatable, updateCandidateStatus){
         this.eventModel = eventModel,
         this.candidateModel = candidateModel
-        this.refreshDatatable - refreshDatatable
+        this.refreshDatatable = refreshDatatable
         this.updateCandidateStatus = updateCandidateStatus
 
         this.finishWindow = $$("finishWindow")
         this.mainTab = $$("main")
+
+        this.attachEventOnFinishWindow(event)
     }
 
     /**
@@ -21,10 +23,10 @@ export class CFinishEventWindow{
      * @param {Event} event объект класса Event
      * @param {Candidate[]} candidates массив объекто класса Candidate
      */
-    attachEventOnFinishWindow(event, candidates){
+    attachEventOnFinishWindow(event){
 
         $$("finishWindowButton").attachEvent("onItemClick", ()=>{
-            this.finishEvent(event, candidates);
+            this.setCandidatesToFinishWindow(event)
         });
 
         this.finishWindow.attachEvent("onDestruct", () => {
@@ -40,7 +42,6 @@ export class CFinishEventWindow{
             this.finishWindow.close()
             this.mainTab.enable()
         });
-
 
         this.finishWindow.show();
         this.mainTab.disable();
@@ -82,5 +83,25 @@ export class CFinishEventWindow{
                 $$("finishWindowButton").disable();
             }
         }
+    }
+
+    /**
+     * Метод для добавления данных в окно
+     * @param {Event} event event объект класса Event
+     */
+    setCandidatesToFinishWindow(event){
+        let candidates = [];
+        Promise.all([
+            this.eventModel.getCandidateIDByEventID(event.ID).then((IDs) => {
+                IDs.forEach((id) => {
+                    this.candidateModel.getCandidateByID(id).then((candidate) => {
+                        candidates.push(candidate);
+                    });
+                });
+            })
+        ]).then(() => {
+            $$("finishCandidates").parse(candidates)
+            this.finishEvent(event, candidates)
+        });
     }
 }

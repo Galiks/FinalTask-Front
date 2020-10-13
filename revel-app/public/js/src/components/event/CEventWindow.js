@@ -33,8 +33,6 @@ export class CEventWindow{
         this.deleteWindowController = new CDeleteEventWindow()
         this.aboutWindowController = new CAboutEventWindow();
         this.finishWindowController = new CFinishEventWindow();
-
-        this.cmenu = $$("eventcmenu")
     }
 
     /**
@@ -84,10 +82,12 @@ export class CEventWindow{
      */
     updateWindow(event){
         webix.ui(this.eventWindowView.viewUpdateWindow(event))
-        this.updateWindowController.init(this.eventModel, (eventID, status)=>{
+        this.updateWindowController.init(event, this.eventModel, (datatableName) => {
+            this.refreshDatatable(datatableName)
+        }, 
+        (eventID, status)=>{
             this.updateCandidateStatus(eventID, status)
         })
-        this.updateWindowController.attachEventOnUpdateWindow(event)
         this.setMultiselectValue(event.ID);
         this.setMultiselectOptions()
     }
@@ -99,10 +99,9 @@ export class CEventWindow{
     deleteWindow(event){
         webix.ui(this.eventWindowView.viewDeleteWindow(event))
 
-        this.deleteWindowController.init(this.eventModel, (datatableName) => {
+        this.deleteWindowController.init(event, this.eventModel, (datatableName) => {
             this.refreshDatatable(datatableName)
         })
-        this.deleteWindowController.attachEventOnDeleteWindow(event)
     }
 
     /**
@@ -110,11 +109,9 @@ export class CEventWindow{
      * @param {Event} event объект класса Event
      */
     aboutWindow(event){
-        let { employees, candidates } = this.aboutWindowController.getEmployeesAndCandidatesByEvent(event);
-    
-        webix.ui(this.eventWindowView.viewAboutWindow(event, employees, candidates))
+        webix.ui(this.eventWindowView.viewAboutWindow(event))
 
-        this.aboutWindowController.attachEventOnAboutWindow()
+        this.aboutWindowController.init(event, this.eventModel, this.employeeModel, this.candidateModel)
     }
 
     /**
@@ -123,22 +120,10 @@ export class CEventWindow{
      * @param {number[]} candidates массив из ID кандидатов 
      */
     finishWindow(event){
-        let candidates = [];
-        Promise.all([
-            this.eventModel.getCandidateIDByEventID(event.ID).then((IDs) => {
-                IDs.forEach((id) => {
-                    this.candidateModel.getCandidateByID(id).then((candidate) => {
-                        candidates.push(candidate);
-                    });
-                });
-            })
-        ]).then(() => {
-            webix.ui(this.eventWindowView.viewFinishWindow(event, candidates))
 
-            this.finishWindowController.init(this.eventModel, this.candidateModel, (datatableName)=>{this.refreshDatatable(datatableName)}, (eventID, status)=>{this.updateCandidateStatus(eventID, status)})
-
-            this.finishWindowController.attachEventOnFinishWindow(event, candidates)
-        });
+        webix.ui(this.eventWindowView.viewFinishWindow(event))
+        
+        this.finishWindowController.init(event, this.eventModel, this.candidateModel, (datatableName)=>{this.refreshDatatable(datatableName)}, (eventID, status)=>{this.updateCandidateStatus(eventID, status)})
     }
 
     /**
